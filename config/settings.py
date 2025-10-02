@@ -30,12 +30,10 @@ class Settings(BaseSettings):
     # 개발 모드 (GPU 없을 때 Mock 모델 사용)
     DEV_MODE: bool = os.getenv("DEV_MODE", "false").lower() == "true"
 
-    # Redis 설정 (선택사항 - 캐싱 성능 향상)
-    REDIS_HOST: str = os.getenv("REDIS_HOST", "localhost")
-    REDIS_PORT: int = int(os.getenv("REDIS_PORT", "6379"))
-    REDIS_DB: int = int(os.getenv("REDIS_DB", "0"))
-    REDIS_PASSWORD: Optional[str] = os.getenv("REDIS_PASSWORD")
-    USE_REDIS: bool = os.getenv("USE_REDIS", "false").lower() == "true"
+    # 임베딩 모델 설정
+    EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "intfloat/multilingual-e5-large")
+    # 선택사항: multilingual-e5-large-instruct (instruction 지원)
+    # 선택사항: nlpai-lab/KoE5 (한국어 특화, +3% 성능)
 
     # 서버 설정
     HOST: str = os.getenv("HOST", "0.0.0.0")

@@ -20,12 +20,13 @@ SOLAR-10.7B 기반 하이브리드 연구 데이터 및 논문 추천 시스템
 ### 주요 특징
 
 - 🤖 **SOLAR-10.7B**: 한국어 특화 소규모 언어모델 (Upstage)
-- 🔍 **하이브리드 RAG**: BM25 + 임베딩(ko-sroberta) + LLM 재순위화
+- 🔍 **하이브리드 RAG**: BM25 + E5 임베딩 + LLM 재순위화
+- 🌏 **E5 임베딩**: 다국어 지원 (한국어+영어), KURE 벤치마크 Recall 0.658
 - 📊 **3단계 추천 파이프라인**:
-  1. 임베딩 기반 빠른 필터링 (50개 → 15개)
+  1. E5 임베딩 기반 빠른 필터링 (30개 → 15개)
   2. BM25 어휘 매칭으로 정확도 향상
   3. LLM이 최종 분석 및 추천 생성
-- ⚡ **최적화**: INT4/INT8 양자화, 로컬 임베딩 모델
+- ⚡ **최적화**: INT4/INT8 양자화, query/passage 구분 인코딩
 - 🎓 **논리적 추천 이유**: LLM이 구체적인 한국어 설명 생성
 - 📈 **3단계 추천 레벨**: 강추/추천/참고로 차별화
 
@@ -51,7 +52,9 @@ SOLAR-10.7B 기반 하이브리드 연구 데이터 및 논문 추천 시스템
     ▼
 ┌──────────────────────────────────┐
 │ 3. 하이브리드 유사도 계산         │
-│   - Semantic (ko-sroberta): 70%  │
+│   - Semantic (E5): 70%           │
+│     * query: 소스 데이터셋        │
+│     * passage: 후보 문서          │
 │   - Lexical (BM25): 30%          │
 │   → 상위 15개 필터링              │
 └──────────────────────────────────┘
@@ -77,8 +80,29 @@ SOLAR-10.7B 기반 하이브리드 연구 데이터 및 논문 추천 시스템
 
 ✅ **로컬 리소스** (사전 다운로드):
 - SOLAR-10.7B 모델 (~21GB, INT4 시 ~6GB)
-- ko-sroberta-multitask 임베딩 (~1GB)
+- multilingual-e5-large 임베딩 (~2.2GB, 1024차원)
 - Python 패키지 (requirements.txt)
+
+### E5 임베딩 모델 특징
+
+**intfloat/multilingual-e5-large**:
+- 📊 **성능**: KURE 벤치마크 Recall 0.658, NDCG 0.628
+- 🚀 **성능 향상**: ko-sroberta 대비 Recall +95%, NDCG +63%
+- 🌏 **다국어**: 한국어 + 영어 논문/데이터셋 동시 지원
+- 🎯 **Query/Passage 구분**: 검색 쿼리와 문서를 분리 인코딩
+- 📐 **차원**: 1024차원 (ko-sroberta 768차원 대비 고해상도)
+
+**사용 방법**:
+```python
+# 소스 데이터셋 (검색 쿼리)
+query_embedding = model.encode("query: " + source_text)
+
+# 후보 논문/데이터셋 (문서)
+passage_embedding = model.encode("passage: " + candidate_text)
+
+# 코사인 유사도 계산
+similarity = cosine_similarity(query_embedding, passage_embedding)
+```
 
 ## 🚀 빠른 시작
 
@@ -99,42 +123,33 @@ pip install -r requirements.txt
 
 ### 2. 환경 변수 설정
 
-```bash
-# .env 파일 생성
-cp .env.example .env
+`.env` 파일을 열어 API 키를 설정하세요:
 
-# .env 파일 편집하여 API 키 설정
+```bash
+# .env 파일 편집
 nano .env
 ```
 
-필수 환경 변수:
+필수 API 키 설정:
 ```env
-# API 키
-DATAON_SEARCH_KEY=your_dataon_search_key
-DATAON_META_KEY=your_dataon_meta_key
-SCIENCEON_CLIENT_ID=your_scienceon_client_id
-SCIENCEON_ACCOUNTS=your_scienceon_accounts
+DATAON_SEARCH_KEY=실제_키_입력
+DATAON_META_KEY=실제_키_입력
+SCIENCEON_CLIENT_ID=실제_키_입력
+SCIENCEON_ACCOUNTS=실제_키_입력
+```
 
+주요 설정 (기본값 사용 가능):
+```env
 # 모델 설정
 MODEL_NAME=upstage/SOLAR-10.7B-Instruct-v1.0
-USE_VLLM=true
-QUANTIZATION=fp16
+QUANTIZATION=int8  # int4(6GB) | int8(11GB) | fp16(21GB)
+EMBEDDING_MODEL=intfloat/multilingual-e5-large
+
+# 개발 모드 (GPU 없을 때)
+DEV_MODE=false
 ```
 
-### 3. Redis 설정 (선택사항)
-
-캐싱 성능 향상을 위해 Redis 설치를 권장합니다:
-
-```bash
-# Docker로 Redis 실행
-docker run -d -p 6379:6379 redis:latest
-
-# 또는 시스템에 직접 설치
-# macOS: brew install redis
-# Ubuntu: sudo apt-get install redis-server
-```
-
-### 4. 서버 실행
+### 3. 서버 실행
 
 ```bash
 # 개발 모드
@@ -218,11 +233,11 @@ MODEL_NAME=yanolja/EEVE-Korean-Instruct-10.8B-v1.0
 MODEL_NAME=beomi/Llama-3-Open-Ko-8B-Instruct
 ```
 
-### 성능 최적화 (중저사양 H/W)
+### 성능 최적화 (`.env` 파일 수정)
 
 ```env
 # 양자화 설정 (메모리 절약)
-QUANTIZATION=int4  # int4 (~6GB) | int8 (~11GB) | fp16 (~21GB)
+QUANTIZATION=int4  # int4(6GB) | int8(11GB) | fp16(21GB)
 
 # 응답 길이 제한 (속도 향상)
 MAX_TOKENS=512
@@ -230,8 +245,8 @@ MAX_TOKENS=512
 # 온도 설정 (일관성 중시)
 TEMPERATURE=0.1
 
-# 개발 모드 (GPU 없을 때)
-DEV_MODE=true  # Mock 모델 사용
+# 개발 모드 (GPU 없을 때 Mock 모델 사용)
+DEV_MODE=true
 ```
 
 ### 하드웨어별 권장 설정
@@ -444,7 +459,9 @@ curl -X POST "http://localhost:8000/recommend" \
 ### 사용 기술
 
 - **언어모델**: [SOLAR-10.7B-Instruct-v1.0](https://huggingface.co/upstage/SOLAR-10.7B-Instruct-v1.0) (Upstage)
-- **임베딩 모델**: [ko-sroberta-multitask](https://huggingface.co/jhgan/ko-sroberta-multitask) (jhgan)
+- **임베딩 모델**: [multilingual-e5-large](https://huggingface.co/intfloat/multilingual-e5-large) (Microsoft)
+  - 대안: [multilingual-e5-large-instruct](https://huggingface.co/intfloat/multilingual-e5-large-instruct) (instruction 지원)
+  - 대안: [KoE5](https://huggingface.co/nlpai-lab/KoE5) (한국어 특화, +3% 성능)
 - **프레임워크**: FastAPI, Transformers, Sentence-Transformers
 - **API**: DataON, ScienceON (KISTI)
 
@@ -457,9 +474,10 @@ curl -X POST "http://localhost:8000/recommend" \
 ### 참고 문헌
 
 1. Upstage SOLAR 모델: [https://www.upstage.ai/solar](https://www.upstage.ai/solar)
-2. Korean Sentence Embedding: jhgan/ko-sentence-transformers
-3. DataON API 가이드: [https://dataon.gitbook.io/](https://dataon.gitbook.io/)
-4. ScienceON API 가이드: [https://scienceon.kisti.re.kr/apigateway/](https://scienceon.kisti.re.kr/apigateway/)
+2. Multilingual E5 Text Embeddings: [Wang et al., 2024](https://arxiv.org/abs/2402.05672)
+3. KURE (Korean Retrieval Embedding): [nlpai-lab/KURE](https://github.com/nlpai-lab/KURE)
+4. DataON API 가이드: [https://dataon.gitbook.io/](https://dataon.gitbook.io/)
+5. ScienceON API 가이드: [https://scienceon.kisti.re.kr/apigateway/](https://scienceon.kisti.re.kr/apigateway/)
 
 ---
 
@@ -467,7 +485,8 @@ curl -X POST "http://localhost:8000/recommend" \
 
 - [KISTI](https://www.kisti.re.kr/) - 대회 주관 및 DataON/ScienceON API 제공
 - [Upstage](https://www.upstage.ai/) - SOLAR-10.7B 모델 공개
-- [jhgan](https://github.com/jhgan00/ko-sentence-transformers) - ko-sroberta 임베딩 모델
+- [Microsoft Research](https://www.microsoft.com/en-us/research/) - Multilingual E5 임베딩 모델
+- [Korea University NLP Lab](https://github.com/nlpai-lab) - KURE 벤치마크 및 KoE5 모델
 - [Hugging Face](https://huggingface.co/) - 모델 허브 및 Transformers 라이브러리
 
 ---

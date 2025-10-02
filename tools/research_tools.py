@@ -15,9 +15,11 @@ logger = logging.getLogger(__name__)
 dataon_client = DataONClient()
 scienceon_client = ScienceONClient()
 
-# 임베딩 모델 (한국어 최적화: RoBERTa 기반, 멀티태스크 학습)
-# jhgan/ko-sroberta-multitask: KorSTS Spearman 85.60%, 논문/데이터셋 추천에 최적
-embedding_model = SentenceTransformer('jhgan/ko-sroberta-multitask')
+# 임베딩 모델 (E5: 다국어 지원, 논문 검색 최적화)
+# intfloat/multilingual-e5-large: KURE 벤치마크 Recall 0.658, NDCG 0.628
+# ko-sroberta 대비 Recall +95%, NDCG +63% 성능 향상
+# 한국어 + 영어 논문/데이터셋 검색에 최적화
+embedding_model = SentenceTransformer('intfloat/multilingual-e5-large')
 
 # SmolAgent용 도구 함수들
 
@@ -121,25 +123,34 @@ def get_scienceon_paper_details(paper_cn: str) -> dict:
         logger.error(f"ScienceON 논문 상세 조회 실패: {e}")
         return {"error": str(e)}
 
-def generate_text_embedding(text: str) -> List[float]:
+def generate_text_embedding(text: str, is_query: bool = True) -> List[float]:
     """
-    한국어/영어 텍스트를 다국어 임베딩으로 변환합니다.
+    E5 모델을 사용하여 텍스트를 임베딩으로 변환합니다.
+
+    E5 모델은 query와 passage를 구분하여 처리합니다:
+    - query: 검색 쿼리 (소스 데이터셋)
+    - passage: 문서 (후보 논문/데이터셋)
 
     Args:
         text: 임베딩할 텍스트
+        is_query: True면 "query:" 프리픽스, False면 "passage:" 프리픽스
 
     Returns:
-        임베딩 벡터
+        임베딩 벡터 (1024차원)
     """
     try:
         if not text or text.strip() == "":
-            return [0.0] * 768  # 빈 텍스트의 경우 영벡터 반환
+            return [0.0] * 1024  # E5-large는 1024차원
 
-        embedding = embedding_model.encode(text)
+        # E5 모델 프리픽스 추가
+        prefix = "query: " if is_query else "passage: "
+        prefixed_text = prefix + text
+
+        embedding = embedding_model.encode(prefixed_text, normalize_embeddings=True)
         return embedding.tolist()
     except Exception as e:
         logger.error(f"임베딩 생성 실패: {e}")
-        return [0.0] * 768
+        return [0.0] * 1024
 
 def calculate_similarity_score(embedding1: List[float], embedding2: List[float]) -> float:
     """
@@ -172,115 +183,10 @@ def calculate_similarity_score(embedding1: List[float], embedding2: List[float])
         logger.error(f"유사도 계산 실패: {e}")
         return 0.0
 
-def generate_korean_recommendation_reason(source_data: dict, candidate_data: dict, similarity_score: float) -> str:
-    """
-    한국어로 추천 이유를 생성합니다.
+# 이 함수는 LLM 기반 추천 생성으로 대체되어 제거됨
+# LLM이 직접 추천 이유를 생성하도록 변경
 
-    Args:
-        source_data: 소스 데이터셋 정보
-        candidate_data: 후보 데이터/논문 정보
-        similarity_score: 유사도 점수
-
-    Returns:
-        한국어 추천 이유 텍스트
-    """
-    try:
-        reasons = []
-
-        # 키워드 유사도 분석
-        source_keywords = set(source_data.get('keywords', []))
-        candidate_keywords = set(candidate_data.get('keywords', []) if isinstance(candidate_data.get('keywords'), list)
-                                 else candidate_data.get('keywords', '').split(','))
-
-        common_keywords = source_keywords.intersection(candidate_keywords)
-        if common_keywords:
-            keywords_text = ', '.join(list(common_keywords)[:3])  # 최대 3개만 표시
-            reasons.append(f"공통 키워드 '{keywords_text}'로 높은 연관성")
-
-        # 분류 유사도
-        source_classification = source_data.get('classification_ko', '') or source_data.get('classification_en', '')
-        candidate_classification = candidate_data.get('classification', '') or candidate_data.get('journal', '')
-
-        if source_classification and candidate_classification:
-            if source_classification in candidate_classification or candidate_classification in source_classification:
-                reasons.append(f"동일 연구 분야({source_classification}) 소속")
-
-        # 시간적 연관성
-        source_year = source_data.get('pub_year', '')
-        candidate_year = candidate_data.get('pub_year', '')
-
-        if source_year and candidate_year:
-            try:
-                year_diff = abs(int(source_year) - int(candidate_year))
-                if year_diff <= 3:
-                    reasons.append("최근 연구로 시의성 높음")
-                elif year_diff <= 5:
-                    reasons.append("관련 시기의 연구")
-            except ValueError:
-                pass
-
-        # 기관 연관성
-        source_org = source_data.get('organization', '')
-        candidate_org = candidate_data.get('affiliation', '') or candidate_data.get('publisher', '')
-
-        if source_org and candidate_org:
-            # 대학교, 연구소 등 공통 기관명 확인
-            source_orgs = set(source_org.split())
-            candidate_orgs = set(candidate_org.split())
-            common_orgs = source_orgs.intersection(candidate_orgs)
-
-            if common_orgs:
-                reasons.append("관련 연구기관 소속으로 방법론 유사")
-
-        # 유사도 점수 기반 평가
-        if similarity_score >= 0.8:
-            reasons.append("의미적 유사도 매우 높음")
-        elif similarity_score >= 0.7:
-            reasons.append("의미적 유사도 높음")
-        elif similarity_score >= 0.6:
-            reasons.append("의미적 연관성 존재")
-
-        # 인용 정보 (논문의 경우)
-        if candidate_data.get('citation_info'):
-            citation_count = candidate_data['citation_info'].get('citation_count', 0)
-            if citation_count > 10:
-                reasons.append("높은 인용도의 주요 연구")
-
-        # 추천 이유 조합
-        if reasons:
-            return '; '.join(reasons)
-        else:
-            return "주제 영역의 의미적 연관성"
-
-    except Exception as e:
-        logger.error(f"추천 이유 생성 실패: {e}")
-        return "관련 연구로 판단됨"
-
-def determine_recommendation_level(similarity_score: float, citation_score: float = 0.0) -> str:
-    """
-    추천 레벨을 결정합니다 (강추/추천/참고).
-
-    Args:
-        similarity_score: 유사도 점수
-        citation_score: 인용 점수 (논문의 경우)
-
-    Returns:
-        추천 레벨 ("강추", "추천", "참고")
-    """
-    try:
-        # 복합 점수 계산 (유사도 70%, 인용도 30%)
-        combined_score = similarity_score * 0.7 + citation_score * 0.3
-
-        if combined_score >= 0.8:
-            return "강추"
-        elif combined_score >= 0.65:
-            return "추천"
-        else:
-            return "참고"
-
-    except Exception as e:
-        logger.error(f"추천 레벨 결정 실패: {e}")
-        return "참고"
+# determine_recommendation_level 함수도 LLM이 직접 판단하도록 제거
 
 def extract_keywords_from_text(text: str, max_keywords: int = 5) -> List[str]:
     """
@@ -426,19 +332,20 @@ def calculate_bm25_score(query_text: str, document_text: str, k1: float = 1.2, b
 
 def calculate_hybrid_similarity(source_text: str, candidate_text: str) -> Dict[str, float]:
     """
-    BM25 + 임베딩 하이브리드 유사도를 계산합니다 (Hybrid RAG 방식)
+    BM25 + E5 임베딩 하이브리드 유사도를 계산합니다 (Hybrid RAG 방식)
 
     Args:
-        source_text: 소스 텍스트
-        candidate_text: 후보 텍스트
+        source_text: 소스 텍스트 (query로 처리)
+        candidate_text: 후보 텍스트 (passage로 처리)
 
     Returns:
         각종 유사도 점수와 최종 점수가 포함된 딕셔너리
     """
     try:
-        # 1. 임베딩 기반 의미적 유사도 (Dense Retrieval)
-        source_embedding = generate_text_embedding(source_text)
-        candidate_embedding = generate_text_embedding(candidate_text)
+        # 1. E5 임베딩 기반 의미적 유사도 (Dense Retrieval)
+        # 소스는 query, 후보는 passage로 인코딩
+        source_embedding = generate_text_embedding(source_text, is_query=True)
+        candidate_embedding = generate_text_embedding(candidate_text, is_query=False)
         semantic_score = calculate_similarity_score(source_embedding, candidate_embedding)
 
         # 2. BM25 기반 어휘적 유사도 (Sparse Retrieval)
@@ -446,8 +353,8 @@ def calculate_hybrid_similarity(source_text: str, candidate_text: str) -> Dict[s
 
         # 3. 하이브리드 점수 계산
         # 일반적으로 의미적 유사도에 더 높은 가중치 부여
-        alpha = 0.7  # 임베딩 가중치
-        beta = 0.3   # BM25 가중치
+        alpha = 0.5  # 임베딩 가중치
+        beta = 0.5   # BM25 가중치
 
         hybrid_score = alpha * semantic_score + beta * lexical_score
 
@@ -479,66 +386,3 @@ def calculate_hybrid_similarity(source_text: str, candidate_text: str) -> Dict[s
             'final_score': 0.0,
             'common_keywords': []
         }
-
-def generate_hybrid_recommendation_reason(
-    source_data: dict,
-    candidate_data: dict,
-    similarity_result: Dict[str, Any]
-) -> str:
-    """
-    하이브리드 유사도 분석 결과를 바탕으로 구체적인 추천 이유를 생성합니다.
-
-    Args:
-        source_data: 소스 데이터셋 정보
-        candidate_data: 후보 데이터/논문 정보
-        similarity_result: calculate_hybrid_similarity 결과
-
-    Returns:
-        구체적인 추천 이유 텍스트
-    """
-    try:
-        reasons = []
-
-        semantic_score = similarity_result.get('semantic_score', 0.0)
-        lexical_score = similarity_result.get('lexical_score', 0.0)
-        common_keywords = similarity_result.get('common_keywords', [])
-        final_score = similarity_result.get('final_score', 0.0)
-
-        # 의미적 유사도 기반 이유
-        if semantic_score >= 0.8:
-            reasons.append("의미적 유사도 매우 높음")
-        elif semantic_score >= 0.7:
-            reasons.append("주제적 연관성 높음")
-
-        # 어휘적 유사도 기반 이유
-        if lexical_score >= 0.6:
-            reasons.append("핵심 용어 일치도 높음")
-        elif lexical_score >= 0.4:
-            reasons.append("관련 용어 공유")
-
-        # 공통 키워드 언급
-        if common_keywords:
-            keywords_text = ', '.join(common_keywords[:3])
-            reasons.append(f"공통 키워드 '{keywords_text}' 확인")
-
-        # 전체적인 유사도 평가
-        if final_score >= 0.8:
-            reasons.append("종합적 연관성 매우 높음")
-        elif final_score >= 0.7:
-            reasons.append("다면적 분석결과 높은 관련성")
-
-        # 기존 메타데이터 기반 이유도 포함
-        source_keywords = set(source_data.get('keywords', []))
-        candidate_keywords = set(candidate_data.get('keywords', []) if isinstance(candidate_data.get('keywords'), list)
-                                else candidate_data.get('keywords', '').split(','))
-
-        metadata_overlap = source_keywords.intersection(candidate_keywords)
-        if metadata_overlap:
-            meta_keywords = ', '.join(list(metadata_overlap)[:2])
-            reasons.append(f"메타데이터 키워드 '{meta_keywords}' 일치")
-
-        return '; '.join(reasons[:4]) if reasons else "하이브리드 분석을 통한 관련 연구"
-
-    except Exception as e:
-        logger.error(f"하이브리드 추천 이유 생성 실패: {e}")
-        return "의미적·어휘적 분석을 통한 관련성 확인"

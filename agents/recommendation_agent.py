@@ -300,7 +300,30 @@ class KoreanResearchRecommendationAgent:
                 parsed_response = json.loads(json_str)
 
                 if 'recommendations' in parsed_response:
-                    return parsed_response['recommendations']
+                    llm_recommendations = parsed_response['recommendations']
+
+                    # LLM 응답과 후보 데이터 매칭
+                    final_recommendations = []
+                    for rec in llm_recommendations:
+                        candidate_number = rec.get('candidate_number', 0)
+                        if 1 <= candidate_number <= len(candidates):
+                            candidate = candidates[candidate_number - 1]
+
+                            # LLM 추천 정보와 후보 데이터 결합
+                            final_rec = {
+                                "type": candidate['type'],
+                                "title": candidate['title'],
+                                "description": candidate['description'][:200] + "..." if len(candidate.get('description', '')) > 200 else candidate.get('description', ''),
+                                "score": rec.get('score', candidate.get('final_score', 0.5)),
+                                "reason": rec.get('reason', '추천 이유 생성 실패'),  # LLM이 생성한 이유
+                                "level": rec.get('level', '참고'),  # LLM이 결정한 레벨
+                                "url": candidate['url']
+                            }
+                            final_recommendations.append(final_rec)
+
+                    if final_recommendations:
+                        logger.info(f"LLM 추천 생성 성공: {len(final_recommendations)}개")
+                        return final_recommendations
 
             # JSON 파싱 실패시 폴백
             logger.warning("LLM 응답 파싱 실패, 폴백 모드로 전환")
@@ -311,42 +334,35 @@ class KoreanResearchRecommendationAgent:
             return self._generate_fallback_recommendations({}, candidates)
 
     def _generate_fallback_recommendations(self, source_data: Dict[str, Any], candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """폴백: 규칙 기반 추천 생성 (하이브리드 분석 결과 활용)"""
+        """
+        폴백: 간단한 점수 기반 추천 생성
+        LLM 실패 시에만 사용 (추천 이유는 간략하게)
+        """
         recommendations = []
 
         for candidate in candidates[:self.final_recommendations]:
             try:
-                # 하이브리드 추천 이유 생성
-                similarity_result = {
-                    'semantic_score': candidate.get('semantic_score', 0.0),
-                    'lexical_score': candidate.get('lexical_score', 0.0),
-                    'final_score': candidate.get('similarity_score', 0.0),
-                    'common_keywords': candidate.get('common_keywords', [])
-                }
+                score = candidate.get('final_score', 0.5)
 
-                from tools.research_tools import generate_hybrid_recommendation_reason
-                reason = generate_hybrid_recommendation_reason(
-                    source_data, candidate['data'], similarity_result
-                )
+                # 간단한 레벨 결정
+                if score >= 0.8:
+                    level = "강추"
+                elif score >= 0.65:
+                    level = "추천"
+                else:
+                    level = "참고"
+
+                # 간단한 추천 이유
+                reason = f"유사도 점수 {score:.2f} (의미적 {candidate.get('semantic_score', 0.0):.2f}, 어휘적 {candidate.get('lexical_score', 0.0):.2f})"
 
                 recommendation = {
                     "type": candidate['type'],
                     "title": candidate['title'],
                     "description": candidate['description'][:100] + "..." if len(candidate.get('description', '')) > 100 else candidate.get('description', ''),
-                    "score": round(candidate.get('final_score', 0.5), 2),
+                    "score": round(score, 2),
                     "reason": reason,
-                    "level": determine_recommendation_level(
-                        candidate.get('similarity_score', 0.5),
-                        candidate.get('citation_score', 0.0)
-                    ),
-                    "url": candidate['url'],
-                    # 추가 디버깅 정보
-                    "similarity_breakdown": {
-                        "semantic": round(candidate.get('semantic_score', 0.0), 3),
-                        "lexical": round(candidate.get('lexical_score', 0.0), 3),
-                        "citation": round(candidate.get('citation_score', 0.0), 3),
-                        "common_terms": candidate.get('common_keywords', [])[:3]
-                    }
+                    "level": level,
+                    "url": candidate['url']
                 }
                 recommendations.append(recommendation)
 
