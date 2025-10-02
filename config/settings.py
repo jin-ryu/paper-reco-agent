@@ -13,11 +13,11 @@ class Settings(BaseSettings):
     SCIENCEON_ACCOUNTS: str = os.getenv("SCIENCEON_ACCOUNTS", "")
 
     # 모델 설정
-    MODEL_NAME: str = os.getenv("MODEL_NAME", "upstage/SOLAR-10.7B-Instruct-v1.0")
+    MODEL_NAME: str = os.getenv("MODEL_NAME", "Qwen/Qwen3-14B")
     MODEL_CACHE_DIR: str = os.getenv("MODEL_CACHE_DIR", "./models")
 
     # 양자화 설정 (메모리 최적화)
-    # fp16: ~21GB (고사양), int8: ~11GB (중사양), int4: ~6GB (저사양)
+    # fp16: ~28GB (고사양), int8: ~14GB (중사양), int4: ~8GB (저사양)
     QUANTIZATION: str = os.getenv("QUANTIZATION", "int8")
 
     # GPU 메모리 사용률 (0.0 ~ 1.0)

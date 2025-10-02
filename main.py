@@ -24,9 +24,9 @@ logger = logging.getLogger(__name__)
 
 # FastAPI 앱 초기화
 app = FastAPI(
-    title="Korean Research Recommendation Agent",
-    description="SOLAR-10.7B 기반 한국 연구 데이터/논문 추천 시스템",
-    version="1.0.0"
+    title="Research Recommendation Agent",
+    description="Qwen3-14B 기반 다국어 연구 데이터/논문 추천 시스템",
+    version="2.0.0"
 )
 
 # CORS 설정
@@ -57,8 +57,8 @@ async def startup_event():
 async def shutdown_event():
     """서버 종료시 리소스 정리"""
     global agent
-    if agent and agent.solar_model:
-        agent.solar_model.cleanup()
+    if agent and agent.llm_model:
+        agent.llm_model.cleanup()
         logger.info("🧹 리소스 정리 완료")
 
 # 요청/응답 모델
@@ -67,6 +67,7 @@ class RecommendationRequest(BaseModel):
     max_recommendations: Optional[int] = 5
 
 class RecommendationItem(BaseModel):
+    rank: int  # 추천 순위 (1=최고 추천)
     type: str  # "dataset" or "paper"
     title: str
     description: str
@@ -149,7 +150,7 @@ async def get_model_info():
     if not agent:
         raise HTTPException(status_code=503, detail="모델이 아직 로드되지 않았습니다")
 
-    return agent.solar_model.get_model_info()
+    return agent.llm_model.get_model_info()
 
 @app.get("/api/test/dataon/{dataset_id}")
 async def test_dataon_api(dataset_id: str):
@@ -181,9 +182,10 @@ async def root():
     루트 엔드포인트
     """
     return {
-        "message": "Korean Research Recommendation Agent",
-        "version": "1.0.0",
+        "message": "Research Recommendation Agent",
+        "version": "2.0.0",
         "model": settings.MODEL_NAME,
+        "languages": "English, Japanese, Korean, Chinese, and 25+ more",
         "docs": "/docs",
         "health": "/health"
     }

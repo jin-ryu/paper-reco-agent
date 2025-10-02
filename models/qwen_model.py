@@ -1,5 +1,5 @@
 """
-SOLAR-10.7B 언어모델 래퍼
+Qwen3-14B 언어모델 래퍼
 하이브리드 추천 시스템을 위한 LLM 인터페이스
 """
 import logging
@@ -25,10 +25,12 @@ except Exception:
 logger = logging.getLogger(__name__)
 
 
-class SolarModel:
+class QwenModel:
     """
-    SOLAR-10.7B Instruct 모델 래퍼
+    Qwen3-14B 모델 래퍼
 
+    - 100+ 언어 지원 (영어, 한국어, 일본어, 중국어 등)
+    - 14.8B 파라미터 (13.2B non-embedding)
     - 검색 쿼리 생성
     - 후보 분석 및 추천 생성
     - 추천 이유 작성
@@ -45,7 +47,7 @@ class SolarModel:
     def _load_model(self):
         """모델 로딩 (양자화 지원)"""
         try:
-            logger.info(f"🚀 SOLAR 모델 로딩 시작: {self.model_name}")
+            logger.info(f"🚀 Qwen 모델 로딩 시작: {self.model_name}")
             logger.info(f"   - 디바이스: {self.device}")
             logger.info(f"   - 양자화: {settings.QUANTIZATION}")
 
@@ -65,26 +67,24 @@ class SolarModel:
 
             # 양자화 설정 (메모리 절약)
             if settings.QUANTIZATION in ["int8", "int4"] and self.device == "cuda":
-                # INT8/INT4는 bitsandbytes 필요
-                if not BITSANDBYTES_AVAILABLE:
-                    logger.warning("⚠️  bitsandbytes가 설치되지 않았거나 CUDA 문제 발생")
+                # INT8/INT4는 bitsandbytes와 accelerate 필요
+                if not BITSANDBYTES_AVAILABLE or not ACCELERATE_AVAILABLE:
+                    logger.warning("⚠️  bitsandbytes 또는 accelerate가 설치되지 않음")
                     logger.warning(f"   {settings.QUANTIZATION} 양자화 불가 - FP16으로 대체")
-                    logger.info("   - FP16 모드로 전환 (~21GB VRAM)")
-                    load_kwargs["torch_dtype"] = torch.float16
-                    if ACCELERATE_AVAILABLE:
-                        load_kwargs["device_map"] = "auto"
+                    logger.info("   - FP16 모드로 전환 (~28GB VRAM)")
+                    load_kwargs["dtype"] = torch.float16
                 elif settings.QUANTIZATION == "int8":
-                    logger.info("   - INT8 양자화 활성화 (~11GB VRAM)")
+                    logger.info("   - INT8 양자화 활성화 (~14GB VRAM)")
                     load_kwargs["load_in_8bit"] = True
                     load_kwargs["device_map"] = "auto"
                 elif settings.QUANTIZATION == "int4":
-                    logger.info("   - INT4 양자화 활성화 (~6GB VRAM)")
+                    logger.info("   - INT4 양자화 활성화 (~8GB VRAM)")
                     load_kwargs["load_in_4bit"] = True
                     load_kwargs["device_map"] = "auto"
             elif self.device == "cuda":
-                # device_map 없이 단순 로드 (accelerate 이슈 회피)
-                logger.info("   - FP16 모드 (~21GB VRAM, device_map 없음)")
-                load_kwargs["torch_dtype"] = torch.float16
+                # device_map 없이 단순 로드
+                logger.info("   - FP16 모드 (~28GB VRAM)")
+                load_kwargs["dtype"] = torch.float16
             else:
                 logger.info("   - CPU 모드 (느림)")
 
@@ -100,7 +100,7 @@ class SolarModel:
 
             self.model.eval()
 
-            logger.info(f"✅ SOLAR 모델 로딩 완료")
+            logger.info(f"✅ Qwen 모델 로딩 완료")
 
         except Exception as e:
             logger.error(f"❌ 모델 로딩 실패: {e}")
@@ -129,12 +129,24 @@ class SolarModel:
             if temperature is None:
                 temperature = settings.TEMPERATURE
 
-            # 토크나이징
+            # Qwen3 채팅 형식으로 변환 (non-thinking 모드)
+            messages = [
+                {"role": "system", "content": "You are a helpful research recommendation assistant. Output JSON directly without any thinking process or explanations."},
+                {"role": "user", "content": prompt}
+            ]
+
+            # 토크나이징 (채팅 템플릿 적용)
+            text = self.tokenizer.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=True
+            )
+
             inputs = self.tokenizer(
-                prompt,
+                text,
                 return_tensors="pt",
                 truncation=True,
-                max_length=2048
+                max_length=32768  # Qwen3는 32K 토큰 지원 (확장 시 128K)
             ).to(self.device)
 
             # 생성
@@ -162,7 +174,7 @@ class SolarModel:
 
     def create_korean_prompt(self, task_description: str, context: Dict[str, Any]) -> str:
         """
-        한국어 작업을 위한 프롬프트 생성 (SOLAR 최적화)
+        한국어/다국어 작업을 위한 프롬프트 생성 (Qwen3 최적화)
 
         Args:
             task_description: 작업 설명
@@ -194,59 +206,70 @@ class SolarModel:
             keywords = ', '.join(candidate.get('keywords', []))[:150]
 
             candidates_text += f"\n[{i}] ({cand_type}) {title}\n"
-            candidates_text += f"   설명: {desc}...\n"
-            candidates_text += f"   유사도: 의미적 {semantic_score:.2f} | 어휘적 {lexical_score:.2f} | 최종 {final_score:.2f}\n"
+            candidates_text += f"   Description: {desc}...\n"
+            candidates_text += f"   Similarity: Semantic {semantic_score:.2f} | Lexical {lexical_score:.2f} | Final {final_score:.2f}\n"
             if common_keywords:
-                candidates_text += f"   공통 용어: {', '.join(common_keywords)}\n"
+                candidates_text += f"   Common terms: {', '.join(common_keywords)}\n"
             if keywords:
-                candidates_text += f"   키워드: {keywords}\n"
+                candidates_text += f"   Keywords: {keywords}\n"
 
-        prompt = f"""### Instruction:
-당신은 연구 데이터와 논문을 추천하는 전문 에이전트입니다.
+        prompt = f"""# Task
+You are a research data and paper recommendation expert.
 
-**중요**: 임베딩 모델(E5)이 이미 유사도를 계산했습니다. 당신의 역할은:
-1. 유사도 점수를 분석하여 가장 관련성 높은 후보 선별
-2. 각 추천에 대해 **구체적이고 논리적인 이유** 작성
-3. 추천 레벨 결정 (강추/추천/참고)
+**Important**: E5 embedding model has already calculated similarity scores. Your role:
+1. Analyze similarity scores and select most relevant candidates
+2. Write specific and logical reasons for each recommendation
+3. Determine recommendation level (강추/추천/참고)
 
 {task_description}
 
-### 추천 레벨 기준:
-- **강추**: 최종 유사도 ≥ 0.75, 의미적+어휘적 모두 높음
-- **추천**: 최종 유사도 ≥ 0.60, 의미적 또는 어휘적 높음
-- **참고**: 최종 유사도 ≥ 0.45, 부분적 연관성
+## Recommendation Level Criteria:
+- 강추 (Strong): Final similarity ≥ 0.75, both semantic+lexical high
+- 추천 (Recommend): Final similarity ≥ 0.60, semantic or lexical high
+- 참고 (Reference): Final similarity ≥ 0.45, partial relevance
 
-### Source Dataset:
-제목: {source_title}
-설명: {source_description}...
-키워드: {source_keywords}
-분류: {source_classification}
+## Source Dataset:
+Title: {source_title}
+Description: {source_description}...
+Keywords: {source_keywords}
+Classification: {source_classification}
 
-### Candidates (E5 임베딩으로 필터링됨):
+## Candidates (Filtered by E5 embedding):
 {candidates_text}
 
-### Response Format:
-다음 JSON 형식으로만 응답하세요. **추가 설명 없이 JSON만 출력**하세요.
+## Output Format:
+Output ONLY valid JSON. No explanations, comments, or examples.
 
-```json
 {{
   "recommendations": [
     {{
+      "rank": 1,
       "candidate_number": 1,
-      "title": "후보 제목 그대로",
-      "type": "paper 또는 dataset",
+      "title": "Candidate title",
+      "type": "paper",
       "score": 0.85,
-      "reason": "의미적 유사도 0.85로 매우 높음; 공통 키워드 'A', 'B', 'C'로 주제 일치; 어휘적 매칭도 높아 핵심 용어 공유",
+      "reason": "High semantic similarity with common keywords",
       "level": "강추"
+    }},
+    {{
+      "rank": 2,
+      "candidate_number": 2,
+      "title": "Candidate2 title",
+      "type": "dataset",
+      "score": 0.72,
+      "reason": "Related research field",
+      "level": "추천"
     }}
   ]
 }}
-```
 
-**중요**:
-- reason은 2-3문장으로 구체적으로 작성
-- 유사도 점수를 근거로 활용
-- 공통 용어/키워드를 언급
+Rules:
+- Output JSON only
+- rank: Your determined recommendation order (1=best)
+- candidate_number: Number from candidate list above
+- type: "paper" or "dataset"
+- level: "강추" or "추천" or "참고"
+- reason: One concise sentence
 """
         return prompt
 
@@ -258,7 +281,8 @@ class SolarModel:
             "quantization": settings.QUANTIZATION,
             "max_tokens": settings.MAX_TOKENS,
             "temperature": settings.TEMPERATURE,
-            "parameters": "10.7B"
+            "parameters": "14.8B",
+            "context_length": "32K (extendable to 128K)"
         }
 
     def cleanup(self):

@@ -1,25 +1,24 @@
 """
-Mock SOLAR 모델 (개발/테스트용)
-GPU 없이 빠른 테스트를 위한 모의 모델
+Mock 모델 (개발/테스트용)
+GPU 없이 빠르게 테스트할 수 있는 더미 모델
 """
 import logging
 import json
-import random
 from typing import Optional, Dict, Any
 
 logger = logging.getLogger(__name__)
 
 
-class MockSolarModel:
+class MockQwenModel:
     """
-    개발 모드용 Mock 모델
-    실제 LLM 없이 빠르게 테스트 가능
+    개발 모드용 Mock Qwen 모델
+
+    실제 LLM 대신 미리 정의된 응답을 반환
     """
 
     def __init__(self):
-        self.model_name = "mock-solar-10.7b"
-        self.device = "mock"
-        logger.info("🎭 Mock SOLAR 모델 로딩 (개발 모드)")
+        self.model_name = "MockQwen (Dev Mode)"
+        logger.info("🎭 Mock Qwen 모델 초기화 (개발 모드)")
 
     async def generate(
         self,
@@ -28,69 +27,72 @@ class MockSolarModel:
         temperature: Optional[float] = None
     ) -> str:
         """
-        Mock 텍스트 생성 (간단한 JSON 응답 반환)
-
-        Args:
-            prompt: 입력 프롬프트
-            max_new_tokens: 무시됨
-            temperature: 무시됨
-
-        Returns:
-            Mock JSON 응답
+        Mock 텍스트 생성 (미리 정의된 JSON 반환)
         """
-        try:
-            # 프롬프트에서 후보 수 추정
-            candidate_count = prompt.count('[')
+        logger.info(f"Mock 생성: {len(prompt)} 글자 프롬프트")
 
-            # Mock 추천 생성
-            recommendations = []
-            for i in range(1, min(6, candidate_count + 1)):
-                score = round(random.uniform(0.6, 0.95), 2)
-                level = "강추" if score >= 0.8 else "추천" if score >= 0.7 else "참고"
+        # 검색 쿼리 생성 요청인지 확인
+        if "검색 키워드" in prompt or "search" in prompt.lower() or "query" in prompt.lower():
+            mock_response = {
+                "dataset_queries": ["climate change", "환경 데이터", "기후 변화"],
+                "paper_queries": ["climate research", "환경 연구", "기후 과학"]
+            }
+        else:
+            # 추천 생성
+            mock_response = {
+                "recommendations": [
+                    {
+                        "rank": 1,
+                        "candidate_number": 1,
+                        "title": "Mock Recommendation 1",
+                        "type": "paper",
+                        "score": 0.85,
+                        "reason": "High semantic similarity with relevant keywords",
+                        "level": "강추"
+                    },
+                    {
+                        "rank": 2,
+                        "candidate_number": 2,
+                        "title": "Mock Recommendation 2",
+                        "type": "dataset",
+                        "score": 0.72,
+                        "reason": "Related research field and methodology",
+                        "level": "추천"
+                    },
+                    {
+                        "rank": 3,
+                        "candidate_number": 3,
+                        "title": "Mock Recommendation 3",
+                        "type": "paper",
+                        "score": 0.65,
+                        "reason": "Partially related topic",
+                        "level": "참고"
+                    }
+                ]
+            }
 
-                recommendations.append({
-                    "candidate_number": i,
-                    "title": f"Mock 후보 {i}",
-                    "type": "paper" if i % 2 == 0 else "dataset",
-                    "score": score,
-                    "reason": f"공통 키워드로 높은 연관성; Mock 추천 {i}번",
-                    "level": level
-                })
-
-            response = {"recommendations": recommendations}
-
-            # JSON 형식으로 반환 (실제 LLM 응답처럼)
-            return f"```json\n{json.dumps(response, ensure_ascii=False, indent=2)}\n```"
-
-        except Exception as e:
-            logger.error(f"Mock 생성 실패: {e}")
-            return '```json\n{"recommendations": []}\n```'
+        return json.dumps(mock_response, ensure_ascii=False, indent=2)
 
     def create_korean_prompt(self, task_description: str, context: Dict[str, Any]) -> str:
-        """
-        프롬프트 생성 (Mock에서는 간단히 처리)
-
-        Args:
-            task_description: 작업 설명
-            context: 컨텍스트
-
-        Returns:
-            Mock 프롬프트
-        """
-        return f"Mock prompt: {task_description}"
+        """Mock 프롬프트 생성 (실제로는 사용 안함)"""
+        return f"Mock prompt for: {task_description}"
 
     def get_model_info(self) -> Dict[str, Any]:
         """Mock 모델 정보"""
         return {
             "model_name": self.model_name,
-            "device": self.device,
+            "device": "cpu",
             "quantization": "none",
             "max_tokens": 512,
             "temperature": 0.1,
-            "parameters": "mock",
-            "mode": "development"
+            "parameters": "Mock (0B)",
+            "dev_mode": True
         }
 
     def cleanup(self):
-        """Mock cleanup (아무것도 안함)"""
-        logger.info("🎭 Mock 모델 정리 완료")
+        """Mock 리소스 정리 (아무것도 안함)"""
+        logger.info("✅ Mock 모델 정리 완료")
+
+
+# 하위 호환성을 위한 alias
+MockSolarModel = MockQwenModel

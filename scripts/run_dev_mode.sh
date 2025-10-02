@@ -10,7 +10,7 @@ echo "GPU 없이 Mock 모델로 실행됩니다"
 # 개발 모드 환경변수 설정
 export DEV_MODE=true
 export USE_VLLM=false
-export MODEL_NAME=mock-solar
+export MODEL_NAME=mock-qwen
 export REDIS_HOST=localhost
 
 # 가상환경 확인
@@ -31,7 +31,7 @@ if [[ ! -f ".env" ]]; then
     cat > .env << EOL
 # 개발 모드 설정
 DEV_MODE=true
-MODEL_NAME=mock-solar
+MODEL_NAME=mock-qwen
 USE_VLLM=false
 
 # Mock API 키 (실제 키 없이도 테스트 가능)

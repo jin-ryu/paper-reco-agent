@@ -3,6 +3,7 @@ import asyncio
 from typing import Dict, List, Optional
 from config.settings import settings
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +36,7 @@ class DataONClient:
                 logger.info(f"Successfully retrieved metadata for dataset {svc_id}")
 
                 # 응답 데이터 구조 로깅
-                import json
-                logger.debug(f"API Response:\n{json.dumps(data, indent=2, ensure_ascii=False)}")
+                logger.info(f"API Response:\n{json.dumps(data, indent=2, ensure_ascii=False)}")
 
                 # 데이터 정제 및 구조화
                 if 'records' in data:
