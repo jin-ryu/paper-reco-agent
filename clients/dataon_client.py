@@ -34,8 +34,17 @@ class DataONClient:
                 data = response.json()
                 logger.info(f"Successfully retrieved metadata for dataset {svc_id}")
 
+                # 응답 데이터 구조 로깅
+                import json
+                logger.debug(f"API Response:\n{json.dumps(data, indent=2, ensure_ascii=False)}")
+
                 # 데이터 정제 및 구조화
-                if 'result' in data and len(data['result']) > 0:
+                if 'records' in data:
+                    # 단일 레코드 응답
+                    dataset = data['records']
+                    return self._process_dataset_metadata(dataset)
+                elif 'result' in data and len(data['result']) > 0:
+                    # 리스트 응답
                     dataset = data['result'][0]
                     return self._process_dataset_metadata(dataset)
                 else:
@@ -93,20 +102,33 @@ class DataONClient:
         """
         원시 DataON API 응답을 구조화된 메타데이터로 변환합니다.
         """
+        # 한글 제목/설명 우선, 없으면 영어 사용
+        title_ko = raw_data.get('dataset_title_kor', '') or raw_data.get('titl_nm', '')
+        title_en = raw_data.get('dataset_title_etc_main', '') or raw_data.get('titl_nm_en', '')
+        desc_ko = raw_data.get('dataset_expl_kor', '') or raw_data.get('desc_cn', '')
+        desc_en = raw_data.get('dataset_expl_etc_main', '') or raw_data.get('desc_cn_en', '')
+
+        # 키워드 처리 (다양한 형식 지원)
+        keywords = []
+        if raw_data.get('dataset_kywd_etc_main'):
+            keywords = [k.strip() for k in raw_data['dataset_kywd_etc_main'].split(';') if k.strip()]
+        elif raw_data.get('keywrd'):
+            keywords = [k.strip() for k in raw_data['keywrd'].split(',') if k.strip()]
+
         return {
             'svc_id': raw_data.get('svc_id', ''),
-            'title_ko': raw_data.get('titl_nm', ''),
-            'title_en': raw_data.get('titl_nm_en', ''),
-            'description_ko': raw_data.get('desc_cn', ''),
-            'description_en': raw_data.get('desc_cn_en', ''),
-            'keywords': raw_data.get('keywrd', '').split(',') if raw_data.get('keywrd') else [],
-            'organization': raw_data.get('org_nm', ''),
-            'classification_ko': raw_data.get('clsfctn_nm', ''),
+            'title_ko': title_ko,
+            'title_en': title_en,
+            'description_ko': desc_ko,
+            'description_en': desc_en,
+            'keywords': keywords,
+            'organization': raw_data.get('cltfm_kor', '') or raw_data.get('org_nm', ''),
+            'classification_ko': raw_data.get('dataset_mnsb_pc', [''])[0] if isinstance(raw_data.get('dataset_mnsb_pc'), list) else raw_data.get('clsfctn_nm', ''),
             'classification_en': raw_data.get('clsfctn_nm_en', ''),
-            'pub_year': raw_data.get('pub_year', ''),
-            'url': raw_data.get('url', ''),
-            'doi': raw_data.get('doi', ''),
-            'data_format': raw_data.get('data_format', ''),
+            'pub_year': raw_data.get('dataset_pub_dt_pc', '') or raw_data.get('pub_year', ''),
+            'url': raw_data.get('dataset_lndgpg', '') or raw_data.get('url', ''),
+            'doi': raw_data.get('dataset_doi', '') or raw_data.get('doi', ''),
+            'data_format': raw_data.get('file_frmt_pc', [''])[0] if isinstance(raw_data.get('file_frmt_pc'), list) else raw_data.get('data_format', ''),
             'file_size': raw_data.get('file_size', ''),
             'download_count': raw_data.get('download_count', 0),
             # 의미적 검색을 위한 결합된 텍스트
@@ -117,25 +139,52 @@ class DataONClient:
     def _create_combined_text(self, data: Dict) -> str:
         """한국어 통합 텍스트 생성"""
         parts = []
-        if data.get('titl_nm'):
-            parts.append(data['titl_nm'])
-        if data.get('desc_cn'):
-            parts.append(data['desc_cn'])
-        if data.get('keywrd'):
+
+        # 제목
+        title = data.get('dataset_title_kor', '') or data.get('titl_nm', '')
+        if title:
+            parts.append(title)
+
+        # 설명
+        desc = data.get('dataset_expl_kor', '') or data.get('desc_cn', '')
+        if desc:
+            parts.append(desc)
+
+        # 키워드
+        if data.get('dataset_kywd_kor'):
+            parts.append(data['dataset_kywd_kor'])
+        elif data.get('keywrd'):
             parts.append(data['keywrd'])
-        if data.get('org_nm'):
-            parts.append(data['org_nm'])
+
+        # 조직
+        org = data.get('cltfm_kor', '') or data.get('org_nm', '')
+        if org:
+            parts.append(org)
+
         return ' '.join(parts)
 
     def _create_combined_text_en(self, data: Dict) -> str:
         """영어 통합 텍스트 생성"""
         parts = []
-        if data.get('titl_nm_en'):
-            parts.append(data['titl_nm_en'])
-        if data.get('desc_cn_en'):
-            parts.append(data['desc_cn_en'])
+
+        # 제목
+        title = data.get('dataset_title_etc_main', '') or data.get('titl_nm_en', '')
+        if title:
+            parts.append(title)
+
+        # 설명
+        desc = data.get('dataset_expl_etc_main', '') or data.get('desc_cn_en', '')
+        if desc:
+            parts.append(desc)
+
+        # 키워드
+        if data.get('dataset_kywd_etc_main'):
+            parts.append(data['dataset_kywd_etc_main'])
+
+        # 분류
         if data.get('clsfctn_nm_en'):
             parts.append(data['clsfctn_nm_en'])
+
         return ' '.join(parts)
 
     async def search_by_keywords(self, keywords: List[str], limit: int = 10) -> List[Dict]:

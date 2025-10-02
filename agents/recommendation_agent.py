@@ -109,7 +109,7 @@ class KoreanResearchRecommendationAgent:
     async def _get_source_data(self, dataset_id: str) -> Dict[str, Any]:
         """1단계: 소스 데이터셋 정보 조회"""
         try:
-            source_data = get_dataon_dataset_metadata(dataset_id)
+            source_data = await get_dataon_dataset_metadata(dataset_id)
             logger.info(f"소스 데이터셋 정보 조회 완료: {source_data.get('title_ko', '')}")
             return source_data
         except Exception as e:
@@ -176,7 +176,7 @@ class KoreanResearchRecommendationAgent:
     async def _search_similar_datasets(self, keywords: List[str]) -> List[Dict[str, Any]]:
         """DataON에서 유사한 데이터셋 검색"""
         try:
-            return search_similar_dataon_datasets(keywords, limit=15)
+            return await search_similar_dataon_datasets(keywords, limit=15)
         except Exception as e:
             logger.error(f"DataON 검색 실패: {e}")
             return []
@@ -187,7 +187,7 @@ class KoreanResearchRecommendationAgent:
             papers = []
             # 키워드별로 검색하여 다양성 확보
             for keyword in keywords[:3]:  # 상위 3개 키워드만 사용
-                keyword_papers = search_scienceon_papers(keyword, limit=5)
+                keyword_papers = await search_scienceon_papers(keyword, limit=5)
                 papers.extend(keyword_papers)
 
             # 중복 제거 (CN 기준)

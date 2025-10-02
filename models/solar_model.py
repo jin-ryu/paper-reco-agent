@@ -8,6 +8,20 @@ from typing import Optional, Dict, Any
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from config.settings import settings
 
+# accelerate가 설치되어 있는지 확인
+try:
+    import accelerate
+    ACCELERATE_AVAILABLE = True
+except ImportError:
+    ACCELERATE_AVAILABLE = False
+
+# bitsandbytes가 설치되어 있는지 확인 (INT4/INT8 양자화용)
+try:
+    import bitsandbytes
+    BITSANDBYTES_AVAILABLE = True
+except Exception:
+    BITSANDBYTES_AVAILABLE = False
+
 logger = logging.getLogger(__name__)
 
 
@@ -50,18 +64,27 @@ class SolarModel:
             }
 
             # 양자화 설정 (메모리 절약)
-            if settings.QUANTIZATION == "int8" and self.device == "cuda":
-                logger.info("   - INT8 양자화 활성화 (~11GB VRAM)")
-                load_kwargs["load_in_8bit"] = True
-                load_kwargs["device_map"] = "auto"
-            elif settings.QUANTIZATION == "int4" and self.device == "cuda":
-                logger.info("   - INT4 양자화 활성화 (~6GB VRAM)")
-                load_kwargs["load_in_4bit"] = True
-                load_kwargs["device_map"] = "auto"
+            if settings.QUANTIZATION in ["int8", "int4"] and self.device == "cuda":
+                # INT8/INT4는 bitsandbytes 필요
+                if not BITSANDBYTES_AVAILABLE:
+                    logger.warning("⚠️  bitsandbytes가 설치되지 않았거나 CUDA 문제 발생")
+                    logger.warning(f"   {settings.QUANTIZATION} 양자화 불가 - FP16으로 대체")
+                    logger.info("   - FP16 모드로 전환 (~21GB VRAM)")
+                    load_kwargs["torch_dtype"] = torch.float16
+                    if ACCELERATE_AVAILABLE:
+                        load_kwargs["device_map"] = "auto"
+                elif settings.QUANTIZATION == "int8":
+                    logger.info("   - INT8 양자화 활성화 (~11GB VRAM)")
+                    load_kwargs["load_in_8bit"] = True
+                    load_kwargs["device_map"] = "auto"
+                elif settings.QUANTIZATION == "int4":
+                    logger.info("   - INT4 양자화 활성화 (~6GB VRAM)")
+                    load_kwargs["load_in_4bit"] = True
+                    load_kwargs["device_map"] = "auto"
             elif self.device == "cuda":
-                logger.info("   - FP16 모드 (~21GB VRAM)")
+                # device_map 없이 단순 로드 (accelerate 이슈 회피)
+                logger.info("   - FP16 모드 (~21GB VRAM, device_map 없음)")
                 load_kwargs["torch_dtype"] = torch.float16
-                load_kwargs["device_map"] = "auto"
             else:
                 logger.info("   - CPU 모드 (느림)")
 
@@ -71,8 +94,8 @@ class SolarModel:
                 **load_kwargs
             )
 
-            # CPU 모드일 경우 명시적으로 이동
-            if self.device == "cpu" and "device_map" not in load_kwargs:
+            # device_map 없을 때만 명시적으로 이동
+            if "device_map" not in load_kwargs:
                 self.model = self.model.to(self.device)
 
             self.model.eval()

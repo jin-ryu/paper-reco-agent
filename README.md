@@ -161,7 +161,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 서버가 시작되면 http://localhost:8000 에서 접근 가능합니다.
 
-## 📖 API 사용법
+## 📖 API 사용법1
 
 ### 추천 요청
 

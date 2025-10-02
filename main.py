@@ -133,10 +133,11 @@ async def health_check():
         model_loaded=agent is not None,
         settings={
             "model_name": settings.MODEL_NAME,
-            "use_vllm": settings.USE_VLLM,
+            "embedding_model": settings.EMBEDDING_MODEL,
             "quantization": settings.QUANTIZATION,
             "max_tokens": settings.MAX_TOKENS,
-            "temperature": settings.TEMPERATURE
+            "temperature": settings.TEMPERATURE,
+            "dev_mode": settings.DEV_MODE
         }
     )
 
@@ -157,7 +158,7 @@ async def test_dataon_api(dataset_id: str):
     """
     try:
         from tools.research_tools import get_dataon_dataset_metadata
-        result = get_dataon_dataset_metadata(dataset_id)
+        result = await get_dataon_dataset_metadata(dataset_id)
         return {"success": True, "data": result}
     except Exception as e:
         return {"success": False, "error": str(e)}
@@ -169,7 +170,7 @@ async def test_scienceon_api():
     """
     try:
         from tools.research_tools import get_scienceon_access_token
-        token = get_scienceon_access_token()
+        token = await get_scienceon_access_token()
         return {"success": True, "token_received": bool(token)}
     except Exception as e:
         return {"success": False, "error": str(e)}

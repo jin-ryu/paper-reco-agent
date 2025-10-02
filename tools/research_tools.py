@@ -23,7 +23,7 @@ embedding_model = SentenceTransformer('intfloat/multilingual-e5-large')
 
 # SmolAgent용 도구 함수들
 
-def get_dataon_dataset_metadata(svc_id: str) -> dict:
+async def get_dataon_dataset_metadata(svc_id: str) -> dict:
     """
     DataON API를 사용해서 특정 데이터셋의 메타데이터를 가져옵니다.
 
@@ -34,17 +34,13 @@ def get_dataon_dataset_metadata(svc_id: str) -> dict:
         데이터셋의 상세 메타데이터
     """
     try:
-        # 비동기 함수를 동기적으로 실행
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        result = loop.run_until_complete(dataon_client.get_dataset_metadata(svc_id))
-        loop.close()
+        result = await dataon_client.get_dataset_metadata(svc_id)
         return result
     except Exception as e:
         logger.error(f"DataON 메타데이터 조회 실패: {e}")
         return {"error": str(e)}
 
-def search_similar_dataon_datasets(keywords: List[str], limit: int = 10) -> list:
+async def search_similar_dataon_datasets(keywords: List[str], limit: int = 10) -> list:
     """
     DataON에서 키워드로 유사한 데이터셋들을 검색합니다.
 
@@ -56,16 +52,13 @@ def search_similar_dataon_datasets(keywords: List[str], limit: int = 10) -> list
         유사한 데이터셋들의 리스트
     """
     try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        result = loop.run_until_complete(dataon_client.search_by_keywords(keywords, limit))
-        loop.close()
+        result = await dataon_client.search_by_keywords(keywords, limit)
         return result
     except Exception as e:
         logger.error(f"DataON 데이터셋 검색 실패: {e}")
         return []
 
-def get_scienceon_access_token() -> str:
+async def get_scienceon_access_token() -> str:
     """
     ScienceON API 접근을 위한 토큰을 발급받습니다.
 
@@ -73,16 +66,13 @@ def get_scienceon_access_token() -> str:
         access_token
     """
     try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        result = loop.run_until_complete(scienceon_client.get_access_token())
-        loop.close()
+        result = await scienceon_client.get_access_token()
         return result
     except Exception as e:
         logger.error(f"ScienceON 토큰 발급 실패: {e}")
         return ""
 
-def search_scienceon_papers(query: str, limit: int = 10) -> list:
+async def search_scienceon_papers(query: str, limit: int = 10) -> list:
     """
     ScienceON에서 논문을 검색합니다.
 
@@ -94,16 +84,13 @@ def search_scienceon_papers(query: str, limit: int = 10) -> list:
         검색된 논문들의 리스트
     """
     try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        result = loop.run_until_complete(scienceon_client.search_by_keywords([query], limit))
-        loop.close()
+        result = await scienceon_client.search_by_keywords([query], limit)
         return result
     except Exception as e:
         logger.error(f"ScienceON 논문 검색 실패: {e}")
         return []
 
-def get_scienceon_paper_details(paper_cn: str) -> dict:
+async def get_scienceon_paper_details(paper_cn: str) -> dict:
     """
     ScienceON에서 특정 논문의 상세 정보를 가져옵니다.
 
@@ -114,10 +101,7 @@ def get_scienceon_paper_details(paper_cn: str) -> dict:
         논문의 상세 정보 (인용 정보, 참고문헌 등 포함)
     """
     try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        result = loop.run_until_complete(scienceon_client.get_paper_details(paper_cn))
-        loop.close()
+        result = await scienceon_client.get_paper_details(paper_cn)
         return result
     except Exception as e:
         logger.error(f"ScienceON 논문 상세 조회 실패: {e}")
