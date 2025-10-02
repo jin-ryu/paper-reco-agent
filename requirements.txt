@@ -1,23 +1,36 @@
+# ===== 웹 프레임워크 =====
 fastapi==0.104.1
 uvicorn==0.24.0
 pydantic==2.5.0
 python-dotenv==1.0.0
+python-multipart==0.0.6
+
+# ===== HTTP 클라이언트 =====
 httpx==0.25.2
 aiohttp==3.9.1
-redis==5.0.1
+
+# ===== 언어모델 및 임베딩 =====
 torch>=2.0.0
 transformers>=4.36.0
 sentence-transformers==2.2.2
-vllm==0.2.2
 accelerate==0.24.1
 bitsandbytes==0.41.2
+
+# ===== 유사도 계산 =====
 scipy==1.11.4
 numpy==1.24.3
-pandas==2.1.4
 scikit-learn==1.3.2
+
+# ===== 데이터 처리 =====
+pandas==2.1.4
 lxml==4.9.3
 beautifulsoup4==4.12.2
-python-multipart==0.0.6
+
+# ===== 캐싱 (선택사항) =====
+redis==5.0.1
+
+# ===== 시스템 모니터링 =====
+psutil==5.9.6
+
+# ===== 템플릿 엔진 =====
 Jinja2==3.1.2
-pytest==7.4.3
-pytest-asyncio==0.21.1

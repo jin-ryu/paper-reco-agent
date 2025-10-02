@@ -15,8 +15,9 @@ logger = logging.getLogger(__name__)
 dataon_client = DataONClient()
 scienceon_client = ScienceONClient()
 
-# 임베딩 모델 (한국어 지원)
-embedding_model = SentenceTransformer('snunlp/KR-SBERT-V40K-klueNLI-augSTS')
+# 임베딩 모델 (한국어 최적화: RoBERTa 기반, 멀티태스크 학습)
+# jhgan/ko-sroberta-multitask: KorSTS Spearman 85.60%, 논문/데이터셋 추천에 최적
+embedding_model = SentenceTransformer('jhgan/ko-sroberta-multitask')
 
 # SmolAgent용 도구 함수들
 
