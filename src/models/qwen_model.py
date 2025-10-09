@@ -6,7 +6,7 @@ import logging
 import torch
 from typing import Optional, Dict, Any
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from config.settings import settings
+from src.config.settings import settings
 
 # accelerate가 설치되어 있는지 확인
 try:
@@ -129,17 +129,18 @@ class QwenModel:
             if temperature is None:
                 temperature = settings.TEMPERATURE
 
-            # Qwen3 채팅 형식으로 변환 (non-thinking 모드)
+            # Qwen3 채팅 형식으로 변환 (non-thinking 모드 강제)
             messages = [
-                {"role": "system", "content": "You are a helpful research recommendation assistant. Output JSON directly without any thinking process or explanations."},
+                {"role": "system", "content": "You are a research recommendation assistant. You must output ONLY valid JSON format. Never use <think> tags or any explanations. Start your response directly with '{' character."},
                 {"role": "user", "content": prompt}
             ]
 
-            # 토크나이징 (채팅 템플릿 적용)
+            # 토크나이징 (채팅 템플릿 적용, thinking 모드 비활성화)
             text = self.tokenizer.apply_chat_template(
                 messages,
                 tokenize=False,
-                add_generation_prompt=True
+                add_generation_prompt=True,
+                enable_thinking=False  # Qwen3 thinking 모드 완전히 비활성화
             )
 
             inputs = self.tokenizer(
@@ -149,7 +150,7 @@ class QwenModel:
                 max_length=32768  # Qwen3는 32K 토큰 지원 (확장 시 128K)
             ).to(self.device)
 
-            # 생성
+            # 생성 (thinking mode 비활성화)
             with torch.no_grad():
                 outputs = self.model.generate(
                     **inputs,
@@ -157,7 +158,8 @@ class QwenModel:
                     temperature=temperature,
                     do_sample=temperature > 0,
                     top_p=0.9,
-                    pad_token_id=self.tokenizer.eos_token_id
+                    pad_token_id=self.tokenizer.eos_token_id,
+                    repetition_penalty=1.1  # 반복 방지
                 )
 
             # 디코딩 (입력 프롬프트 제외)
@@ -243,20 +245,12 @@ Output ONLY valid JSON. No explanations, comments, or examples.
 {{
   "recommendations": [
     {{
-      "rank": 1,
       "candidate_number": 1,
-      "title": "Candidate title",
-      "type": "paper",
-      "score": 0.85,
       "reason": "High semantic similarity with common keywords",
       "level": "강추"
     }},
     {{
-      "rank": 2,
       "candidate_number": 2,
-      "title": "Candidate2 title",
-      "type": "dataset",
-      "score": 0.72,
       "reason": "Related research field",
       "level": "추천"
     }}
@@ -264,12 +258,11 @@ Output ONLY valid JSON. No explanations, comments, or examples.
 }}
 
 Rules:
-- Output JSON only
-- rank: Your determined recommendation order (1=best)
-- candidate_number: Number from candidate list above
-- type: "paper" or "dataset"
-- level: "강추" or "추천" or "참고"
-- reason: One concise sentence
+- Output JSON only, start with '{{' character
+- candidate_number: Number from candidate list above (1-15)
+- reason: One concise sentence explaining why this is relevant
+- level: "강추" (≥0.75) or "추천" (≥0.60) or "참고" (≥0.45)
+- DO NOT include title, type, or score - only candidate_number, reason, level
 """
         return prompt
 
