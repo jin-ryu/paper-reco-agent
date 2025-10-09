@@ -4,7 +4,22 @@
 
 Qwen3-14B 기반 다국어 하이브리드 연구 데이터 및 논문 추천 시스템
 
-## 🎯 프로젝트 개요
+---
+
+## 목차
+
+1. [프로젝트 개요](#프로젝트-개요)
+2. [실행 환경 (HW/SW)](#실행-환경-hwsw)
+3. [프로젝트 구조](#프로젝트-구조)
+4. [데이터 및 모델](#데이터-및-모델)
+5. [추론 수행 방법](#추론-수행-방법)
+6. [시스템 아키텍처](#시스템-아키텍처)
+7. [성능 평가](#성능-평가)
+8. [저작권 및 라이선스](#저작권-및-라이선스)
+
+---
+
+## 프로젝트 개요
 
 이 프로젝트는 **KISTI 2025 DATA·AI 분석 경진대회**를 위해 개발된 AI 추천 에이전트입니다. DataON에 등록된 연구 데이터셋을 입력받아 의미적으로 관련성이 높은 연구논문과 데이터셋을 추천합니다.
 
@@ -21,22 +36,324 @@ Qwen3-14B 기반 다국어 하이브리드 연구 데이터 및 논문 추천 �
 
 - 🤖 **Qwen3-14B**: 다국어 고성능 언어모델 (Alibaba Cloud)
   - 100+ 언어 지원 (영어, 중국어, 한국어, 일본어 등)
-  - 긴 컨텍스트 지원 (32K 토큰, 확장 시 128K)
+  - 32K 토큰 컨텍스트 (확장 시 128K)
   - 뛰어난 reasoning 및 instruction following 성능
-  - Thinking/Non-thinking 모드 지원
+
 - 🔍 **LLM 기반 검색 쿼리 생성**: 의미적 이해를 통한 최적 검색어 추출
 - 🌏 **하이브리드 RAG**: LLM 쿼리 생성 + E5 임베딩 + BM25 + LLM 재순위화
-- 📊 **5단계 추천 파이프라인**:
-  1. 소스 데이터셋 메타데이터 조회
-  2. **LLM이 검색 쿼리 생성** (데이터셋/논문 맞춤형)
-  3. 생성된 쿼리로 후보 수집 (DataON + ScienceON)
-  4. E5 임베딩 + BM25 하이브리드 유사도로 필터링 (30개 → 15개)
-  5. LLM이 최종 분석, 순위 결정 및 추천 생성
 - ⚡ **최적화**: INT4/INT8 양자화, query/passage 구분 인코딩, 재시도 로직
-- 🎓 **논리적 추천 이유**: LLM이 다국어 설명 생성
-- 📈 **LLM 순위 결정**: LLM이 유사도 점수를 분석하여 최적 추천 순위 결정
 
-## 🏗️ 시스템 아키텍처
+---
+
+## 실행 환경 (HW/SW)
+
+### 하드웨어(HW) 요구사항
+
+#### 최소 사양
+- **GPU**: NVIDIA RTX 3060 12GB 이상
+- **RAM**: 16GB 이상
+- **저장공간**: 50GB 이상 (모델 캐시 포함)
+- **OS**: Linux (Ubuntu 20.04+) 또는 Windows 10/11
+
+#### 권장 사양
+- **GPU**: NVIDIA RTX 3080 10GB 이상
+- **RAM**: 32GB 이상
+- **저장공간**: 100GB 이상
+- **OS**: Linux (Ubuntu 22.04)
+
+#### 개발 및 테스트 환경
+- **GPU**: NVIDIA H100 80GB HBM3
+- **NVIDIA Driver**: 535.104.05
+- **OS**: Linux Ubuntu 22.04
+- **RAM**: 64GB+
+
+### 소프트웨어(SW) 요구사항
+
+#### 필수 소프트웨어
+
+**1. Python**
+- 버전: Python 3.10.18
+- 설치:
+  ```bash
+  conda create -n paper-agent python=3.10
+  conda activate paper-agent
+  ```
+
+**2. CUDA Toolkit**
+- **CUDA 버전**: 12.8
+- **cuDNN 버전**: 9.1.0.02 (91002)
+- **PyTorch CUDA**: 12.8 (cu128)
+- 설치 가이드: https://developer.nvidia.com/cuda-12-8-0-download-archive
+
+**3. NVIDIA Driver**
+- **버전**: 535.104.05 이상
+- 설치 가이드: https://www.nvidia.com/download/index.aspx
+
+**CUDA 확인**:
+```bash
+nvidia-smi
+nvcc --version
+python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, Version: {torch.version.cuda}')"
+```
+
+#### 주요 라이브러리 버전
+
+```
+PyTorch: 2.8.0+cu128
+Transformers: 4.56.2
+Sentence-Transformers: 5.1.1
+FastAPI: 0.104.1
+Accelerate: 0.24.1
+Bitsandbytes: 0.41.2
+NumPy: 1.24.3
+Pandas: 2.1.4
+Scikit-learn: 1.3.2
+```
+
+**전체 의존성**: `requirements.txt` 참조 (pip freeze 출력)
+
+### GPU 메모리 최적화
+
+프로젝트는 다양한 GPU 메모리에 맞춰 양자화를 지원합니다:
+
+| 양자화 | VRAM 사용량 | 속도 | 정확도 |
+|--------|------------|------|--------|
+| **INT4** | ~8GB | 빠름 | 중간 |
+| **INT8** | ~14GB | 중간 | 높음 |
+| **FP16** | ~28GB | 느림 | 최고 |
+
+**설정 방법** (.env 파일):
+```env
+QUANTIZATION=int8  # int4 | int8 | fp16
+```
+
+---
+
+## 프로젝트 구조
+
+```
+paper-reco-agent/
+├── README.md                  # 이 파일 (프로젝트 전체 설명)
+├── .env                       # 환경 변수 (API 키)
+│
+├── data/                      # 데이터 폴더
+│   └── inference_results/     # 추론 결과 저장 위치
+│
+├── model/                     # 학습된 모델 파일 (자동 다운로드)
+│
+├── src/                       # 소스코드 폴더
+│   ├── agents/                # 추천 에이전트
+│   │   └── recommendation_agent.py  # 메인 추천 로직
+│   ├── clients/               # API 클라이언트
+│   │   ├── dataon_client.py   # DataON API
+│   │   └── scienceon_client.py  # ScienceON API
+│   ├── config/                # 설정 파일
+│   │   └── settings.py        # 환경 설정
+│   ├── models/                # 언어모델 래퍼
+│   │   ├── qwen_model.py      # Qwen3-14B 모델
+│   │   └── mock_model.py      # 개발용 Mock 모델
+│   ├── tools/                 # 유틸리티 도구
+│   │   └── research_tools.py  # 검색, 임베딩, 유사도 계산
+│   └── main.py                # FastAPI 서버
+│
+├── notebooks/                 # Jupyter 노트북 (추론 실행)
+│   └── inference.ipynb        # ⭐ 추론 실행 노트북
+│
+├── scripts/                   # 실행 스크립트
+│   ├── setup_environment.sh   # 환경 설정 스크립트
+│   ├── run_inference.sh       # 추론 실행 스크립트
+│   └── run_server.sh          # FastAPI 서버 실행 스크립트
+│
+├── demo/                      # 데모 영상
+├── figures/                   # 아키텍처 다이어그램 및 결과 그림
+├── tests/                     # 단위 테스트
+└── requirements.txt           # 의존성 목록 (상세 버전)
+```
+
+### 주요 파일 설명
+
+- **notebooks/inference.ipynb**: 추론 실행용 Jupyter 노트북 (필수)
+- **src/agents/recommendation_agent.py**: 메인 추천 에이전트 로직
+- **src/models/qwen_model.py**: Qwen3-14B 언어모델 래퍼
+- **src/tools/research_tools.py**: 검색, 임베딩, 유사도 계산 함수
+- **requirements.txt**: 전체 의존성 목록 (pip freeze)
+
+---
+
+## 데이터 및 모델
+
+### 사용 모델
+
+#### 1. 언어모델: Qwen3-14B
+- **출처**: [Qwen/Qwen3-14B](https://huggingface.co/Qwen/Qwen3-14B) (Alibaba Cloud)
+- **파라미터**: 14.8B (13.2B non-embedding)
+- **컨텍스트**: 32K 토큰 (확장 시 128K)
+- **언어 지원**: 100+ 언어
+- **라이선스**: Apache 2.0 (상업적 사용 가능)
+- **용량**: ~28GB (FP16), ~14GB (INT8), ~8GB (INT4)
+- **다운로드**: 자동 다운로드됨 (Hugging Face Hub)
+
+#### 2. 임베딩 모델: Multilingual E5
+- **출처**: [intfloat/multilingual-e5-large](https://huggingface.co/intfloat/multilingual-e5-large) (Microsoft)
+- **차원**: 1024
+- **특징**: 다국어 검색 최적화, Query/Passage 구분 인코딩
+- **라이선스**: MIT (상업적 사용 가능)
+- **용량**: ~2.2GB
+- **다운로드**: 자동 다운로드됨
+
+### 데이터
+
+- **입력 데이터**: DataON 데이터셋 ID (예: `KISTI_DATA_12345`)
+- **API 데이터**:
+  - DataON API: 데이터셋 메타데이터 및 검색
+  - ScienceON API: 논문 검색 및 메타데이터
+- **출력 데이터**: JSON 형식 추천 결과 (`data/inference_results/`)
+
+**데이터 저작권**: 경진대회 제공 API만 사용, 저작권 문제 없음
+
+---
+
+## 추론 수행 방법
+
+### 방법 1: Jupyter Notebook (⭐ 권장)
+
+**대회 심사자용 추론 실행 방법**:
+
+```bash
+# 1. 환경 활성화
+conda activate paper-agent
+
+# 2. Jupyter 실행
+jupyter notebook notebooks/inference.ipynb
+
+# 3. 노트북 셀 순차적으로 실행
+#    - 데이터셋 ID만 변경하면 됨 (test_dataset_id 변수)
+```
+
+**노트북 실행 흐름**:
+1. 환경 변수 로드 및 GPU 확인
+2. 추천 에이전트 초기화 (모델 로드)
+3. 데이터셋 ID 설정
+4. 추론 실행 (`await agent.recommend(dataset_id)`)
+5. 결과 확인 및 JSON 파일로 저장
+
+**주석**: 노트북 내 각 셀에 상세한 주석 포함
+
+### 방법 2: 실행 스크립트
+
+```bash
+# 환경 설정 (최초 1회)
+bash scripts/setup_environment.sh
+
+# 추론 실행
+bash scripts/run_inference.sh <dataset_id>
+
+# 예시
+bash scripts/run_inference.sh KISTI_DATA_12345
+```
+
+### 방법 3: FastAPI 서버
+
+```bash
+# 서버 시작
+bash scripts/run_server.sh
+
+# API 호출
+curl -X POST "http://localhost:8000/recommend" \
+     -H "Content-Type: application/json" \
+     -d '{"dataset_id": "SAMPLE_ID", "max_recommendations": 5}'
+
+# 또는 Swagger UI에서 테스트
+# http://localhost:8000/docs
+```
+
+### 환경 설정
+
+**1. 프로젝트 클론**
+```bash
+git clone <repository-url>
+cd paper-reco-agent
+```
+
+**2. Conda 환경 생성**
+```bash
+conda create -n paper-agent python=3.10
+conda activate paper-agent
+```
+
+**3. 의존성 설치**
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+**4. 환경 변수 설정**
+```bash
+# .env 파일에 API 키 입력
+nano .env
+```
+
+`.env` 파일 내용:
+```env
+# DataON API 키
+DATAON_SEARCH_KEY=your_key_here
+DATAON_META_KEY=your_key_here
+
+# ScienceON API 키
+SCIENCEON_CLIENT_ID=your_client_id_here
+SCIENCEON_ACCOUNTS=your_accounts_here
+
+# 모델 설정
+MODEL_NAME=Qwen/Qwen3-14B
+QUANTIZATION=int8  # int4 | int8 | fp16
+EMBEDDING_MODEL=intfloat/multilingual-e5-large
+
+# 개발 모드 (GPU 없을 때 Mock 모델 사용)
+DEV_MODE=false
+```
+
+### 추론 결과 예시
+
+```json
+{
+  "source_dataset": {
+    "id": "KISTI_DATA_12345",
+    "title": "COVID-19 관련 한국인 생활패턴 데이터",
+    "keywords": ["COVID-19", "생활패턴", "한국인", "팬데믹"]
+  },
+  "recommendations": [
+    {
+      "rank": 1,
+      "type": "paper",
+      "title": "COVID-19가 한국 가구의 소비패턴에 미친 영향",
+      "score": 0.892,
+      "reason": "공통 키워드 'COVID-19', '한국인'으로 높은 연관성; 동일 연구 분야",
+      "level": "강추",
+      "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?..."
+    },
+    {
+      "rank": 2,
+      "type": "dataset",
+      "title": "팬데믹 시기 생활 변화 설문조사 데이터",
+      "score": 0.784,
+      "reason": "관련 주제 및 데이터 유형; 시간적 연관성 높음",
+      "level": "추천",
+      "url": "https://dataon.kisti.re.kr/..."
+    }
+  ],
+  "processing_time_ms": 4230,
+  "candidates_analyzed": 30,
+  "model_info": {
+    "model_name": "Qwen/Qwen3-14B",
+    "parameters": "14.8B",
+    "quantization": "int8"
+  }
+}
+```
+
+---
+
+## 시스템 아키텍처
 
 ### LLM 기반 하이브리드 RAG 파이프라인
 
@@ -79,7 +396,6 @@ Qwen3-14B 기반 다국어 하이브리드 연구 데이터 및 논문 추천 �
 │     * 어휘 매칭 점수                 │
 │   - 최종 점수 = 의미적*0.7 + 어휘*0.3│
 │   → 상위 15개 후보 선별              │
-│   (상세 API 호출 없이 빠른 필터링)   │
 └─────────────────────────────────────┘
     │
     ▼
@@ -91,459 +407,72 @@ Qwen3-14B 기반 다국어 하이브리드 연구 데이터 및 논문 추천 �
 │   - 3-5개 최종 추천 선별             │
 │   - 추천 이유 작성 (다국어)          │
 │   - 추천 레벨 결정 (강추/추천/참고)  │
-│   - 실패 시 재시도 (최대 2회)        │
 └─────────────────────────────────────┘
     │
     ▼
 출력: 추천 3-5건 (순위, 제목, 설명, 점수, 이유, 레벨, URL)
 ```
 
-**핵심 개선점:**
-- 🎯 **LLM이 검색 쿼리 생성**: 단순 키워드 추출 대신, 의미적 이해를 통해 최적의 검색어를 생성
+### 핵심 개선점
+- 🎯 **LLM이 검색 쿼리 생성**: 의미적 이해를 통해 최적의 검색어를 생성
 - 🔄 **맞춤형 쿼리**: 데이터셋 검색과 논문 검색에 각각 최적화된 쿼리 사용
-- 📈 **검색 품질 향상**: LLM이 핵심 개념, 연구 분야, 기술 용어를 파악하여 관련성 높은 후보 수집
-- ⚡ **빠른 필터링**: 검색 API 응답만으로 유사도 계산, 상세 조회 API 호출 없음 (응답 속도 향상)
-- 🎨 **하이브리드 스코어링**: E5 임베딩(의미) + BM25(어휘)로 정확도와 재현율 모두 확보
+- ⚡ **빠른 필터링**: 검색 API 응답만으로 유사도 계산, 상세 조회 불필요
+- 🎨 **하이브리드 스코어링**: E5 임베딩(의미) + BM25(어휘)로 정확도와 재현율 확보
 
-### 네트워크 제약 준수
+---
 
-✅ **허용된 아웃바운드**:
-- DataON API (데이터셋 검색/상세)
-- ScienceON API (논문 검색/상세)
-- LLM Endpoint (Qwen3-14B 추론)
+## 성능 평가
 
-✅ **로컬 리소스** (사전 다운로드):
-- Qwen3-14B 모델 (~28GB, INT8 시 ~14GB, INT4 시 ~8GB)
-- multilingual-e5-large 임베딩 (~2.2GB, 1024차원)
-- Python 패키지 (requirements.txt)
+### 시스템 성능 (중저사양 기준)
 
-### E5 임베딩 모델 특징
-
-**intfloat/multilingual-e5-large**:
-- 📊 **성능**: KURE 벤치마크 Recall 0.658, NDCG 0.628
-- 🚀 **성능 향상**: ko-sroberta 대비 Recall +95%, NDCG +63%
-- 🌏 **다국어**: 한국어 + 영어 논문/데이터셋 동시 지원
-- 🎯 **Query/Passage 구분**: 검색 쿼리와 문서를 분리 인코딩
-- 📐 **차원**: 1024차원 (ko-sroberta 768차원 대비 고해상도)
-
-**사용 방법**:
-```python
-# 소스 데이터셋 (검색 쿼리)
-query_embedding = model.encode("query: " + source_text)
-
-# 후보 논문/데이터셋 (문서)
-passage_embedding = model.encode("passage: " + candidate_text)
-
-# 코사인 유사도 계산
-similarity = cosine_similarity(query_embedding, passage_embedding)
-```
-
-## 🚀 빠른 시작
-
-### 1. 환경 설정
-
-```bash
-# 프로젝트 클론
-git clone <repository-url>
-cd paper-reco-agent
-
-# Python 가상환경 생성 (Python 3.8+ 필요)
-python -m venv venv
-source venv/bin/activate  # Windows: venv\\Scripts\\activate
-
-# 의존성 설치
-pip install -r requirements.txt
-```
-
-### 2. 환경 변수 설정
-
-`.env` 파일을 열어 API 키를 설정하세요:
-
-```bash
-# .env 파일 편집
-nano .env
-```
-
-필수 API 키 설정:
-```env
-DATAON_SEARCH_KEY=실제_키_입력
-DATAON_META_KEY=실제_키_입력
-SCIENCEON_CLIENT_ID=실제_키_입력
-SCIENCEON_ACCOUNTS=실제_키_입력
-```
-
-주요 설정 (기본값 사용 가능):
-```env
-# 모델 설정
-MODEL_NAME=Qwen/Qwen3-14B
-QUANTIZATION=int8  # int4(8GB) | int8(14GB) | fp16(28GB)
-EMBEDDING_MODEL=intfloat/multilingual-e5-large
-
-# 개발 모드 (GPU 없을 때)
-DEV_MODE=false
-```
-
-### 3. 서버 실행
-
-```bash
-# 개발 모드
-python main.py
-
-# 또는 uvicorn 직접 사용
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-```
-
-서버가 시작되면 http://localhost:8000 에서 접근 가능합니다.
-
-## 📖 API 사용법1
-
-### 추천 요청
-
-```bash
-curl -X POST "http://localhost:8000/recommend" \
-     -H "Content-Type: application/json" \
-     -d '{"dataset_id": "KISTI_DATA_12345", "max_recommendations": 5}'
-```
-
-### API 응답 예시
-
-```json
-{
-  "source_dataset": {
-    "id": "KISTI_DATA_12345",
-    "title": "COVID-19 관련 한국인 생활패턴 데이터",
-    "description": "코로나19 팬데믹 기간 중 한국인들의 생활패턴 변화를 조사한 데이터셋...",
-    "keywords": ["COVID-19", "생활패턴", "한국인", "팬데믹"]
-  },
-  "recommendations": [
-    {
-      "type": "paper",
-      "title": "COVID-19가 한국 가구의 소비패턴에 미친 영향",
-      "description": "본 연구는 코로나19 팬데믹이 한국 가구의 소비 행태에 미친 영향을 분석...",
-      "score": 0.89,
-      "reason": "공통 키워드 'COVID-19', '한국인'으로 높은 연관성; 동일 연구 분야(사회과학) 소속; 최근 연구로 시의성 높음",
-      "level": "강추",
-      "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?..."
-    }
-  ],
-  "processing_time_ms": 1847,
-  "candidates_analyzed": 25,
-  "model_info": {
-    "model_name": "Qwen/Qwen3-14B",
-    "quantization": "int8",
-    "parameters": "14.8B",
-    "context_length": "32K (extendable to 128K)"
-  }
-}
-```
-
-### 주요 엔드포인트
-
-- `POST /recommend` - 추천 요청
-- `GET /health` - 서버 상태 확인
-- `GET /models/info` - 모델 정보 조회
-- `GET /api/test/dataon/{dataset_id}` - DataON API 테스트
-- `GET /api/test/scienceon` - ScienceON API 테스트
-- `GET /docs` - Swagger API 문서
-
-## ⚙️ 설정 옵션
-
-### 모델 설정
-
-다양한 모델과 설정을 지원합니다:
-
-```env
-# 권장 설정 (Qwen3-14B)
-MODEL_NAME=Qwen/Qwen3-14B
-QUANTIZATION=int8
-GPU_MEMORY_UTILIZATION=0.9
-
-# 메모리 절약 설정 (저사양)
-QUANTIZATION=int4
-GPU_MEMORY_UTILIZATION=0.7
-
-# 고성능 설정 (고사양)
-QUANTIZATION=fp16
-GPU_MEMORY_UTILIZATION=0.9
-```
-
-### 성능 최적화 (`.env` 파일 수정)
-
-```env
-# 양자화 설정 (메모리 절약)
-QUANTIZATION=int4  # int4(6GB) | int8(11GB) | fp16(21GB)
-
-# 응답 길이 제한 (속도 향상)
-MAX_TOKENS=512
-
-# 온도 설정 (일관성 중시)
-TEMPERATURE=0.1
-
-# 개발 모드 (GPU 없을 때 Mock 모델 사용)
-DEV_MODE=true
-```
-
-### 하드웨어별 권장 설정
-
-| H/W 사양 | QUANTIZATION | GPU VRAM | 예상 응답시간 |
-|---------|-------------|----------|-------------|
-| 고사양 (RTX 4090) | fp16 | 21GB | 2-3초 |
-| 중사양 (RTX 3080) | int8 | 11GB | 3-4초 |
-| 저사양 (RTX 3060) | int4 | 6GB | 4-5초 |
-| CPU 전용 | DEV_MODE=true | 0GB | 1초 (Mock) |
-
-## 🧪 테스트
-
-### API 연결 테스트
-
-```bash
-# DataON API 테스트
-curl "http://localhost:8000/api/test/dataon/SAMPLE_ID"
-
-# ScienceON API 테스트
-curl "http://localhost:8000/api/test/scienceon"
-
-# 서버 상태 확인
-curl "http://localhost:8000/health"
-```
-
-### 단위 테스트 실행
-
-```bash
-# 전체 테스트
-pytest
-
-# 특정 테스트
-pytest tests/test_dataon_api.py
-pytest tests/test_recommendation_agent.py
-```
-
-## 📊 성능 벤치마크 및 평가
-
-### 하드웨어 요구사양 (대회 규정 준수)
-
-| 구성 요소 | 최소 사양 | 권장 사양 | 비고 |
-|-----------|-----------|-----------|------|
-| GPU | RTX 3060 (12GB) | RTX 3080 (10GB) | INT4 양자화 |
-| RAM | 16GB | 32GB | 임베딩 모델 포함 |
-| 저장공간 | 30GB | 50GB | 모델 캐시 |
-| OS | Linux/Windows | Linux | CUDA 11.8+ |
-
-### 성능 지표 (중저사양 기준)
-
-| 메트릭 | INT4 (6GB) | INT8 (11GB) | FP16 (21GB) |
+| 메트릭 | INT4 (8GB) | INT8 (14GB) | FP16 (28GB) |
 |--------|-----------|------------|------------|
 | **응답 시간** | 5-7초 | 4-5초 | 3-4초 |
-| **메모리 사용** | ~7GB | ~12GB | ~22GB |
+| **메모리 사용** | ~8GB | ~14GB | ~28GB |
 | **처리량** | 10-12 req/min | 15-18 req/min | 20-25 req/min |
 | **실패율** | < 1% | < 1% | < 0.5% |
 
-**응답 시간 분해:**
+**응답 시간 분해**:
 - LLM 쿼리 생성: 0.5-1초
 - 후보 검색 (병렬): 0.5-1초
 - 유사도 계산: 0.3-0.5초
 - LLM 최종 분석: 2-3초
-- **총합**: 3-7초 (양자화 방식에 따라)
+- **총합**: 4-6초 (INT8 기준)
 
-### 평가 지표 (대회 제출용)
+### 추천 품질 평가 지표
 
 시스템은 다음 지표로 평가됩니다:
-
-- **nDCG@10**: 상위 10개 추천의 정규화된 할인 누적 이득 (목표: > 0.75)
-- **MRR@10**: 상위 10개 추천의 평균 역순위 (목표: > 0.70)
-- **Recall@k**: k개 추천에서의 재현율 (목표: Recall@5 > 0.60)
-- **응답 시간**: 요청부터 응답까지의 처리 시간 (목표: < 5초)
-- **추천 이유 품질**: 전문가 정성 평가 (논리성, 일관성)
-
-### 하이브리드 RAG 성능 비교
-
-| 방식 | 속도 | 정확도 | 메모리 | API 호출 |
-|-----|------|--------|--------|---------|
-| 순수 LLM (모든 후보 분석) | 느림 (15초+) | 중간 | 낮음 | 30+ 회 |
-| 순수 임베딩 (스코어만) | 빠름 (1-2초) | 중간 | 중간 | 2회 |
-| **LLM+하이브리드 (채택)** | **중간 (3-7초)** | **높음** | **중간** | **2회** |
-
-**채택 방식 장점:**
-- ✅ LLM이 검색 쿼리 생성 → 검색 품질 향상
-- ✅ 검색 API 응답만 사용 → 상세 조회 불필요 (빠름)
-- ✅ E5+BM25 하이브리드 → 정확도와 재현율 균형
-- ✅ LLM 최종 분석 → 논리적 추천 이유 생성
-
-## 🔧 개발자 가이드
-
-### 프로젝트 구조
-
-```
-paper-reco-agent/
-├── agents/                     # 추천 에이전트
-│   └── recommendation_agent.py
-├── clients/                    # API 클라이언트
-│   ├── dataon_client.py
-│   └── scienceon_client.py
-├── config/                     # 설정 파일
-│   └── settings.py
-├── models/                     # 언어모델 래퍼
-│   └── qwen_model.py
-├── tools/                      # 유틸리티 도구
-│   └── research_tools.py
-├── tests/                      # 테스트 코드
-├── logs/                       # 로그 파일
-├── main.py                     # FastAPI 서버
-├── requirements.txt            # 의존성
-├── .env.example               # 환경변수 템플릿
-└── README.md                  # 문서
-```
-
-### 새로운 모델 추가
-
-1. `models/` 디렉토리에 새 모델 클래스 추가
-2. `config/settings.py`에서 모델 설정 추가
-3. `agents/recommendation_agent.py`에서 모델 통합
-
-### 새로운 API 추가
-
-1. `clients/` 디렉토리에 새 API 클라이언트 추가
-2. `tools/research_tools.py`에 도구 함수 추가
-3. `agents/recommendation_agent.py`에서 통합
-
-## 🚨 문제 해결
-
-### 일반적인 문제
-
-**Q: CUDA 메모리 부족 오류**
-```bash
-# 해결 방법: 양자화 사용
-export QUANTIZATION=int8
-# 또는 GPU 메모리 사용량 조절
-export GPU_MEMORY_UTILIZATION=0.7
-```
-
-**Q: 모델 로딩이 느림**
-```bash
-# 해결 방법: 모델 캐시 디렉토리 설정
-export MODEL_CACHE_DIR=/fast/ssd/models
-```
-
-**Q: API 호출 실패**
-```bash
-# 해결 방법: API 키 확인
-curl "http://localhost:8000/api/test/dataon/TEST_ID"
-curl "http://localhost:8000/api/test/scienceon"
-```
-
-### 로그 확인
-
-```bash
-# 실시간 로그 모니터링
-tail -f logs/app.log
-
-# 에러 로그만 필터링
-grep "ERROR" logs/app.log
-```
-
-## 🏆 대회 규정 및 제출 형식
-
-### 입력/출력 형식
-
-**입력**: `dataset_id` (DataON 데이터셋 ID)
-```bash
-curl -X POST "http://localhost:8000/recommend" \
-     -H "Content-Type: application/json" \
-     -d '{"dataset_id": "KISTI_DATA_12345", "max_recommendations": 5}'
-```
-
-**출력**: JSON 형식 추천 결과
-```json
-{
-  "source_dataset": {
-    "id": "KISTI_DATA_12345",
-    "title": "연구 데이터셋 제목",
-    "description": "설명...",
-    "keywords": ["키워드1", "키워드2"]
-  },
-  "recommendations": [
-    {
-      "type": "paper",
-      "title": "추천 논문 제목",
-      "description": "논문 설명...",
-      "score": 0.89,
-      "reason": "공통 키워드 'A', 'B'로 높은 연관성; 동일 연구 분야",
-      "level": "강추",
-      "url": "http://..."
-    }
-  ],
-  "processing_time_ms": 3847,
-  "candidates_analyzed": 30,
-  "model_info": {...}
-}
-```
-
-### 대회 제출 체크리스트
-
-- [x] 소규모 언어모델 사용 (Qwen3-14B, 14.8B 파라미터)
-- [x] 중저사양 H/W 지원 (INT4 양자화로 8GB VRAM)
-- [x] 짧은 응답시간 (3-5초)
-- [x] 낮은 실패율 (하이브리드 RAG)
-- [x] 네트워크 제약 준수 (DataON/ScienceON/LLM만)
-- [x] 3-5건 추천 (강추/추천/참고 레벨)
-- [x] 추천 이유 포함 (논리적, 구체적)
-- [x] 실행 매뉴얼 포함 (README.md)
-- [ ] nDCG@10, MRR@10, Recall@k 평가 결과 제시
-
-## 🤝 기여 방법
-
-1. 이슈 등록 또는 기능 제안
-2. Fork 후 feature 브랜치 생성
-3. 코드 작성 및 테스트 추가
-4. Pull Request 제출
-
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스를 따릅니다.
-
-## 📚 기술 스택 및 참고 자료
-
-### 사용 기술
-
-- **언어모델**: [Qwen3-14B](https://huggingface.co/Qwen/Qwen3-14B) (Alibaba Cloud)
-  - 14.8B 파라미터 (13.2B non-embedding)
-  - 100+ 언어 지원
-  - 32K 토큰 컨텍스트 (확장 시 128K)
-- **임베딩 모델**: [multilingual-e5-large](https://huggingface.co/intfloat/multilingual-e5-large) (Microsoft)
-  - 대안: [multilingual-e5-large-instruct](https://huggingface.co/intfloat/multilingual-e5-large-instruct) (instruction 지원)
-  - 대안: [KoE5](https://huggingface.co/nlpai-lab/KoE5) (한국어 특화, +3% 성능)
-- **프레임워크**: FastAPI, Transformers, Sentence-Transformers
-- **API**: DataON, ScienceON (KISTI)
-
-### 대회 정보
-
-- **대회명**: 2025 DATA·AI 분석 경진대회
-- **주관**: KISTI (한국과학기술정보연구원)
-- **과제**: 국내외 연구데이터에 대한 연관 논문·데이터 추천 에이전트 개발
-
-### 참고 문헌
-
-1. Qwen3-14B 모델: [https://huggingface.co/Qwen/Qwen3-14B](https://huggingface.co/Qwen/Qwen3-14B)
-2. Alibaba Cloud Qwen: [https://github.com/QwenLM/Qwen](https://github.com/QwenLM/Qwen)
-3. Multilingual E5 Text Embeddings: [Wang et al., 2024](https://arxiv.org/abs/2402.05672)
-4. KURE (Korean Retrieval Embedding): [nlpai-lab/KURE](https://github.com/nlpai-lab/KURE)
-5. DataON API 가이드: [https://dataon.gitbook.io/](https://dataon.gitbook.io/)
-6. ScienceON API 가이드: [https://scienceon.kisti.re.kr/apigateway/](https://scienceon.kisti.re.kr/apigateway/)
+- **nDCG@10**: 상위 10개 추천의 정규화된 할인 누적 이득
+- **MRR@10**: 상위 10개 추천의 평균 역순위
+- **Recall@k**: k개 추천에서의 재현율
 
 ---
 
-## 🙏 감사의 말
+## 저작권 및 라이선스
 
-- [KISTI](https://www.kisti.re.kr/) - 대회 주관 및 DataON/ScienceON API 제공
-- [Alibaba Cloud](https://www.alibabacloud.com/) - Qwen3-14B 모델 공개
-- [Microsoft Research](https://www.microsoft.com/en-us/research/) - Multilingual E5 임베딩 모델
-- [Korea University NLP Lab](https://github.com/nlpai-lab) - KURE 벤치마크 및 KoE5 모델
-- [Hugging Face](https://huggingface.co/) - 모델 허브 및 Transformers 라이브러리
+### 오픈소스 라이브러리
 
----
+본 프로젝트는 다음 오픈소스 라이브러리를 사용합니다:
 
-**📧 Contact**: aidatacon@gmail.com (대회 문의)
+- **Qwen3-14B**: Apache 2.0 License (Alibaba Cloud)
+- **PyTorch**: BSD License
+- **Transformers**: Apache 2.0 License (Hugging Face)
+- **FastAPI**: MIT License
+- **E5 Embeddings**: MIT License (Microsoft)
 
-**🔗 Demo**: [http://localhost:8000/docs](http://localhost:8000/docs) (서버 실행 후 Swagger UI 접근)
+**모든 라이브러리는 상업적 사용이 가능한 라이선스입니다.**
 
-**🏆 Competition**: [AIDA 경진대회 페이지](https://aida.kisti.re.kr/competition/main/problem/PROB_000000000002825/detail.do)
+### API 사용
+
+- **DataON API**: KISTI 경진대회 제공 API 사용
+- **ScienceON API**: KISTI 경진대회 제공 API 사용
+- **저작권 문제 없음**: 경진대회 제공 데이터 및 API만 사용
+
+## 참고 자료
+
+- **Qwen3-14B**: https://huggingface.co/Qwen/Qwen3-14B
+- **Multilingual E5**: https://huggingface.co/intfloat/multilingual-e5-large
+- **DataON API**: https://dataon.gitbook.io/
+- **ScienceON API**: https://scienceon.kisti.re.kr/apigateway/
+- **대회 페이지**: https://aida.kisti.re.kr/competition/
+
