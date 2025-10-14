@@ -16,13 +16,6 @@ class Settings(BaseSettings):
     MODEL_NAME: str = os.getenv("MODEL_NAME", "Qwen/Qwen3-14B")
     MODEL_CACHE_DIR: str = os.getenv("MODEL_CACHE_DIR", "/home/infidea/paper-reco-agent/model")
 
-    # 양자화 설정 (메모리 최적화)
-    # fp16: ~28GB (고사양), int8: ~14GB (중사양), int4: ~8GB (저사양)
-    QUANTIZATION: str = os.getenv("QUANTIZATION", "int8")
-
-    # GPU 메모리 사용률 (0.0 ~ 1.0)
-    GPU_MEMORY_UTILIZATION: float = float(os.getenv("GPU_MEMORY_UTILIZATION", "0.9"))
-
     # LLM 생성 설정
     MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", "512"))
     TEMPERATURE: float = float(os.getenv("TEMPERATURE", "0.1"))

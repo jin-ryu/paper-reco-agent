@@ -8,20 +8,6 @@ from typing import Optional, Dict, Any
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from src.config.settings import settings
 
-# accelerate가 설치되어 있는지 확인
-try:
-    import accelerate
-    ACCELERATE_AVAILABLE = True
-except ImportError:
-    ACCELERATE_AVAILABLE = False
-
-# bitsandbytes가 설치되어 있는지 확인 (INT4/INT8 양자화용)
-try:
-    import bitsandbytes
-    BITSANDBYTES_AVAILABLE = True
-except Exception:
-    BITSANDBYTES_AVAILABLE = False
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,11 +31,10 @@ class QwenModel:
         self._load_model()
 
     def _load_model(self):
-        """모델 로딩 (양자화 지원)"""
+        """모델 로딩 (FP16)"""
         try:
             logger.info(f"🚀 Qwen 모델 로딩 시작: {self.model_name}")
             logger.info(f"   - 디바이스: {self.device}")
-            logger.info(f"   - 양자화: {settings.QUANTIZATION}")
 
             # 토크나이저 로드
             self.tokenizer = AutoTokenizer.from_pretrained(
@@ -65,26 +50,10 @@ class QwenModel:
                 "low_cpu_mem_usage": True
             }
 
-            # 양자화 설정 (메모리 절약)
-            if settings.QUANTIZATION in ["int8", "int4"] and self.device == "cuda":
-                # INT8/INT4는 bitsandbytes와 accelerate 필요
-                if not BITSANDBYTES_AVAILABLE or not ACCELERATE_AVAILABLE:
-                    logger.warning("⚠️  bitsandbytes 또는 accelerate가 설치되지 않음")
-                    logger.warning(f"   {settings.QUANTIZATION} 양자화 불가 - FP16으로 대체")
-                    logger.info("   - FP16 모드로 전환 (~28GB VRAM)")
-                    load_kwargs["dtype"] = torch.float16
-                elif settings.QUANTIZATION == "int8":
-                    logger.info("   - INT8 양자화 활성화 (~14GB VRAM)")
-                    load_kwargs["load_in_8bit"] = True
-                    load_kwargs["device_map"] = "auto"
-                elif settings.QUANTIZATION == "int4":
-                    logger.info("   - INT4 양자화 활성화 (~8GB VRAM)")
-                    load_kwargs["load_in_4bit"] = True
-                    load_kwargs["device_map"] = "auto"
-            elif self.device == "cuda":
-                # device_map 없이 단순 로드
+            # FP16 모드로 로드
+            if self.device == "cuda":
                 logger.info("   - FP16 모드 (~28GB VRAM)")
-                load_kwargs["dtype"] = torch.float16
+                load_kwargs["torch_dtype"] = torch.float16
             else:
                 logger.info("   - CPU 모드 (느림)")
 
@@ -94,10 +63,8 @@ class QwenModel:
                 **load_kwargs
             )
 
-            # device_map 없을 때만 명시적으로 이동
-            if "device_map" not in load_kwargs:
-                self.model = self.model.to(self.device)
-
+            # 명시적으로 디바이스로 이동
+            self.model = self.model.to(self.device)
             self.model.eval()
 
             logger.info(f"✅ Qwen 모델 로딩 완료")
@@ -271,7 +238,7 @@ Rules:
         return {
             "model_name": self.model_name,
             "device": self.device,
-            "quantization": settings.QUANTIZATION,
+            "dtype": "float16",
             "max_tokens": settings.MAX_TOKENS,
             "temperature": settings.TEMPERATURE,
             "parameters": "14.8B",
