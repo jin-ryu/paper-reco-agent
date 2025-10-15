@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     # 모델 설정
     MODEL_NAME: str = os.getenv("MODEL_NAME", "Qwen/Qwen3-14B")
     MODEL_CACHE_DIR: str = os.getenv("MODEL_CACHE_DIR", "/home/infidea/paper-reco-agent/model")
+    HF_TOKEN: Optional[str] = os.getenv("HF_TOKEN", None)
 
     # LLM 생성 설정
     MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", "512"))
