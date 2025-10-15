@@ -1,0 +1,4064 @@
+[
+  {
+    "source_dataset": {
+      "id": "c1f03ab868f32371ec97a650bcdf39ac",
+      "title": "한반도 기상 관측 데이터 세트",
+      "description": "한반도 종관 기상 관측 세스템으로부터의 관측 데이터 세트",
+      "keywords": [
+        "한반도",
+        "기상",
+        "센서데이터"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "기상 분석",
+        "센서 기술",
+        "기후 연구",
+        "관측 방법",
+        "데이터 처리"
+      ],
+      "dataset_keywords": [
+        "한반도 기상",
+        "관측 데이터",
+        "기상 센서",
+        "기후 자료",
+        "지역 기상"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "기상 분석",
+          "count": 5
+        },
+        {
+          "keyword": "센서 기술",
+          "count": 5
+        },
+        {
+          "keyword": "기후 연구",
+          "count": 5
+        },
+        {
+          "keyword": "관측 방법",
+          "count": 5
+        },
+        {
+          "keyword": "데이터 처리",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "한반도 기상",
+          "count": 5
+        },
+        {
+          "keyword": "관측 데이터",
+          "count": 5
+        },
+        {
+          "keyword": "기상 센서",
+          "count": 1
+        },
+        {
+          "keyword": "기후 자료",
+          "count": 5
+        },
+        {
+          "keyword": "지역 기상",
+          "count": 5
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "JAKO202009651118985",
+        "platform": "scienceon",
+        "title": "기상드론을 이용한 보성 지역 기상 인자의 연직 측정 및 분석",
+        "description": "기상현상관측은 기상청에서 다양한 방법(지상, 고층, 해양, 항공, 등)으로 관측되고 있다. 하지만, 인간생활에 많은 영향을 미치는 대기경계층 관측에는 한계가 있다. 특히, 존데 또는 항공기를 이용한 기상관측은 경제적인 측면에서 상당한 비용이 필요하다. 따라서 본 연구의 목적은 기상드론을 이용하여 국지기상현상 중 해륙풍 연직분포에 대한 기상 인자들을 측정하고...",
+        "keywords": [
+          "기상",
+          "인자",
+          "국지기상현상",
+          "기상드론",
+          "연직",
+          "프로파일",
+          "관측"
+        ],
+        "score": 0.8011726417250559,
+        "reason": "제목과 설명에서 '기상', '센서', '관측'이라는 핵심 키워드가 다수 포함되어 있으며, 기상드론을 활용한 실제 기상 인자 측정 사례를 다루고 있어 주제와 매우 밀접하다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202009651118985"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "ATN0037470932",
+        "platform": "scienceon",
+        "title": "데이터센터 모니터링 시스템에서 대량 스트리밍 센서 데이터 처리",
+        "description": "A data center collects a very large volume of data from various kinds of sensors that is used by the data center monitoring system for the center’s efficiency management and improvement. As the recent...",
+        "keywords": [
+          "데이터센터",
+          "센서데이터",
+          "모니터링",
+          "스트리밍",
+          "데이터",
+          "처리",
+          "이벤트",
+          "타임",
+          "data",
+          "center",
+          "sensor",
+          "monitoring",
+          "streaming",
+          "processing",
+          "event",
+          "time"
+        ],
+        "score": 0.7902490752452654,
+        "reason": "센서 데이터 처리에 대한 내용이 포함되어 있으며, 실시간 스트리밍 처리 모델에 대한 연구로 데이터 센서와 관련된 주제와 연관성이 크다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ATN0037470932"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "JAKO202131559466401",
+        "platform": "scienceon",
+        "title": "국지적 기상 레이다에서의 기상 변화 탐지 방법 분석",
+        "description": "대부분의 기상 레이다 시스템은 중장거리용으로 매우 넓은 지역의 전체적인 기상 현상을 파악하는 목적으로 사용된다. 그러나 최근에 와서는 국지적인 재난현상의 빈발 가능성이 높아짐에 따라 국지적인 기상 레이다를 활용한 기상이변 현상의 탐지가 매우 중요한 문제이다. 따라서 이러한 국지적인 기상 이변 탐지목적의 기상 레이다는 저고도 탐지 및 급변하는 기상상황의 빠른...",
+        "keywords": [
+          "풍속",
+          "급변",
+          "저고도",
+          "기상",
+          "탐지",
+          "국지적",
+          "변화",
+          "레이다"
+        ],
+        "score": 0.7708509151121322,
+        "reason": "'기상', '레이다', '탐지'라는 키워드가 다수 포함되어 있으며, 국지적 기상 변화를 탐지하는 방법을 제안하고 있어 기상 관측과 관련된 주제와 밀접하다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202131559466401"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO201630762630902",
+        "platform": "scienceon",
+        "title": "기상 레이다에서의 클러터 영향 분석",
+        "description": "기상 레이다는 해당 영역에서의 비, 구름이나 먼지 입자 등에 의해 반사되어 나타나는 기상신호로부터 신호의 도플러 주파수 및 도플러 스펙트럼 폭 값들을 추정한다. 이러한 값들은 평균풍속, 대기교란 정도 등의 정보와 직접적으로 연관된 중요한 변수들이다. 따라서 정확한 기상정보를 얻기 위해서는 이러한 추정 값들에 대한 매우 높은 신뢰성이 요구 된다. 그러나 기상...",
+        "keywords": [
+          "기상",
+          "신호",
+          "도플러",
+          "스펙트럼",
+          "클러터",
+          "모멘트",
+          "추정오차"
+        ],
+        "score": 0.7653153225555303,
+        "reason": "기상 레이다에서의 클러터 영향 분석을 다루며, 기상 신호와 관련된 기술적 내용이 포함되어 있어 기상 관측과 관련성이 있다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO201630762630902"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "JAKO200340961071385",
+        "platform": "scienceon",
+        "title": "정지궤도 기상 영상기 MTF 특성 분석",
+        "description": "국내 최초로 통신, 해양, 기상 3분야 복합 임무를 수행하는 정지궤도 위성인 통신해양기상위성이 2003년부터 개발되어 2008년 발사 예정이다. 본 연구에서는 통신해양기상위성의 기상관측 탑재체인 기상 영상기(Imager)의 개발을 위해 정지궤도 위성 기상 영상기의 Modulation Transfer Function (MTF) 특성을 연구하고 현재 운영 또는...",
+        "keywords": [
+          "통신해양기상위성(communication",
+          "ocean",
+          "meteorological",
+          "satellite)",
+          "기상",
+          "영상기(meteorological",
+          "imager)",
+          "변조전달함수(modulation",
+          "transfer",
+          "function)"
+        ],
+        "score": 0.769047399940544,
+        "reason": "기상 영상기의 기술적 특성 분석을 다루고 있으며, 정지궤도 위성 기상 관측과 관련된 내용으로 주제와 어느 정도 연관성이 있다.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200340961071385"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "89aef73b9777fb102e3cd07bcfa29df6",
+        "platform": "dataon",
+        "title": "시정 예측 모델 개발을 위한 기상청 ASOS 데이터와 air korea 지상대기질 데이터",
+        "description": "데이터 개요 : * 지상측정소를 통한 대기질 관측 자료 제공\\r\\n* 기상청에서 운용 중인 지상기상관측소(ASOS)에서 관측된 주요 기상 변수들 제공\\r\\n* 지상대기질 상태 파악 및 정답데이터셋으로 활용 가능\\r\\n* 인공지능 모델 개발 및 검증에 활용 가능\\r\\n* 원천데이터출처: 에어코리아, 기상청\\r\\n\\r\\n데이터 설명 : \\r\\n*국내 도시대기측...",
+        "keywords": [
+          "대기질 데이터",
+          "기상데이터",
+          "지상대기질 데이터",
+          "ASOS 데이터",
+          "기상청 데이터"
+        ],
+        "score": 0.7500499488405041,
+        "reason": "제목과 설명에서 기상 데이터와 대기질 데이터에 대한 내용이 상세히 언급되어 있어 의미적으로 매우 유사하며, 한반도와 관련된 데이터를 포함하고 있어 직접적인 관련성이 높다.",
+        "level": "강추",
+        "url": "https://doi.org/10.22711/idr/1037"
+      },
+      {
+        "rank": 2,
+        "type": "dataset",
+        "id": "c8b9476b412dd3adc851e15a458a57bb",
+        "platform": "dataon",
+        "title": "COMS_MI_AOD 데이터셋",
+        "description": "데이터 개요 : * 천리안 위성 기상 탑재체 (MI, Meterological Imager)에서 관측된 에어로솔 광학두께(AOD, Aerosol Optical Depth)를 지정한 영역으로 내삽한 자료\\r\\n* 동아시아 영역의 대략적인 대기질 상태 추정\\r\\n* 한반도 지역 상세 대기질 추정에 활용 가능\\r\\n* 위성에서 관측한 에어로솔 광학두께의분포와 지...",
+        "keywords": [],
+        "score": 0.726008963903382,
+        "reason": "한반도 지역의 대기질 상태를 추정할 수 있는 위성 기반 데이터로, 기상 데이터와 관련성이 깊으며, 기존의 지상 관측소 데이터와 결합하여 활용 가능하다.",
+        "level": "강추",
+        "url": "https://aida.kisti.re.kr/data/30069289-8a92-4e78-b92f-2d0c68e8e1b3"
+      },
+      {
+        "rank": 3,
+        "type": "dataset",
+        "id": "54115afb48b80da5acc84ffe0832bf8f",
+        "platform": "dataon",
+        "title": "최적 내삽법(Optimal Interpolation) 기반 pCO₂ 보정 자료 생성",
+        "description": "1. 자료 배경 및 목적\\r\\n본 자료는 Fay et al. (2021)에서 제공하는 전지구 pCO₂ 재구성 자료(SeaFlux v2021.04)를 기반으로, KIOST가 수집한 pCO₂ 관측자료를 비롯한 다양한 pCO₂ 자료를 활용하여 공간적으로 추가 보정한 분석 필드를 생산하는 것을 목적으로 한다.\\r\\n기존 재구성 자료는 SOCAT 자료를 기반으로 기...",
+        "keywords": [
+          "pCO₂",
+          "한국해양과학기술원",
+          "전지구",
+          "최적내삽법",
+          "격자화"
+        ],
+        "score": 0.6701006067829739,
+        "reason": "한반도 주변 해역의 특성을 반영한 데이터로, 기상 데이터와 관련된 해양 관측 정보를 포함하고 있어 상대적으로 관련성이 높다.",
+        "level": "추천",
+        "url": "https://doi.org/10.22711/idr/1105"
+      },
+      {
+        "rank": 4,
+        "type": "dataset",
+        "id": "dc6dd49a1d2720ec11aaa24bfb8ad2ca",
+        "platform": "dataon",
+        "title": "GK-2A와 ASOS 지상관측자료를 이용한 태양광 에너지 산출 딥러닝 학습 데이터",
+        "description": "딥러닝을 이용한 태양광 에너지 산출에 관한 학습 데이터셋 (GK-2A 위성과 기상청 ASOS 자료셋)\\r\\n입력자료:\\r\\nGK-2A 위성 16개 채널에 대한 TOA 반사도\\r\\n출력자료:\\r\\n기상청 ASOS 자료",
+        "keywords": [
+          "GK-2A",
+          "딥러닝",
+          "태양광 에너지",
+          "일사계"
+        ],
+        "score": 0.600594533489599,
+        "reason": "태양광 에너지 산출을 위한 딥러닝 학습 데이터로, 기상청 ASOS 자료와 연결되어 있어 기상 데이터와 관련성이 어느 정도 있다.",
+        "level": "추천",
+        "url": "https://doi.org/10.22711/idr/1047"
+      },
+      {
+        "rank": 5,
+        "type": "dataset",
+        "id": "7cbb4aa41e736db535dcc14a34790309",
+        "platform": "dataon",
+        "title": "딥러닝을 이용하여 예측된 위성영상 파일",
+        "description": "관측 위성영상을 이용하여 학습시킨 딥러닝 모델에서 예측된 위성영상 데이터",
+        "keywords": [
+          "예측위성영상",
+          "기계생성데이터",
+          "이종 연구데이터",
+          "위성영상 데이터"
+        ],
+        "score": 0.662789486402786,
+        "reason": "딥러닝을 이용한 위성영상 예측 데이터로, 기상 데이터와 관련된 영상 분석에 활용 가능하며, 일부 기상 요소와 연관성이 있다.",
+        "level": "참고",
+        "url": ""
+      }
+    ],
+    "processing_time_ms": 41519,
+    "candidates_analyzed": 43,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "8d498db96633f07fe1d82ebe43daaf45",
+      "title": "Landsat-5/-7/-8 및 Sentinel-2 광학 위성 영상을 활용한 천지호 GeoAI 데이터셋",
+      "description": "Landsat-5/-7/-8 및 Sentinel-2 광학 위성 영상으로부터 구축된 백두산 천지호 GeoAI 데이터셋",
+      "keywords": [
+        "#백두산 #화산활동 #천지 #수체 #광학위성 #인공지능 데이터셋"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "화산 활동",
+        "AI 데이터셋",
+        "위성 이미지",
+        "GeoAI 모델",
+        "광학 분석"
+      ],
+      "dataset_keywords": [
+        "천지호",
+        "GeoAI",
+        "Landsat",
+        "Sentinel-2",
+        "광학영상"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "화산 활동",
+          "count": 5
+        },
+        {
+          "keyword": "AI 데이터셋",
+          "count": 5
+        },
+        {
+          "keyword": "위성 이미지",
+          "count": 5
+        },
+        {
+          "keyword": "GeoAI 모델",
+          "count": 5
+        },
+        {
+          "keyword": "광학 분석",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "천지호",
+          "count": 2
+        },
+        {
+          "keyword": "GeoAI",
+          "count": 5
+        },
+        {
+          "keyword": "Landsat",
+          "count": 5
+        },
+        {
+          "keyword": "Sentinel-2",
+          "count": 5
+        },
+        {
+          "keyword": "광학영상",
+          "count": 4
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "ART003035577",
+        "platform": "scienceon",
+        "title": "딥러닝 기반 광학 위성영상 간 정합 모델 학습을 위한 GeoAI 데이터셋",
+        "description": "Satellite imagery is being used to monitor the Earth, as it allows for the continuous provision of multi-temporal observations with consistent quality. To analyze time series remote sensing data with ...",
+        "keywords": [],
+        "score": 0.7740056290604145,
+        "reason": "논문 제목과 설명에서 광학 위성영상과 GeoAI 데이터셋을 직접적으로 언급하며, 딥러닝 기반의 이미지 정합 모델 학습에 초점을 맞춘 내용으로 소스 데이터셋과 주제가 매우 유사함.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ART003035577"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "JAKO202210559551497",
+        "platform": "scienceon",
+        "title": "위성영상 이미지를 활용한 연구 동향 및 데이터셋 리뷰",
+        "description": "기존 컴퓨터 비전의 연구 동향과 마찬가지로, 위성영상을 이용한 연구도 GPU 기반의 컴퓨터 연산능력과 이미지 처리와 관련된 딥러닝 방법론의 발전으로 많이 이루어지고 있다. 그로 인해 다양한 분야에 위성영상이 활용되고 있고, 위성 영상을 활용에 관한 연구도 증가하고 있다. 본 연구에서는 위성영상의 연구 활용 분야와 위성영상을 활용한 연구에 이용할 수 있는 데...",
+        "keywords": [
+          "위성영상",
+          "데이터셋",
+          "토지피복"
+        ],
+        "score": 0.8014347758356004,
+        "reason": "위성영상과 관련된 연구 동향 및 데이터셋을 다루었으며, 다양한 분야에서의 활용 사례와 데이터셋 정보를 상세히 설명하고 있어 소스 데이터셋과 관련성이 높음.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202210559551497"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "DIKO0016950738",
+        "platform": "scienceon",
+        "title": "UAV 영상을 활용한 GeoAI 기반 정밀 환경공간정보 구축",
+        "description": "The creation of environmental spatial information is critical for the development of local environmental policies, yet it is challenged by limitations in field surveys and spatial data editing. This s...",
+        "keywords": [
+          "Remote",
+          "Sensing",
+          "UAV",
+          "GeoAI",
+          "Deep",
+          "Learning",
+          "OBIA",
+          "Land",
+          "Cover",
+          "Classification",
+          "Individual",
+          "Tree",
+          "detection"
+        ],
+        "score": 0.7897693946141802,
+        "reason": "UAV 영상과 GeoAI 기술을 결합하여 환경 공간정보를 구축하는 방법을 다루며, GeoAI의 실제 적용 사례를 제시하고 있어 관련성이 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0016950738"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "ART003244580",
+        "platform": "scienceon",
+        "title": "국토 지능화를 위한 GeoAI 기술 및 정책 발전 전략 연구",
+        "description": "'공간 인공지능(GeoAI)은 도시화, 환경 문제, 재난 대응 등 복합적인 국토 이슈에 효과적으로 대응할 수 있는 핵심기술로 부상하고 있다. 그러나 국내에서는 고품질 데이터 확보의 어려움, 반복적인 학습 데이터 구축 부담, 기술 성숙도 부족 등으로 인해 GeoAI의 활용과 확산에 제약이 존재한다. 본 연구는 이러한 문제를 해결하기 위해 GeoAI 발전의 전...",
+        "keywords": [],
+        "score": 0.7679978062185118,
+        "reason": "GeoAI 기술의 발전 전략과 정책 방향을 다루며, 데이터 통합 및 학습 데이터 마련 등 GeoAI와 관련된 핵심 이슈를 다루고 있어 맥락상 관련성이 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ART003244580"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "NPAP08018991",
+        "platform": "scienceon",
+        "title": "위성 이미지(ETM+)를 활용한 가뭄민감도 분석",
+        "description": "",
+        "keywords": [],
+        "score": 0.7550292353485546,
+        "reason": "위성 이미지를 활용한 특정 분야(가뭄 민감도 분석)의 연구로, 위성 영상의 활용 사례를 다루고 있어 소스 데이터셋과 일부 관련성이 있음.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NPAP&cn=NPAP08018991"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "f717686f7a403e95e24cfac2f9f6992f",
+        "platform": "dataon",
+        "title": "TerraSAR-X, Sentinel-1, ALOS PALSAR-2 위성 레이더 영상을 활용한 천지호 GeoAI 데이터셋",
+        "description": "TerraSAR-X, Sentinel-1, ALOS PALSAR-2 위성레이더 영상으로 부터 구축된 백두산 천지호 GeoAI 데이터셋",
+        "keywords": [
+          "분할",
+          "인공지능 데이터셋",
+          "위성레이더",
+          "수체",
+          "천지",
+          "백두산"
+        ],
+        "score": 0.9014593835580045,
+        "reason": "제목과 설명에서 '천지호', '백두산', '위성레이더' 등의 핵심 키워드가 동일하거나 매우 유사하며, GeoAI 데이터셋이라는 점에서 직접적인 관련성이 있다.",
+        "level": "강추",
+        "url": "https://doi.org/10.22711/idr/1088"
+      },
+      {
+        "rank": 2,
+        "type": "dataset",
+        "id": "aa33370ac95b0f2a42f9b6f533bcdc9c",
+        "platform": "dataon",
+        "title": "대형 멀티모달 모델 학습을 위한 KOMPSAT-3/3A호 이미지-텍스트 데이터셋",
+        "description": "이 데이터셋은 KOMPSAT-3/3A 위성 영상을 기반으로 구축된 이미지-텍스트 데이터셋으로, 위성 영상 분석에 특화된 대규모 멀티모달 모델(LMM)의 정확도와 해석력을 향상시키는 것을 목표로 한다. 기존 LMM들은 주로 일반적인 RGB 이미지를 학습하여 위성 영상이 갖는 고유한 특징(공간 해상도, 촬영 각도, 다분광 정보 등)을 효과적으로 해석하는 데 한...",
+        "keywords": [
+          "다목적실용위성",
+          "위성영상",
+          "미세조정",
+          "대형 멀티모달 모델",
+          "아리랑 위성",
+          "이미지-텍스트 데이터셋"
+        ],
+        "score": 0.7038359781336712,
+        "reason": "KOMPSAT 위성 영상 기반의 AI 데이터셋으로, 위성 영상 분석에 특화된 모델 개발에 대한 내용이 포함되어 있어 연구 목적과 연관성이 크다.",
+        "level": "추천",
+        "url": "https://doi.org/10.22711/idr/1083"
+      },
+      {
+        "rank": 3,
+        "type": "dataset",
+        "id": "29a1960f330b7837344cddd25e1d65cb",
+        "platform": "dataon",
+        "title": "위성영상 객체판독",
+        "description": "개요: 아리랑 위성 영상을 활용한 학습 데이터셋 5종(관심객체 검출, 건물 윤곽 추출, 도로 윤곽 추출, 구름 추출, 레이더영상 수계 추출) 구축하여 재난, 환경, 에너지, 자원, 안보, 식량 등 위성 영상을 다루는 다양한 분야에서 효율적으로 분석, 활용할 수 있도록 데이터 제공, 구축목적: 아리랑 위성영상(광학 및 레이다 영상)을 이용한 다양한 위성정보 ...",
+        "keywords": [],
+        "score": 0.6956341964140097,
+        "reason": "아리랑 위성 영상 기반의 다양한 분석 작업에 대한 데이터셋으로, 위성 영상 처리 및 분석에 필요한 기초 자료로 활용 가능하다.",
+        "level": "추천",
+        "url": "https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=73"
+      },
+      {
+        "rank": 4,
+        "type": "dataset",
+        "id": "0787aba6f22211f6c36553ace7f24a4f",
+        "platform": "dataon",
+        "title": "산업단지 및 채석장 분류 AI 데이터셋",
+        "description": "KOMPSAT-3/3A 광학 위성 영상으로부터 구축된 산업단지 및 채석장 분류 AI 데이터셋",
+        "keywords": [
+          "채석장",
+          "의미론적 분할",
+          "위성영상",
+          "딥러닝",
+          "산업단지"
+        ],
+        "score": 0.6766864520099912,
+        "reason": "광학 위성 영상 기반의 분류 작업에 대한 데이터셋으로, 특정 분야의 AI 모델 개발에 활용 가능한 실질적인 자료이다.",
+        "level": "참고",
+        "url": "https://doi.org/10.22711/idr/1005"
+      },
+      {
+        "rank": 5,
+        "type": "dataset",
+        "id": "945ddf8a4f2c6b91b2adc77d50f60756",
+        "platform": "dataon",
+        "title": "Comparison of Methods of Multi-Source Remote Sensing Estimations of Aboveground Biomass of Tropical Rainforests in Kwahu South, Ghana",
+        "description": "Aboveground biomass (AGB) is an important metric in forest carbon analysis, allowing for continuous monitoring of changes in biomass over time. Field measurements to provide accurate assessments of th...",
+        "keywords": [],
+        "score": 0.6204849917277675,
+        "reason": "Landsat-8 및 Sentinel-2 위성을 활용한 생물량 추정 연구로, 위성 영상과 머신러닝을 결합한 분석 방법에 대한 이해를 돕는 참고 자료이다.",
+        "level": "참고",
+        "url": "https://dx.doi.org/10.5683/SP3/G30CMV"
+      }
+    ],
+    "processing_time_ms": 40682,
+    "candidates_analyzed": 43,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "c3ad2f8c1cf9e107a3f68b6972b64ad5",
+      "title": "이동형 도시환경 센싱 데이터 셋",
+      "description": "자동차 탑재 센서를 활용한 전국 5대 광역시 대상 대기환경 수집 데이터. 미세먼지, 초미세먼지, 일산화탄소, 이산화질소 수치 등 각종 정보를 수집",
+      "keywords": [
+        "사물데이터",
+        "대기환경 센싱",
+        "광역시",
+        "미세먼지"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "센서 네트워크",
+        "대기 오염 모니터링",
+        "실시간 데이터 수집",
+        "도시 환경 분석",
+        "모빌리티 센싱"
+      ],
+      "dataset_keywords": [
+        "도시 센싱",
+        "대기 질",
+        "미세먼지 데이터",
+        "광역시 환경",
+        "이동 센서"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "센서 네트워크",
+          "count": 5
+        },
+        {
+          "keyword": "대기 오염 모니터링",
+          "count": 5
+        },
+        {
+          "keyword": "실시간 데이터 수집",
+          "count": 5
+        },
+        {
+          "keyword": "도시 환경 분석",
+          "count": 5
+        },
+        {
+          "keyword": "모빌리티 센싱",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "도시 센싱",
+          "count": 1
+        },
+        {
+          "keyword": "대기 질",
+          "count": 0
+        },
+        {
+          "keyword": "미세먼지 데이터",
+          "count": 5
+        },
+        {
+          "keyword": "광역시 환경",
+          "count": 5
+        },
+        {
+          "keyword": "이동 센서",
+          "count": 0
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "NPAP12898529",
+        "platform": "scienceon",
+        "title": "대기 오염 모니터링을 위한 측정 시스템 설계",
+        "description": "현재 다양한 분야에서 IoT 기술이 적용되어 편의성과 활용성이 증대되고 있다. 본 논문에서는 IoT 응용 서비스의 일환으로 대기 오염 모니터링 시스템을 고안하여 이를 위한 측정 시스템의 설계를 제안한다. 제안하는 측정 시스템은 아두이노와 미세 먼지 센서를 이용하여 위치한 장소에서 실측 데이터를 수집하고 공공데이터 서버에서 제공하는 데이터를 수신하여 시간과 ...",
+        "keywords": [],
+        "score": 0.7502741493666316,
+        "reason": "논문의 주제가 대기 오염 모니터링 시스템 설계에 집중되어 있으며, 실제 센서를 활용한 데이터 수집과 공공데이터와의 연동이라는 점에서 매우 직접적인 관련성을 가진다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NPAP&cn=NPAP12898529"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "NPAP12898528",
+        "platform": "scienceon",
+        "title": "대기 오염 모니터링 시스템을 위한 모바일 어플리케이션",
+        "description": "대기 오염의 문제가 증대됨에 따라 사람들의 대기 오염에 대한 관심도 크게 증가하였다. 본 논문은 대기 오염 모니터링 시스템을 위한 모바일 어플리케이션의 설계와 구현을 제안한다. 대기 오염 모니터링 시스템은 미세 먼지 센서를 활용한 미세 먼지 실측값과 공공데이터 서버에서 제공하는 미세 먼지 데이터를 수신하여 제공하는 구조로 제안하는 어플리케이션에서는 이러한 ...",
+        "keywords": [],
+        "score": 0.7567602654852885,
+        "reason": "대기 오염 모니터링을 위한 모바일 앱 설계 및 구현에 초점을 맞춘 논문으로, 사용자에게 대기 오염 정보를 시각화하여 제공하는 방식이 해당 데이터셋의 활용 가능성과 연결된다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NPAP&cn=NPAP12898528"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "JAKO201914260902411",
+        "platform": "scienceon",
+        "title": "실시간 데이터 수집/분석/처리를 위한 지능형 IoT",
+        "description": "본 연구는 데이터의 실시간 수집/분석/처리를 위한 빅데이터 기반, 데이터 자산의 창의적 분석과 유통단계를 실시간으로 측정할 수 있는 IoT 기반 지능형 처리시스템을 개발한다. 모바일 단말은 제공된 디바이스의 SDK를 이용하여 특정지역 해산물 생산유통소비에 대한 데이터 정보를 측정한다. 측정된 정보를 oneM2M 프로토콜을 이용하여 해산물 생산에 필요한 각종...",
+        "keywords": [
+          "클라우드",
+          "사물",
+          "인터넷",
+          "데이터",
+          "분류",
+          "머신",
+          "러닝"
+        ],
+        "score": 0.7784214997895854,
+        "reason": "IoT 기반의 실시간 데이터 수집 및 처리 시스템에 대한 연구로, 센서 데이터를 수집하고 분석하는 과정에서의 기술적 접근이 해당 데이터셋의 수집 방식과 유사하다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO201914260902411"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO201913661038178",
+        "platform": "scienceon",
+        "title": "oneM2M 표준 기반 실시간 회전기기 센싱 데이터 수집 및 모니터링 시스템 구현",
+        "description": "본 논문에서는 회전기기의 전압, 전류, 온도, 가속도, 진동 등을 측정 전송할 수 있는 oneM2M 기반의 실시간 회전기기 센싱 데이터 수집 및 모니터링 시스템을 설계하고 구현하였다. 구현된 시스템은 전기적 결함(과전류, 역상, 결상, 지락)과 기계적 결함(MC 카운터, 모터동작시간, 베어링 및 권선온도, 모터 회전수, 절연저항)의 전기 또는 물리적인 현상...",
+        "keywords": [
+          "기계적",
+          "결함",
+          "데이터획득시스템",
+          "회전기기"
+        ],
+        "score": 0.7763559565294216,
+        "reason": "회전기기의 센싱 데이터를 실시간으로 수집 및 모니터링하는 시스템 설계에 대한 내용으로, 센서 데이터 수집 및 전송 기술에 대한 이해가 깊어 관련성이 있다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO201913661038178"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "DIKO0017282035",
+        "platform": "scienceon",
+        "title": "IoT를 활용한 잔디 생육 지원 시스템 구현에 관한 연구",
+        "description": "사물인터넷(IoT)은 다양한 분야에서 디지털 혁신을 가능하게 하는 핵심 기술로 부상하였으며, 현재는 인공지능과 보안 인터넷 기술의 융합을 통해 AIoT로 진화하고 있다. IoT 응용은 스마트 홈, 모빌리티, 산업 자동화, 디지털 트윈 등으로 확장되어 왔지만, 스포츠 경기장 관리 분야에서는 여전히 사용이 제한적이다. 천연 잔디는 살아있는 생물로서 환경 변화에...",
+        "keywords": [
+          "Turf",
+          "Management",
+          "Climate",
+          "Change",
+          "Internet",
+          "of",
+          "Things",
+          "(IoT)",
+          "잔디",
+          "관리",
+          "기후",
+          "변화"
+        ],
+        "score": 0.7613266950797396,
+        "reason": "IoT 기반의 잔디 생육 지원 시스템에 대한 연구로, 환경 요소를 실시간으로 측정하고 데이터를 분석하여 최적화된 관리를 수행하는 방식이 데이터 수집 및 분석에 대한 이해를 제공한다.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0017282035"
+      }
+    ],
+    "dataset_recommendations": [],
+    "processing_time_ms": 53931,
+    "candidates_analyzed": 32,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "000e4340354d8219bdb3af6a7ad4800d",
+      "title": "이동형 도시환경 센서 및 도로영상 데이터 셋",
+      "description": "자동차 탑재 센서 및 블랙박스를 활용한 전국 5대 광역시 대상 도로영상 수집 데이터. 미세먼지, 초미세먼지, 일산화탄소, 이산화질소 수치 등 각종 정보를 수집",
+      "keywords": [
+        "사물데이터",
+        "도시영상",
+        "광역시",
+        "미세먼지"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "도시모니터링",
+        "센서네트워크",
+        "대기오염",
+        "영상분석",
+        "환경측정"
+      ],
+      "dataset_keywords": [
+        "도시센서",
+        "도로영상",
+        "미세먼지",
+        "광역시",
+        "이산화질소"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "도시모니터링",
+          "count": 5
+        },
+        {
+          "keyword": "센서네트워크",
+          "count": 5
+        },
+        {
+          "keyword": "대기오염",
+          "count": 5
+        },
+        {
+          "keyword": "영상분석",
+          "count": 5
+        },
+        {
+          "keyword": "환경측정",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "도시센서",
+          "count": 1
+        },
+        {
+          "keyword": "도로영상",
+          "count": 5
+        },
+        {
+          "keyword": "미세먼지",
+          "count": 5
+        },
+        {
+          "keyword": "광역시",
+          "count": 5
+        },
+        {
+          "keyword": "이산화질소",
+          "count": 2
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "ATN0038544536",
+        "platform": "scienceon",
+        "title": "대도시 유해대기오염물질 관리를 위한 블랙카본 모니터링",
+        "description": "Particulate matter(PM) is widely used as an indicator of the airborne particles. Korea introduced a PM10 air quality standard in 1995 and is preparing to introduce a PM2.5 air quality standard in 2015...",
+        "keywords": [
+          "risk",
+          "management",
+          "diesel",
+          "particulate",
+          "matter(DPM)",
+          "optical",
+          "measurement",
+          "PM_2.5",
+          "fugitive",
+          "dust",
+          "위해성",
+          "관리",
+          "경유차",
+          "배출",
+          "입자",
+          "광학적",
+          "측정",
+          "비산먼지"
+        ],
+        "score": 0.7431411291570195,
+        "reason": "제목과 설명에서 대도시 대기 오염 물질인 블랙카본에 대한 모니터링을 다루고 있어 주제와 직접적으로 관련성이 높으며, 미세먼지와 같은 대기 오염 물질에 대한 관리 방안을 제시하고 있다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ATN0038544536"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "DIKO0014861001",
+        "platform": "scienceon",
+        "title": "딥 뉴럴 네트워크 기반 교통 CCTV 데이터 분석",
+        "description": "기술의 발전과 도시로의 인구 밀집 현상에 의하여 교통정보의 활용과 중요성은 점차 높아지고 있다. 이에 따라 교통 정보의 수집 지역이 늘어나고 있지만, 현재 교통 정보 수집 방법은 설치나 유지 보수에 많은 시간과 비용이 들기 때문에 효율이 떨어지는 단점이 있다.&amp;#xD; 따라서 본 논문에서는 별도의 추가 설비 없이 기존 설치된 CCTV를 이용해 딥러닝...",
+        "keywords": [
+          "딥러닝",
+          "물체",
+          "검출",
+          "object",
+          "detection",
+          "tracking",
+          "교통",
+          "분석",
+          "차량"
+        ],
+        "score": 0.7779408181957966,
+        "reason": "교통 CCTV를 활용한 딥러닝 기반의 물체 검출 및 추적 기술을 제안하며, 도시 내 교통 데이터 분석에 관한 내용으로 도시 환경 데이터 수집과 관련성이 있다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0014861001"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "DIKO0013856411",
+        "platform": "scienceon",
+        "title": "온실가스-대기오염 통합 배출량 산정 및 도시공간구조와의 상관관계 분석 : 서울시를 대상으로",
+        "description": "본 연구는 2010년 서울시를 대상으로 온실가스-대기오염 통합 배출량 산정과 이에 따른 도시공간구조와의 배출모형을 통계학적으로 해석하여, 다음과 같은 종합적 연구요약을 도출하였다. 2장의 온실가스-대기오염 통합 배출량 산정결과에서 온실가스-대기오염 통합 배출량은 각각 39,078,217 tonCO2eq, 2,924,098 tonAP로 산정되었다. 부문별로 ...",
+        "keywords": [],
+        "score": 0.7340015787579737,
+        "reason": "온실가스와 대기오염 배출량을 통합적으로 분석하고, 도시공간구조와의 상관관계를 다루고 있어 대기 오염 문제와 도시 환경 데이터에 대한 이해를 돕는 데 기여한다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0013856411"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO200818259611865",
+        "platform": "scienceon",
+        "title": "센서네트워크 보안 기술 개발 동향",
+        "description": "최근 유비쿼터스 환경을 실현하는 기술로서 사물 및 환경 정보를 센싱하여 무선으로 통신하여 필요한 정보를 수집 및 분석, 처리하는 센서네트워크 기술에 대한 관심이 고조되고 있다. 특히, 최근 국내에서는 u-City와 u-Port 사업 등, 범국가적으로 유비쿼터스 환경을 실현하고자 하는 사업이 진행되고 있기 때문에, 센서네트워크 기술에 대한 관심이 더욱 크다....",
+        "keywords": [],
+        "score": 0.7467908910803244,
+        "reason": "센서네트워크 기술의 보안 문제를 다루며, 무선 통신 기반의 환경 정보 수집 및 분석에 대한 내용으로 센서 기반 도시 환경 데이터 수집과 관련성이 있다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200818259611865"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "DIKO0014164960",
+        "platform": "scienceon",
+        "title": "대기오염 정보서비스 App디자인 개발연구",
+        "description": "산업 발전으로 인한 대기 오염이 발생하는 현재, 사람들은 환경오염이 자신에게 미치는 피해가 심각하다는 것을 인지하기 시작했다. 황사, 미세먼지 등의 현상은 모두 인간에 의해 발생된 현상이다. 특별히 공기 중에 있는 스모그의 다량의 화학물질은 인체에 많은 피해를 입힌다. 이런 상황에서 인간들은 대기오염이 인류에 가져다 주는 피해에 대해 관심을 갖게 된 것이다...",
+        "keywords": [],
+        "score": 0.7356024749184893,
+        "reason": "대기오염 정보 서비스 앱의 디자인 개발을 다루며, 대기 오염 지수에 대한 관심과 그에 따른 정보 제공 방식에 대한 내용으로 주제와 관련성이 있다.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0014164960"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "c3ad2f8c1cf9e107a3f68b6972b64ad5",
+        "platform": "dataon",
+        "title": "이동형 도시환경 센싱 데이터 셋",
+        "description": "자동차 탑재 센서를 활용한 전국 5대 광역시 대상 대기환경 수집 데이터. 미세먼지, 초미세먼지, 일산화탄소, 이산화질소 수치 등 각종 정보를 수집",
+        "keywords": [
+          "대기환경 센싱",
+          "광역시",
+          "사물데이터",
+          "미세먼지"
+        ],
+        "score": 0.9332996682613302,
+        "reason": "제목과 설명이 매우 유사하며, '미세먼지', '광역시', '대기환경' 등의 핵심 키워드가 다수 일치한다.",
+        "level": "강추",
+        "url": ""
+      },
+      {
+        "rank": 2,
+        "type": "dataset",
+        "id": "6d914c63d76603b6c70d64827862c69b",
+        "platform": "dataon",
+        "title": "대전시 도로영상 객체상황 추출 데이터셋",
+        "description": "데이터 개요 : KISTI가 자체적으로 수집한 도로영상 비디오를 활용한 영상객체 인식용 학습데이터셋(대전시 도로 영상 객체 인식 데이터셋)을 기반으로 선별한 1만장 수준의 데이터를 KISTI의 객체상황 레벨 추출 기술을 통해 재가공한 데이터셋. 객체 60종, 상황 34종에 대한 정보를 포함하고 있음.\\r\\n* (이미지 상황 34종) 교각, 공항, 해안가, ...",
+        "keywords": [],
+        "score": 0.6416363244451764,
+        "reason": "도로영상 데이터에 대한 설명이 상세하며, 대전시 도로영상과 관련된 다양한 객체 및 상황 정보를 포함하고 있다.",
+        "level": "추천",
+        "url": "https://aida.kisti.re.kr/data/4ab34fcb-0a06-477a-8bd8-cef912e88991"
+      },
+      {
+        "rank": 3,
+        "type": "dataset",
+        "id": "764113b99ed6e5b41365240efa010ed7",
+        "platform": "dataon",
+        "title": "대전시 도로 영상 객체 인식 데이터셋",
+        "description": "데이터 개요 : * KISTI가 자체적으로 촬영한 도로영상을 기반으로 구축한 영상객체 인식용 학습데이터셋\\r\\n * 2019년 7~9월, 2020년 7~9월 전용차량으로 대전시 주요 도로 주행시 촬영한 고프로 영상데이터를 대상으로 구축\\r\\n\\r\\n* 대전시 도로 영상데이터에 대해 객체* 라벨링 수행\\r\\n * 승용차, 버스, 소형트럭, 대형트럭, 바이크,...",
+        "keywords": [],
+        "score": 0.5982044012951976,
+        "reason": "대전시 도로영상 데이터에 대한 설명이 명확하며, 객체 인식에 필요한 다양한 정보를 포함하고 있다.",
+        "level": "추천",
+        "url": "https://aida.kisti.re.kr/data/625ec9da-a303-44d5-a7eb-5b6a7ad91d34"
+      },
+      {
+        "rank": 4,
+        "type": "dataset",
+        "id": "c8b9476b412dd3adc851e15a458a57bb",
+        "platform": "dataon",
+        "title": "COMS_MI_AOD 데이터셋",
+        "description": "데이터 개요 : * 천리안 위성 기상 탑재체 (MI, Meterological Imager)에서 관측된 에어로솔 광학두께(AOD, Aerosol Optical Depth)를 지정한 영역으로 내삽한 자료\\r\\n* 동아시아 영역의 대략적인 대기질 상태 추정\\r\\n* 한반도 지역 상세 대기질 추정에 활용 가능\\r\\n* 위성에서 관측한 에어로솔 광학두께의분포와 지...",
+        "keywords": [],
+        "score": 0.5958742730754328,
+        "reason": "미세먼지와 관련된 대기질 정보를 제공하며, 위성 데이터를 활용한 분석 방식이 유사하다.",
+        "level": "추천",
+        "url": "https://aida.kisti.re.kr/data/30069289-8a92-4e78-b92f-2d0c68e8e1b3"
+      }
+    ],
+    "processing_time_ms": 28639,
+    "candidates_analyzed": 35,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "33da0205f56477ba41dec7d7db3258a6",
+      "title": "Dataset for Intervention strategies against COVID-19 and their estimated impact on Swedish healthcare capacity",
+      "description": "Dataset for individual-based modeling of COVID-19 spread in Sweden.",
+      "keywords": [
+        "코로나",
+        "코로나19"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "감염제어",
+        "개인기반 시뮬레이션",
+        "의료부하",
+        "확산예측",
+        "정책효과"
+      ],
+      "dataset_keywords": [
+        "코로나19",
+        "스웨덴",
+        "개인기반 모델",
+        "의료용량",
+        "전파모델"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "감염제어",
+          "count": 5
+        },
+        {
+          "keyword": "개인기반 시뮬레이션",
+          "count": 5
+        },
+        {
+          "keyword": "의료부하",
+          "count": 5
+        },
+        {
+          "keyword": "확산예측",
+          "count": 5
+        },
+        {
+          "keyword": "정책효과",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "코로나19",
+          "count": 5
+        },
+        {
+          "keyword": "스웨덴",
+          "count": 5
+        },
+        {
+          "keyword": "개인기반 모델",
+          "count": 0
+        },
+        {
+          "keyword": "의료용량",
+          "count": 0
+        },
+        {
+          "keyword": "전파모델",
+          "count": 0
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "JAKO201528638841075",
+        "platform": "scienceon",
+        "title": "MERS로 보는 병원의 공조방식과 감염제어",
+        "description": "",
+        "keywords": [],
+        "score": 0.7301661921529693,
+        "reason": "제목과 내용이 병원 내 감염 방지 및 감염 제어와 관련되어 있으며, 연구 주제와 직접적인 연관성이 있음.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO201528638841075"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "NPAP08511814",
+        "platform": "scienceon",
+        "title": "심장운동부하 모델링과 의료장비 개발",
+        "description": "The estimation of the work of heart can be treated as one of the most important parameters for determining the amount of circulating blood needed for harmonious metabolism in the human body. By monito...",
+        "keywords": [],
+        "score": 0.7874474530766833,
+        "reason": "심장 운동 부하와 의료 장비 개발에 대한 연구로, 의료 분야의 기술적 발전과 관련성이 큼.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NPAP&cn=NPAP08511814"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "DIKO0017293803",
+        "platform": "scienceon",
+        "title": "의료종사자의 환자 이승 간 발생하는 허리 부하 감소를 위한 생체역학 및 위험한 이승 감지 기술",
+        "description": "환자 이승 중 발생하는 의료종사자의 허리 부상은 주요한 산업재해 중 하나로, 특히 요추(L5/S1) 부위의 압축력이 부상 위험과 밀접한 관련이 있다. 본 박사학위 논문은 이러한 허리 부하 위험을 정량화하고, 안전하지 않은 이승을 예측 분류할 수 있는 생체역학 기반 및 웨어러블 센서 기반의 기술적 접근을 제시한다.&amp;#xD; 연구 1에서는 L5/S1에 ...",
+        "keywords": [
+          "Classification",
+          "model",
+          "Compressive",
+          "force",
+          "Lower",
+          "back",
+          "injury",
+          "Patient",
+          "transfer"
+        ],
+        "score": 0.725907102238346,
+        "reason": "의료 종사자의 허리 부상 방지를 위한 생체 역학적 모델과 센서 기반 기술을 다루며, 의료 현장의 안전 문제와 관련됨.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0017293803"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "ART002891904",
+        "platform": "scienceon",
+        "title": "상사무례 및 부하무례가 의료종사자의 조직몰입과 고객지향성에 미치는 영향",
+        "description": "This study aimed at the administration and medical workers who are at the customer contact point providing services in the medical tourism industry. Through an empirical study on the effect of superio...",
+        "keywords": [],
+        "score": 0.8057375825149551,
+        "reason": "의료 종사자의 조직몰입과 고객지향성에 대한 연구로, 의료 인력 관리와 관련된 주제로 연결될 수 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ART002891904"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "ATN0027097727",
+        "platform": "scienceon",
+        "title": "개인 신용대출에 대한 동적 신용평가 방법에 관한 연구",
+        "description": "Recently, as the portion of private loans increases in financial institutes, the importance of credit scoring of individuals is also increasing. However, since most of current credit scoring systems e...",
+        "keywords": [
+          "신용평가",
+          "신용평가시스템",
+          "시스템",
+          "다이나믹스",
+          "System",
+          "Dynamics",
+          "CSS(credit",
+          "scoring",
+          "system)"
+        ],
+        "score": 0.7975765474743384,
+        "reason": "개인 신용 평가 방법론에 대한 연구로, 금융 분야의 모델링 기법을 이해하는 데 도움이 됨.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ATN0027097727"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "7a887d274ffd76bc67284467441127ae",
+        "platform": "dataon",
+        "title": "Code and data sharing for manuscript titled Transmission heterogeneities, kinetics, and controllability of SARS-CoV-2",
+        "description": "Code and data sharing for manuscript titled Transmission heterogeneities, kinetics, and controllability of SARS-CoV-2",
+        "keywords": [
+          "contact tracing",
+          "SARS-CoV-2",
+          "코로나19",
+          "COVID-19",
+          "코로나"
+        ],
+        "score": 0.6955080053752214,
+        "reason": "제목과 설명에서 코로나19와 관련된 전염병 모델링 및 전파 특성 분석에 대한 내용이 포함되어 있으며, 핵심 키워드도 다수 일치하여 의미적으로 매우 유사함.",
+        "level": "강추",
+        "url": ""
+      },
+      {
+        "rank": 2,
+        "type": "dataset",
+        "id": "db3641dc820b620962ea7680b842e394",
+        "platform": "dataon",
+        "title": "predict_sales_with_pandemic",
+        "description": "코로나19(COVID-19) 대응정책수립을 위한 업종별 매출 예측",
+        "keywords": [
+          "매출",
+          "딥러닝",
+          "팬데믹",
+          "코로나",
+          "예측"
+        ],
+        "score": 0.6192245974706398,
+        "reason": "코로나19 대응 정책 수립을 위한 데이터를 다루고 있어 주제와 직접적인 연관성이 있음.",
+        "level": "추천",
+        "url": "https://dataon.kisti.re.kr/canvas/software/292/index.do"
+      },
+      {
+        "rank": 3,
+        "type": "dataset",
+        "id": "0e0d6b6b92da49c75120b2b85eb6e19d",
+        "platform": "dataon",
+        "title": "predict_sales_with_pandemic",
+        "description": "코로나19(COVID-19) 대응정책수립을 위한 업종별 매출 예측",
+        "keywords": [
+          "매출",
+          "딥러닝",
+          "팬데믹",
+          "코로나",
+          "예측"
+        ],
+        "score": 0.6192245974706398,
+        "reason": "동일한 제목과 설명으로 코로나19 대응 정책 수립을 위한 데이터를 다루고 있어 주제와 직접적인 연관성이 있음.",
+        "level": "추천",
+        "url": "https://dataon.kisti.re.kr/canvas/software/245/index.do"
+      },
+      {
+        "rank": 4,
+        "type": "dataset",
+        "id": "e50d13dfadde53e29d13b54d7586cb46",
+        "platform": "dataon",
+        "title": "코로나 변이주 바이러스에 감염된 햄스터의 폐 조직 대사체 분석",
+        "description": "SARS-CoV-2 델타 및 오미크론 변이는 감염된 햄스터에서 급성 폐 염증과 병변을 유발했으며, 델타 변이가 더 큰 영향을 보였습니다. 메타볼로믹스와 전사체 분석을 통해 아르지닌 생합성, 글루타티온 및 트립토판 대사 경로에서 변화가 발견되었으며, 이는 면역 활성화와 산화 스트레스와 연관되었습니다. 이 연구는 다중 오믹스 접근이 면역 대사 반응을 이해하고 ...",
+        "keywords": [
+          "감염 동물모델",
+          "SARS-CoV-2",
+          "변이 바이러스",
+          "코로나19",
+          "대사체",
+          "K-BDS"
+        ],
+        "score": 0.582892081395164,
+        "reason": "SARS-CoV-2 변이 바이러스에 대한 연구 내용이 포함되어 있어 코로나19 관련 주제와 밀접하게 연결됨.",
+        "level": "추천",
+        "url": "https://kbds.re.kr/KAP240957"
+      },
+      {
+        "rank": 5,
+        "type": "dataset",
+        "id": "ee992e1b2d64a35dab156e19f17caba6",
+        "platform": "dataon",
+        "title": "코로나19 전후 대구 중·고등학생의 국어 학업성취 추이 및 영향 요인 분석",
+        "description": "",
+        "keywords": [],
+        "score": 0.5829163264256282,
+        "reason": "코로나19와 관련된 교육 영향 분석 자료로 주제와 어느 정도 연관성이 있음.",
+        "level": "참고",
+        "url": "http://203.250.103.3/darchive/data/d5317153-d952-4507-acbc-74ece1a8b997"
+      }
+    ],
+    "processing_time_ms": 39918,
+    "candidates_analyzed": 35,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "bee3162957beecc87a91c94803d23439",
+      "title": "해양 관측 CCTV 타임스탬프 이미지 데이터셋 (2023년 8월)",
+      "description": "본 데이터셋은 해양 관측을 목적으로 수집된 CCTV 화면에서 날짜와 시간을 나타내는 영역을 추출한 3362개의 이미지로 구성됨.\\r\\n이미지 파일명은 S-ORS_WEST_yyyy-mm-dd_hh-MM-ss 형식을 따르며, 날짜와 시간 정보를 포함함.\\r\\n본 데이터셋은 2023년 8월 동안 수집된 자료로, 모든 이미지 파일은 PNG 형식이며 해상도는 500x120 픽셀.",
+      "keywords": [
+        "해양 관측",
+        "CCTV",
+        "타임스탬프",
+        "이미지 데이터셋",
+        "날짜 및 시간 정보",
+        "해양 모니터링",
+        "이미지 처리"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "CCTV 타임스탬프",
+        "영상 시간 인식",
+        "해양 모니터링",
+        "이미지 처리 기법",
+        "자동 시간 추출"
+      ],
+      "dataset_keywords": [
+        "해양 CCTV",
+        "타임스탬프 이미지",
+        "PNG 데이터셋",
+        "시간 정보 추출",
+        "해양 관측 데이터"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "CCTV 타임스탬프",
+          "count": 1
+        },
+        {
+          "keyword": "영상 시간 인식",
+          "count": 5
+        },
+        {
+          "keyword": "해양 모니터링",
+          "count": 5
+        },
+        {
+          "keyword": "이미지 처리 기법",
+          "count": 5
+        },
+        {
+          "keyword": "자동 시간 추출",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "해양 CCTV",
+          "count": 1
+        },
+        {
+          "keyword": "타임스탬프 이미지",
+          "count": 1
+        },
+        {
+          "keyword": "PNG 데이터셋",
+          "count": 3
+        },
+        {
+          "keyword": "시간 정보 추출",
+          "count": 3
+        },
+        {
+          "keyword": "해양 관측 데이터",
+          "count": 5
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "NART69976214",
+        "platform": "scienceon",
+        "title": "해양 모니터링 설비의 기술 성숙도 평가방법 탐구",
+        "description": "현대 해양 모니터링 설비(ocean observing instruments)는 기술 수준이 높고, 기술 관리의 강화는 설비 품질을 향상시키는데 매우 중요하다. 기술 성숙도 레벨(technology readiness level, TRL)을 이용한 평가와 응용은 해양 관측 시스템의 발전에 중요한 의미를 갖고 있다. 본 논문은 우선 TRL의 개념을 간단히 서술하...",
+        "keywords": [
+          "ocean",
+          "observing",
+          "instruments",
+          "technology",
+          "management",
+          "readiness",
+          "level(TRL)",
+          "assessment",
+          "method",
+          "해양",
+          "모니터링",
+          "설비",
+          "기술",
+          "관리",
+          "성숙도",
+          "레벨",
+          "평가방법"
+        ],
+        "score": 0.7490616292347779,
+        "reason": "해양 관측과 관련된 기술 성숙도 평가 방법을 다루고 있어 주제와 직접적으로 연결되며, 해양 모니터링 설비에 대한 내용이 포함되어 있어 의미적으로 매우 유사함.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART69976214"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "JAKO202228049104234",
+        "platform": "scienceon",
+        "title": "순환 적대적 생성 신경망을 이용한 안면 교체를 위한 새로운 이미지 처리 기법",
+        "description": "최근 모바일 단말기 및 개인형 컴퓨터의 비약적인 발전과 신경망 기술의 등장으로 영상을 활용한 실시간 안면 교체가 가능해졌다. 특히, 순환 적대적 생성 신경망은 상호 연관성이 없는 이미지 데이터를 활용한 안면 교체가 가능하게 만들었다. 본 논문에서는 적은 학습 데이터와 시간으로 안면 교체의 품질을 높일 수 있는 입력 데이터 처리 기법을 제안한다. 제안 방식은...",
+        "keywords": [
+          "안면",
+          "교체",
+          "변환",
+          "순환",
+          "적대적",
+          "생성",
+          "신경망",
+          "특이점",
+          "데이터셋"
+        ],
+        "score": 0.7481340511373765,
+        "reason": "이미지 처리 기법에 대한 심층적인 연구가 진행되었으며, 안면 교체와 관련된 기술이 포함되어 있어 해양 관측 CCTV 이미지 처리와 관련성이 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202228049104234"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "JAKO200932056740511",
+        "platform": "scienceon",
+        "title": "디지털 이미지 처리 기법을 이용한 골재입자의 형상 분류",
+        "description": "본 논문에서는 체분석이 불가능한 일반토사 및 조립토 입자의 입도분포 특성을 디지털 이미지 처리기법을 적용하여 분석하는 방법을 제안하였다. 디지털 이미지 처리 기법은 골재의 표면거칠기 및 형상계수 등의 정량적인 분석에 적합한 것이다. 연구에 사용된 골재입자는 주문진 표준사, 해양골재 2종, 쇄석골재 2종 등이 이용되었다. 해변자갈 I, II의 형상계수는 $0...",
+        "keywords": [
+          "디지털이미지처리기법",
+          "골재",
+          "입자형상",
+          "세장비",
+          "편평비"
+        ],
+        "score": 0.7464021867993363,
+        "reason": "디지털 이미지 처리 기법을 활용한 입자 형상 분석이 이루어졌으며, 이는 해양 관측 CCTV 이미지의 처리와 유사한 기술적 접근을 포함하고 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200932056740511"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO201118559655094",
+        "platform": "scienceon",
+        "title": "디지털 이미지 처리 기법을 이용한 굵은골재의 입도분포곡선",
+        "description": "본 연구는 디지털 이미지 처리 기법을 이용하여 골재입자의 형상을 분류한 것이다. 디지털 이미지 처리 기법은 골재의 표면거칠기 및 형상계수 등의 정량적인 분석에 적합한 것이다. 연구에 사용된 골재입자는 주문진 표준사, 해양골재 2종, 쇄석골재 2종 등이 이용되었다. 해변자갈I, II의 형상계수는 0.35~0.54, 쇄석I은 0.74의 범위로 박편 형태의 편평...",
+        "keywords": [
+          "디지털이미지처리기법",
+          "입자형상",
+          "세장비",
+          "편평비",
+          "입도곡선",
+          "형상변환계수"
+        ],
+        "score": 0.746020789647861,
+        "reason": "디지털 이미지 처리 기법을 이용한 입도분포곡선 작성에 관한 연구로, 해양 관측 CCTV 이미지의 처리와 관련된 기술적 내용이 포함되어 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO201118559655094"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "JAKO199811920099693",
+        "platform": "scienceon",
+        "title": "효율적인 실시간 해양 모니터링 시스템 구축에 대한 고찰",
+        "description": "",
+        "keywords": [],
+        "score": 0.7450559567583762,
+        "reason": "실시간 해양 모니터링 시스템에 대한 고찰을 다루고 있어 주제와 직접적인 연관성이 있으며, 해양 관측과 관련된 기술적 배경을 제공함.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO199811920099693"
+      }
+    ],
+    "dataset_recommendations": [],
+    "processing_time_ms": 41320,
+    "candidates_analyzed": 29,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "c592e36ae62d104b21183d9f498d918f",
+      "title": "필리핀해 해양-대기 감시부이 자료 1(2020년)",
+      "description": "필리핀해에 해양-대기 감시부이를 설치하여(북위 15도, 동경 134.5도) 대기변수 관측.",
+      "keywords": [
+        "동중국해",
+        "쿠로시오",
+        "해류관측"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "해양관측",
+        "대기데이터",
+        "지점측정",
+        "해양기후",
+        "환경모니터링"
+      ],
+      "dataset_keywords": [
+        "필리핀해",
+        "해양감시",
+        "대기변수",
+        "15도134.5도",
+        "2020년자료"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "해양관측",
+          "count": 5
+        },
+        {
+          "keyword": "대기데이터",
+          "count": 5
+        },
+        {
+          "keyword": "지점측정",
+          "count": 5
+        },
+        {
+          "keyword": "해양기후",
+          "count": 5
+        },
+        {
+          "keyword": "환경모니터링",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "필리핀해",
+          "count": 5
+        },
+        {
+          "keyword": "해양감시",
+          "count": 5
+        },
+        {
+          "keyword": "대기변수",
+          "count": 5
+        },
+        {
+          "keyword": "15도134.5도",
+          "count": 3
+        },
+        {
+          "keyword": "2020년자료",
+          "count": 5
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "DIKO0015098806",
+        "platform": "scienceon",
+        "title": "장기 해양관측시스템을 활용한 해양관측과 이를 기반으로 한 해양환경특성 분석",
+        "description": "해양재난재해에 의한 피해를 줄이고, 미래 해양의 변동을 예측하기 위해서는 장기간의 고품질 해양관측자료가 필수적이다. 황해와 동중국해(이하 황동중국해)는 한반도의 주요 기상현상이 최종적으로 결정되는 해역으로서 장기 해양정보 획득을 위해 주요 거점 해역에 2003년 이어도 해양과학기지를 시작으로 현재는 가거초 및 소청초 기지, 그리고 황해중부부이가 설치되어 운...",
+        "keywords": [
+          "해양관측",
+          "해양환경"
+        ],
+        "score": 0.8081046805037558,
+        "reason": "제목과 설명에서 해양관측과 해양환경에 대한 내용이 중심적이며, 장기 해양관측 시스템과 관련된 실무 사례가 포함되어 있어 주어진 자료와 매우 유사한 주제를 다루고 있음.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0015098806"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "DIKO0014589705",
+        "platform": "scienceon",
+        "title": "쿠로시오 해류의 변동성과 동아시아 겨울 기후와의 상관성 연구",
+        "description": "동아시아 겨울 기후를 대표하는 동아시아 겨울 몬순의 변동성은 외부적 다양한 인자들에 의해 영향을 받는다. 북서태평양에서 주요한 흐름인 쿠로시오 해류도 한반도와 주변 바다에 영향을 미치며 동아시아 기후에 영향을 주는 인자로 제시할 수 있다. 북서태평양을 따라 흐르는 따뜻한 쿠로시오 적도 태평양에서부터 북상하면서 열대의 수분과 열을 중위도로 운반하는 역할을 한...",
+        "keywords": [
+          "동아시아",
+          "기후",
+          "쿠로시오",
+          "해류"
+        ],
+        "score": 0.7981407525777819,
+        "reason": "쿠로시오 해류와 동아시아 겨울 기후의 상관성을 다루고 있으며, 주어진 자료의 키워드인 '쿠로시오'와 '해류'가 직접적으로 언급되어 있어 관련성이 높음.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0014589705"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "JAKO202125761281604",
+        "platform": "scienceon",
+        "title": "기상 데이터와 대기 환경 데이터 기반 (초)미세먼지 분석과 예측",
+        "description": "석면, 벤젠과 같이 발암물질 1급인 미세먼지는 각종 질병에 원인이 되고 있다. 초 미세먼지 확산은 코로나 바이러스 확산의 중요한 원인중 하나이다. 본 논문은 2015년부터 2019년까지 서울시 평균 기온, 강수량, 평균 풍속등의 기상 데이터와 SO2, NO2, O3,등의 대기 환경 데이터를 기반으로 미세먼지와 초 미세먼지를 분석하고 예측한다. 계절별과 월별...",
+        "keywords": [
+          "Air",
+          "pollution",
+          "Ultra-air",
+          "Meteorological",
+          "data",
+          "Atmospheric",
+          "environment",
+          "Linear",
+          "regression",
+          "SVM",
+          "Ensemble",
+          "models"
+        ],
+        "score": 0.7385425047650436,
+        "reason": "기상 데이터와 대기 환경 데이터를 활용한 분석 방법론이 소개되어 있으며, 기후와 환경 요소에 대한 접근 방식이 유사함.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202125761281604"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO200528839765414",
+        "platform": "scienceon",
+        "title": "기후 변환와 해양 열염분 순환",
+        "description": "In this short article, oceanic processes that could have strong effect on the climate have been explained while focusing on the oceanic thermohaline circulation (THC). First, the structure of THC is e...",
+        "keywords": [
+          "climate",
+          "change",
+          "thermohaline",
+          "circulation",
+          "theromohaline",
+          "catastrophe",
+          "interdecadal",
+          "variability"
+        ],
+        "score": 0.7379489773604713,
+        "reason": "기후 변화와 해양 열염분 순환에 대한 설명이 포함되어 있어 해양과 기후 간의 상호작용이라는 주제와 어느 정도 연관됨.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200528839765414"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "JAKO200211921172228",
+        "platform": "scienceon",
+        "title": "동해 기후변동 예측 연구 2002년도 해양관측 계획",
+        "description": "",
+        "keywords": [],
+        "score": 0.7368688374413781,
+        "reason": "동해 기후변동과 해양관측 계획에 대한 내용이 포함되어 있어 주어진 자료의 주제와 일부 겹침.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200211921172228"
+      }
+    ],
+    "dataset_recommendations": [],
+    "processing_time_ms": 41210,
+    "candidates_analyzed": 42,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "a59a0a7d0c894a81a2936833b0790e0a",
+      "title": "의료영상데이터",
+      "description": "휴먼 디지털트윈을 위한 의료영상데이터",
+      "keywords": [
+        "인체데이터",
+        "데이터 플랫폼",
+        "Human Digital Twin"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "Digital Twin",
+        "Medical Imaging",
+        "Human Model",
+        "Data Platform",
+        "Bio Data"
+      ],
+      "dataset_keywords": [
+        "의료영상",
+        "디지털트윈",
+        "인체데이터",
+        "의료플랫폼",
+        "영상데이터"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "Digital Twin",
+          "count": 5
+        },
+        {
+          "keyword": "Medical Imaging",
+          "count": 5
+        },
+        {
+          "keyword": "Human Model",
+          "count": 5
+        },
+        {
+          "keyword": "Data Platform",
+          "count": 5
+        },
+        {
+          "keyword": "Bio Data",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "의료영상",
+          "count": 5
+        },
+        {
+          "keyword": "디지털트윈",
+          "count": 4
+        },
+        {
+          "keyword": "인체데이터",
+          "count": 5
+        },
+        {
+          "keyword": "의료플랫폼",
+          "count": 1
+        },
+        {
+          "keyword": "영상데이터",
+          "count": 5
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "JAKO202020264317117",
+        "platform": "scienceon",
+        "title": "Digital Twin 개념을 적용한 제조환경 시뮬레이션 모형 설계",
+        "description": "제조환경이 더욱 복잡해짐에 따라 전통적인 시뮬레이션만으로는 실시간 현장 결과를 평가하는 데 많은 어려움을 겪고 있다. 이를 극복하기 위한 대안으로 Digital Twin개념이 활발히 논의되고 있지만, 제품설계 단계에 국한되어 연구가 진행되고 있는 실정이다. 본 연구는 Digital Twin개념이 생산 공정 프로세스에 적용되기 위한 Digital Twin 기...",
+        "keywords": [
+          "디지털",
+          "트윈",
+          "프레임워크",
+          "트윈기반",
+          "제조환경",
+          "가상공간",
+          "생산공정",
+          "시뮬레이션",
+          "데이터",
+          "상호연동",
+          "모의실험"
+        ],
+        "score": 0.8551482576105306,
+        "reason": "제목과 설명에서 디지털 트윈과 관련된 제조환경 시뮬레이션을 다루고 있으며, 실제 시스템과 가상 모델 간의 상호연동을 언급하여 주제와 밀접하게 연결된다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202020264317117"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "JAKO202228660783851",
+        "platform": "scienceon",
+        "title": "Study on the Interoperability of Digital Twin Systems",
+        "description": "The world is paying a lot of attention to digital twins to preoccupy future technological competitiveness. Digital twins can be used in various fields such as manufacturing, medical care, and cities. ...",
+        "keywords": [
+          "Digital",
+          "Twin",
+          "Interoperability",
+          "Consortium",
+          "(DTC)",
+          "System",
+          "Framework"
+        ],
+        "score": 0.8101566555508494,
+        "reason": "디지털 트윈의 상호운용성에 초점을 맞춘 연구로, 다양한 분야에서의 적용 가능성과 표준화 필요성을 강조하며 주제와 관련성이 크다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202228660783851"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "DIKO0015025571",
+        "platform": "scienceon",
+        "title": "스마트팩토리 공정구현을 위한 PLC기반 디지털 트윈 설계방법에 관한 연구",
+        "description": "최근 4차 산업혁명에 대한 관심이 높아지고 있는 가운데 전세계 주요 국가들이 제조업 기반을 바탕으로 한 스마트팩토리 도입을 적극적으로 추진하고 있다. 4차 산업혁명이 추구하는 스마트팩토리는 사물인터넷 등 최신의 정보통신 기술을 활용하여 빅데이터를 실시간으로 수집 축적하고, 인공지능을 통한 해석 판단으로 시스템을 제어하고, 사람이 더 정확한 의사결정을 할 수...",
+        "keywords": [
+          "'스마트팩토리'",
+          "'PLC'",
+          "'디지털트윈'",
+          "'CPS'",
+          "'사전검증'",
+          "'시뮬레이션'",
+          "'PLC시뮬레이터'"
+        ],
+        "score": 0.8015036848775443,
+        "reason": "스마트팩토리 환경에서 디지털 트윈을 설계하는 방법을 제시하며, 실제 공장과 가상 모델 간의 연동을 통해 이상 상태를 감지하고 대처하는 과정을 설명한다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0015025571"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO201810038012250",
+        "platform": "scienceon",
+        "title": "바이오센싱 융합 빅데이터 컴퓨팅 아키텍처",
+        "description": "생체정보 컴퓨팅은 생체신호 센서와 컴퓨터 정보처리를 융합한 정보시스템에 기초하여 컴퓨팅시스템 뿐만 아니라 빅데이터 시스템에 크게 영향을 미치고 있다. 이러한 생체정보는 지금까지의 텍스트, 이미지, 동영상 등의 전통적인 데이터 형식과는 달리 생체신호의 의미를 부여하는 값은 텍스트 기반으로 표현되고, 중요한 이벤트 순간은 이미지 형식으로 저장하며, 시계열 분석...",
+        "keywords": [
+          "바이오센싱",
+          "웨어러블",
+          "디바이스",
+          "디지털",
+          "패치",
+          "빅데이터",
+          "하둡",
+          "동적",
+          "프로세스"
+        ],
+        "score": 0.7988610604010644,
+        "reason": "생체정보 컴퓨팅과 빅데이터 플랫폼에 대한 연구로, 복합적인 데이터 형식을 다루며 디지털 기술과 관련된 내용을 포함하고 있어 주제와 어느 정도 연관된다.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO201810038012250"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "NART136355857",
+        "platform": "scienceon",
+        "title": "Inaugural Editorial - Digital Twin",
+        "description": "Professor Fei Tao from Beihang University initiated Digital Twin (ISSN 2752-5783), the first open research publishing platform dedicated to digital twin technologies and applications. It is published ...",
+        "keywords": [],
+        "score": 0.795116555743589,
+        "reason": "디지털 트윈 기술과 관련된 첫 번째 오픈 연구 출판 플랫폼에 대해 소개하며, 해당 분야의 연구 및 응용에 대한 맥락을 제공한다.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART136355857"
+      }
+    ],
+    "dataset_recommendations": [],
+    "processing_time_ms": 43796,
+    "candidates_analyzed": 39,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "bee3162957beecc87a91c94803d23439",
+      "title": "해양 관측 CCTV 타임스탬프 이미지 데이터셋 (2023년 8월)",
+      "description": "본 데이터셋은 해양 관측을 목적으로 수집된 CCTV 화면에서 날짜와 시간을 나타내는 영역을 추출한 3362개의 이미지로 구성됨.\\r\\n이미지 파일명은 S-ORS_WEST_yyyy-mm-dd_hh-MM-ss 형식을 따르며, 날짜와 시간 정보를 포함함.\\r\\n본 데이터셋은 2023년 8월 동안 수집된 자료로, 모든 이미지 파일은 PNG 형식이며 해상도는 500x120 픽셀.",
+      "keywords": [
+        "해양 관측",
+        "CCTV",
+        "타임스탬프",
+        "이미지 데이터셋",
+        "날짜 및 시간 정보",
+        "해양 모니터링",
+        "이미지 처리"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "CCTV 타임스탬프",
+        "영상 시간 인식",
+        "해양 모니터링",
+        "이미지 처리 기법",
+        "자동 시간 추출"
+      ],
+      "dataset_keywords": [
+        "해양 CCTV",
+        "타임스탬프 이미지",
+        "PNG 데이터셋",
+        "시간 정보 추출",
+        "해양 관측 데이터"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "CCTV 타임스탬프",
+          "count": 1
+        },
+        {
+          "keyword": "영상 시간 인식",
+          "count": 5
+        },
+        {
+          "keyword": "해양 모니터링",
+          "count": 5
+        },
+        {
+          "keyword": "이미지 처리 기법",
+          "count": 5
+        },
+        {
+          "keyword": "자동 시간 추출",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "해양 CCTV",
+          "count": 1
+        },
+        {
+          "keyword": "타임스탬프 이미지",
+          "count": 1
+        },
+        {
+          "keyword": "PNG 데이터셋",
+          "count": 3
+        },
+        {
+          "keyword": "시간 정보 추출",
+          "count": 3
+        },
+        {
+          "keyword": "해양 관측 데이터",
+          "count": 5
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "NART69976214",
+        "platform": "scienceon",
+        "title": "해양 모니터링 설비의 기술 성숙도 평가방법 탐구",
+        "description": "현대 해양 모니터링 설비(ocean observing instruments)는 기술 수준이 높고, 기술 관리의 강화는 설비 품질을 향상시키는데 매우 중요하다. 기술 성숙도 레벨(technology readiness level, TRL)을 이용한 평가와 응용은 해양 관측 시스템의 발전에 중요한 의미를 갖고 있다. 본 논문은 우선 TRL의 개념을 간단히 서술하...",
+        "keywords": [
+          "ocean",
+          "observing",
+          "instruments",
+          "technology",
+          "management",
+          "readiness",
+          "level(TRL)",
+          "assessment",
+          "method",
+          "해양",
+          "모니터링",
+          "설비",
+          "기술",
+          "관리",
+          "성숙도",
+          "레벨",
+          "평가방법"
+        ],
+        "score": 0.7490616292347779,
+        "reason": "해양 관측과 관련된 기술 성숙도 평가 방법을 다루고 있어 주제와 직접적으로 연결되며, 해양 모니터링 설비에 대한 내용이 포함되어 있어 의미적으로 매우 유사함.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART69976214"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "JAKO202228049104234",
+        "platform": "scienceon",
+        "title": "순환 적대적 생성 신경망을 이용한 안면 교체를 위한 새로운 이미지 처리 기법",
+        "description": "최근 모바일 단말기 및 개인형 컴퓨터의 비약적인 발전과 신경망 기술의 등장으로 영상을 활용한 실시간 안면 교체가 가능해졌다. 특히, 순환 적대적 생성 신경망은 상호 연관성이 없는 이미지 데이터를 활용한 안면 교체가 가능하게 만들었다. 본 논문에서는 적은 학습 데이터와 시간으로 안면 교체의 품질을 높일 수 있는 입력 데이터 처리 기법을 제안한다. 제안 방식은...",
+        "keywords": [
+          "안면",
+          "교체",
+          "변환",
+          "순환",
+          "적대적",
+          "생성",
+          "신경망",
+          "특이점",
+          "데이터셋"
+        ],
+        "score": 0.7481340511373765,
+        "reason": "이미지 처리 기법에 대한 연구로, 제안된 기법이 안면 교체와 관련된 이미지 품질 향상에 초점을 맞추고 있어 해양 관측 CCTV 이미지 처리와 관련성이 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202228049104234"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "JAKO200932056740511",
+        "platform": "scienceon",
+        "title": "디지털 이미지 처리 기법을 이용한 골재입자의 형상 분류",
+        "description": "본 논문에서는 체분석이 불가능한 일반토사 및 조립토 입자의 입도분포 특성을 디지털 이미지 처리기법을 적용하여 분석하는 방법을 제안하였다. 디지털 이미지 처리 기법은 골재의 표면거칠기 및 형상계수 등의 정량적인 분석에 적합한 것이다. 연구에 사용된 골재입자는 주문진 표준사, 해양골재 2종, 쇄석골재 2종 등이 이용되었다. 해변자갈 I, II의 형상계수는 $0...",
+        "keywords": [
+          "디지털이미지처리기법",
+          "골재",
+          "입자형상",
+          "세장비",
+          "편평비"
+        ],
+        "score": 0.7464021867993363,
+        "reason": "디지털 이미지 처리 기법을 활용한 입자 형상 분석을 다루고 있어, 해양 관측 CCTV 이미지의 형태 분석이나 처리와 관련된 기술적 접근을 공유함.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200932056740511"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO200629734288734",
+        "platform": "scienceon",
+        "title": "사건 탐지 및 추적을 위해 신문기사에서 자동 추출된 시간정보의 유용성 판단",
+        "description": "시간정보는 정보 추출, 질의응답 시스템, 자동 요약과 같은 자연언어 처리 응용분야에서 중요한 역할을 한다. 사건 탐지 및 추적 분야에서는 기사의 발행일이 기사간 유사도 계산에 많이 사용되고 있지만 그 유용성에는 한계가 있다. 본 연구에서는 사건 탐지 및 추적 시스템의 성능을 향상시키기 위해서, 한국어 신문기사를 대상으로 비교적 간단한 자연언어 처리 기술을 ...",
+        "keywords": [
+          "시간정보",
+          "추출",
+          "사건",
+          "탐지",
+          "추적"
+        ],
+        "score": 0.7441132638284781,
+        "reason": "시간정보 추출 기법을 다루고 있어, 해양 관측 CCTV 이미지에 포함된 타임스탬프 정보의 처리와 관련성이 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200629734288734"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "JAKO199811920099693",
+        "platform": "scienceon",
+        "title": "효율적인 실시간 해양 모니터링 시스템 구축에 대한 고찰",
+        "description": "",
+        "keywords": [],
+        "score": 0.7450559567583762,
+        "reason": "실시간 해양 모니터링 시스템에 대한 고찰을 다루고 있어, 해양 관측 CCTV 데이터셋의 활용 목적과 직접적으로 연결됨.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO199811920099693"
+      }
+    ],
+    "dataset_recommendations": [],
+    "processing_time_ms": 44584,
+    "candidates_analyzed": 29,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "c592e36ae62d104b21183d9f498d918f",
+      "title": "필리핀해 해양-대기 감시부이 자료 1(2020년)",
+      "description": "필리핀해에 해양-대기 감시부이를 설치하여(북위 15도, 동경 134.5도) 대기변수 관측.",
+      "keywords": [
+        "동중국해",
+        "쿠로시오",
+        "해류관측"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "해양관측",
+        "대기데이터",
+        "센서망",
+        "기후모니터링",
+        "지점측정"
+      ],
+      "dataset_keywords": [
+        "필리핀해",
+        "해양감시",
+        "대기변수",
+        "감시부이",
+        "15도134.5도"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "해양관측",
+          "count": 5
+        },
+        {
+          "keyword": "대기데이터",
+          "count": 5
+        },
+        {
+          "keyword": "센서망",
+          "count": 5
+        },
+        {
+          "keyword": "기후모니터링",
+          "count": 5
+        },
+        {
+          "keyword": "지점측정",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "필리핀해",
+          "count": 5
+        },
+        {
+          "keyword": "해양감시",
+          "count": 5
+        },
+        {
+          "keyword": "대기변수",
+          "count": 5
+        },
+        {
+          "keyword": "감시부이",
+          "count": 2
+        },
+        {
+          "keyword": "15도134.5도",
+          "count": 3
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "DIKO0015098806",
+        "platform": "scienceon",
+        "title": "장기 해양관측시스템을 활용한 해양관측과 이를 기반으로 한 해양환경특성 분석",
+        "description": "해양재난재해에 의한 피해를 줄이고, 미래 해양의 변동을 예측하기 위해서는 장기간의 고품질 해양관측자료가 필수적이다. 황해와 동중국해(이하 황동중국해)는 한반도의 주요 기상현상이 최종적으로 결정되는 해역으로서 장기 해양정보 획득을 위해 주요 거점 해역에 2003년 이어도 해양과학기지를 시작으로 현재는 가거초 및 소청초 기지, 그리고 황해중부부이가 설치되어 운...",
+        "keywords": [
+          "해양관측",
+          "해양환경"
+        ],
+        "score": 0.8081046805037558,
+        "reason": "제목과 설명에서 장기 해양관측 및 해양환경 특성 분석에 대한 내용이 직접적으로 언급되어 있어 의미적으로 매우 유사하며, 해양관측이라는 핵심 키워드도 일치합니다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0015098806"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "JAKO202125761281604",
+        "platform": "scienceon",
+        "title": "기상 데이터와 대기 환경 데이터 기반 (초)미세먼지 분석과 예측",
+        "description": "석면, 벤젠과 같이 발암물질 1급인 미세먼지는 각종 질병에 원인이 되고 있다. 초 미세먼지 확산은 코로나 바이러스 확산의 중요한 원인중 하나이다. 본 논문은 2015년부터 2019년까지 서울시 평균 기온, 강수량, 평균 풍속등의 기상 데이터와 SO2, NO2, O3,등의 대기 환경 데이터를 기반으로 미세먼지와 초 미세먼지를 분석하고 예측한다. 계절별과 월별...",
+        "keywords": [
+          "Air",
+          "pollution",
+          "Ultra-air",
+          "Meteorological",
+          "data",
+          "Atmospheric",
+          "environment",
+          "Linear",
+          "regression",
+          "SVM",
+          "Ensemble",
+          "models"
+        ],
+        "score": 0.7385425047650436,
+        "reason": "대기 환경 데이터와 기상 데이터를 활용한 분석이라는 점에서 일부 관련성이 있으며, 대기 변수에 대한 관심이 공유됩니다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202125761281604"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "JAKO202208360603657",
+        "platform": "scienceon",
+        "title": "ADS-B, 기상, 지형 데이터의 통합을 통한 대기속도 추정",
+        "description": "일반적으로 동역학 방정식을 이용하여 항공기의 거동을 분석하기 위해서는 공기 역학적 성분이 필요하고, 이를 위해서는 진 대기속도가 필수적이다. 대기속도는 피토관과 같은 항공기의 탑재 장비를 이용하여 계측할 수 있으나, 상업용 항공기의 계측 데이터는 항공사 내규 관련 보안성 데이터를 포함할 수 있으므로 확보하기 어렵다. 일반인들이 이용할 수 있는 항적 데이터 ...",
+        "keywords": [
+          "방송형자동종속감시",
+          "국지예보모델",
+          "수치표고모델",
+          "대기속도"
+        ],
+        "score": 0.7310350116594759,
+        "reason": "항공기의 대기 속도 추정을 위한 기상 및 지형 데이터 통합 방법에 대해 다루고 있어 대기 변수와 관련된 연구로서 일정 부분 연관성이 있습니다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202208360603657"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO202433472038794",
+        "platform": "scienceon",
+        "title": "딥러닝 모델 기반의 자동차 배출가스 관련 대기환경 이상 데이터 탐지 연구",
+        "description": "자동차는 주요 대기 오염원 중 하나로 작용하고 있으며 자동차가 주 오염원인 대기오염물질 데이터의 분석을 통해 전기자동차, 교통량 등과 실제 대기오염의 상관관계를 분석할 수 있으며, 이러한 분석을 위해선 대기오염물질 데이터의 신뢰성 확보가 중요하다. 본 논문은 딥러닝 모델과 동적 시간 와핑, 변화점 탐지 등의 알고리즘을 복합적으로 이용하여 전국 각지의 대기오...",
+        "keywords": [
+          "이상치",
+          "탐지",
+          "시계열",
+          "데이터",
+          "분류",
+          "대기질",
+          "환경"
+        ],
+        "score": 0.7309061608128262,
+        "reason": "대기 환경 데이터의 이상치 탐지에 대한 연구로, 대기 변수에 대한 분석 접근법이 공유되며, 관련성이 어느 정도 있습니다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202433472038794"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "JAKO200828073326403",
+        "platform": "scienceon",
+        "title": "기후변화 모니터링 : USN(Ubiquitous Sensor Network)의 활용",
+        "description": "",
+        "keywords": [],
+        "score": 0.7280020826283699,
+        "reason": "기후변화 모니터링을 위한 USN 활용이라는 주제로, 기후와 환경 데이터 수집에 대한 관심이 공유되며, 일정 수준의 관련성이 있습니다.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200828073326403"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "ecdb8983b6ddf0ae6a412924a27924fa",
+        "platform": "dataon",
+        "title": "필리핀해 해양-대기 감시부이 자료 2(2021년)",
+        "description": "필리핀해에 해양-대기 감시부이를 설치하여(북위 15도, 동경 134.5도) 대기변수 관측.",
+        "keywords": [
+          "해양관측",
+          "쿠로시오",
+          "동중국해"
+        ],
+        "score": 0.9576399787110067,
+        "reason": "제목과 설명이 매우 유사하며, 동일한 위치에서 대기변수를 관측한 것으로 확인되어 의미적 유사성이 매우 높다.",
+        "level": "강추",
+        "url": "https://doi.org/10.22711/0101EH017763996111.0"
+      },
+      {
+        "rank": 2,
+        "type": "dataset",
+        "id": "85c8ff9cc0bcd36d0d334787133b33e5",
+        "platform": "dataon",
+        "title": "필리핀 인근 해류 자료 1(2018년~2019년)",
+        "description": "필리핀해에 해류계를 설치하여(북위 8.00도, 동경 126.90도) 2017년 11월~2019년 12월의 해류 관측.",
+        "keywords": [
+          "해류관측",
+          "쿠로시오",
+          "동중국해"
+        ],
+        "score": 0.769891248590405,
+        "reason": "필리핀해에서 해류를 관측한 자료로, 핵심 키워드인 '해류관측', '쿠로시오', '동중국해'가 모두 일치한다.",
+        "level": "추천",
+        "url": "https://doi.org/10.22711/0101EH014477984211.0"
+      },
+      {
+        "rank": 3,
+        "type": "dataset",
+        "id": "fe0984469bc734c7cc6330a5eddb4271",
+        "platform": "dataon",
+        "title": "필리핀 인근 해류 자료 2(2018년)",
+        "description": "필리핀해에 해류계를 설치하여(북위 8.00도, 동경 127.97도) 2017년 11월~2018년 10월의 해류 관측.",
+        "keywords": [
+          "해류관측",
+          "쿠로시오",
+          "동중국해"
+        ],
+        "score": 0.7693671667135633,
+        "reason": "필리핀해에서 해류를 관측한 자료로, 핵심 키워드가 대부분 일치하며, 위치와 관측 목적도 유사하다.",
+        "level": "추천",
+        "url": "https://doi.org/10.22711/0101EH014499792911.0"
+      },
+      {
+        "rank": 4,
+        "type": "dataset",
+        "id": "388bf9da6113b126624c8192cea9500a",
+        "platform": "dataon",
+        "title": "2017년 필리핀해 북부 해양의 대기, 해양 표층 이산화탄소 분압 관측 자료",
+        "description": "연구선 이사부호의 pCO2 시스템을 이용하여 관측한 필리핀해 북부에서의 대기, 해양 표층 이산화탄소 분압 관측 자료 ( 2017.9.14. ~2017.9.23.)",
+        "keywords": [
+          "surface fCO2",
+          "필리핀해",
+          "Atmospheric fCO2",
+          "대기 fCO2",
+          "Northern Philippine Sea",
+          "표층 fCO2"
+        ],
+        "score": 0.7245670414188662,
+        "reason": "필리핀해 북부에서 대기와 해양 표층의 이산화탄소 분압을 관측한 자료로, 지역적 특성과 관측 목적에 대해 일부 유사성을 보인다.",
+        "level": "참고",
+        "url": "https://doi.org/10.22711/idr/941"
+      },
+      {
+        "rank": 5,
+        "type": "dataset",
+        "id": "d12579904439f6296baf7915f3853b6e",
+        "platform": "dataon",
+        "title": "KIOST 해양-대기 결합 지역기후 모델-커플링 결과 자료",
+        "description": "1.설명\\r\\n한국해양과학기술원은 해양-대기 결합 지역기후모델은 10일 규모의 한반도 주변 고수온 현상을 탐지하기 위한 대기-해양 결합 모델링 시스템을 극지연구소, 부경대학교 등 공동으로 개발하고 있다. 해양모델은 GFDL-MOM5, 대기모형은 WRF-ARW, 접합자는 OASIS-MCT이다. 모델의 공간 영역은 5°S – 70°N, 98°E – 76°W이다...",
+        "keywords": [
+          "WRF",
+          "고수온",
+          "MOM6",
+          "결합모델"
+        ],
+        "score": 0.6681097536109084,
+        "reason": "해양-대기 결합 모델에 관한 자료로, 해양과 대기를 연결하는 연구에 관심이 있을 경우 참고 가치가 있다.",
+        "level": "참고",
+        "url": "https://doi.org/10.22711/0101EH011032775811.0"
+      }
+    ],
+    "processing_time_ms": 41978,
+    "candidates_analyzed": 38,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "a59a0a7d0c894a81a2936833b0790e0a",
+      "title": "의료영상데이터",
+      "description": "휴먼 디지털트윈을 위한 의료영상데이터",
+      "keywords": [
+        "인체데이터",
+        "데이터 플랫폼",
+        "Human Digital Twin"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "Digital Twin",
+        "Medical Imaging",
+        "Human Model",
+        "Data Platform",
+        "Bio Data"
+      ],
+      "dataset_keywords": [
+        "의료영상",
+        "디지털트윈",
+        "인체데이터",
+        "의료플랫폼",
+        "영상데이터"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "Digital Twin",
+          "count": 5
+        },
+        {
+          "keyword": "Medical Imaging",
+          "count": 5
+        },
+        {
+          "keyword": "Human Model",
+          "count": 5
+        },
+        {
+          "keyword": "Data Platform",
+          "count": 5
+        },
+        {
+          "keyword": "Bio Data",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "의료영상",
+          "count": 5
+        },
+        {
+          "keyword": "디지털트윈",
+          "count": 4
+        },
+        {
+          "keyword": "인체데이터",
+          "count": 5
+        },
+        {
+          "keyword": "의료플랫폼",
+          "count": 1
+        },
+        {
+          "keyword": "영상데이터",
+          "count": 5
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "JAKO202020264317117",
+        "platform": "scienceon",
+        "title": "Digital Twin 개념을 적용한 제조환경 시뮬레이션 모형 설계",
+        "description": "제조환경이 더욱 복잡해짐에 따라 전통적인 시뮬레이션만으로는 실시간 현장 결과를 평가하는 데 많은 어려움을 겪고 있다. 이를 극복하기 위한 대안으로 Digital Twin개념이 활발히 논의되고 있지만, 제품설계 단계에 국한되어 연구가 진행되고 있는 실정이다. 본 연구는 Digital Twin개념이 생산 공정 프로세스에 적용되기 위한 Digital Twin 기...",
+        "keywords": [
+          "디지털",
+          "트윈",
+          "프레임워크",
+          "트윈기반",
+          "제조환경",
+          "가상공간",
+          "생산공정",
+          "시뮬레이션",
+          "데이터",
+          "상호연동",
+          "모의실험"
+        ],
+        "score": 0.8551482576105306,
+        "reason": "제목과 설명에서 디지털 트윈과 관련된 제조환경 시뮬레이션을 다루고 있으며, 실제 시스템과 가상 모델 간의 상호연동을 언급하여 주제와 밀접하게 연결된다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202020264317117"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "JAKO202228660783851",
+        "platform": "scienceon",
+        "title": "Study on the Interoperability of Digital Twin Systems",
+        "description": "The world is paying a lot of attention to digital twins to preoccupy future technological competitiveness. Digital twins can be used in various fields such as manufacturing, medical care, and cities. ...",
+        "keywords": [
+          "Digital",
+          "Twin",
+          "Interoperability",
+          "Consortium",
+          "(DTC)",
+          "System",
+          "Framework"
+        ],
+        "score": 0.8101566555508494,
+        "reason": "디지털 트윈의 상호운용성에 초점을 맞춘 연구로, 다양한 분야에서의 적용 가능성과 표준화 필요성을 강조하며 주제와 관련성이 크다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO202228660783851"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "DIKO0015025571",
+        "platform": "scienceon",
+        "title": "스마트팩토리 공정구현을 위한 PLC기반 디지털 트윈 설계방법에 관한 연구",
+        "description": "최근 4차 산업혁명에 대한 관심이 높아지고 있는 가운데 전세계 주요 국가들이 제조업 기반을 바탕으로 한 스마트팩토리 도입을 적극적으로 추진하고 있다. 4차 산업혁명이 추구하는 스마트팩토리는 사물인터넷 등 최신의 정보통신 기술을 활용하여 빅데이터를 실시간으로 수집 축적하고, 인공지능을 통한 해석 판단으로 시스템을 제어하고, 사람이 더 정확한 의사결정을 할 수...",
+        "keywords": [
+          "'스마트팩토리'",
+          "'PLC'",
+          "'디지털트윈'",
+          "'CPS'",
+          "'사전검증'",
+          "'시뮬레이션'",
+          "'PLC시뮬레이터'"
+        ],
+        "score": 0.8015036848775443,
+        "reason": "스마트팩토리 환경에서 디지털 트윈을 설계하는 방법을 제시하며, 실제 공장과 가상 모델 간의 연동을 통해 이상 상태를 감지하고 대처하는 과정을 설명한다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0015025571"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO201810038012250",
+        "platform": "scienceon",
+        "title": "바이오센싱 융합 빅데이터 컴퓨팅 아키텍처",
+        "description": "생체정보 컴퓨팅은 생체신호 센서와 컴퓨터 정보처리를 융합한 정보시스템에 기초하여 컴퓨팅시스템 뿐만 아니라 빅데이터 시스템에 크게 영향을 미치고 있다. 이러한 생체정보는 지금까지의 텍스트, 이미지, 동영상 등의 전통적인 데이터 형식과는 달리 생체신호의 의미를 부여하는 값은 텍스트 기반으로 표현되고, 중요한 이벤트 순간은 이미지 형식으로 저장하며, 시계열 분석...",
+        "keywords": [
+          "바이오센싱",
+          "웨어러블",
+          "디바이스",
+          "디지털",
+          "패치",
+          "빅데이터",
+          "하둡",
+          "동적",
+          "프로세스"
+        ],
+        "score": 0.7988610604010644,
+        "reason": "생체정보 컴퓨팅과 빅데이터 플랫폼에 대한 연구로, 복합적인 데이터 형식을 다루며 디지털 기술과 관련된 내용을 포함하고 있어 주제와 어느 정도 연관된다.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO201810038012250"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "NART136355857",
+        "platform": "scienceon",
+        "title": "Inaugural Editorial - Digital Twin",
+        "description": "Professor Fei Tao from Beihang University initiated Digital Twin (ISSN 2752-5783), the first open research publishing platform dedicated to digital twin technologies and applications. It is published ...",
+        "keywords": [],
+        "score": 0.795116555743589,
+        "reason": "디지털 트윈 기술과 관련된 첫 번째 오픈 연구 출판 플랫폼에 대해 소개하며, 해당 분야의 연구 및 응용에 대한 맥락을 제공한다.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART136355857"
+      }
+    ],
+    "dataset_recommendations": [],
+    "processing_time_ms": 42458,
+    "candidates_analyzed": 39,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "4fc87916027f5568850d33ecd2f7680f",
+      "title": "한국인 정상인 심전도 세부파형 ",
+      "description": "참조표준 설명 : ○ P_height, Q_height, R_height, S_height, T_height, P_duration, QRS_interval, QT_interval, T_duration\\n○ 60~69세 Modified lead (Mason-Likar) system에서 성인 남녀의 정상 심전도\\n<br> 참조표준 제/개정 사유 : ㅇ심장 질환 환자용 진단 기기 개발\\nㅇ마취 중에 있거나 중환자실에 있는 환자의 심장질환 발병 및 경과 관찰용 기기 개발\\nㅇ심전도를 이용한 심박변이도(Heart Rate Variability, HRV), 맥파전도속도(Pulse Wave Velocity) 등의 연구 및 관련 기기 개발에 도움\\nㅇ 2013년에 개발한 연령대 20-50세, 2014년 2-13세, 2017년 6--60세를 추가함 ",
+      "keywords": []
+    },
+    "search_result": {
+      "paper_keywords": [
+        "ECG",
+        "Modified lead",
+        "QRS interval",
+        "Heart rate variability",
+        "ECG feature"
+      ],
+      "dataset_keywords": [
+        "심전도",
+        "정상인",
+        "QRS",
+        "P_wave",
+        "T_wave"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "ECG",
+          "count": 5
+        },
+        {
+          "keyword": "Modified lead",
+          "count": 5
+        },
+        {
+          "keyword": "QRS interval",
+          "count": 5
+        },
+        {
+          "keyword": "Heart rate variability",
+          "count": 5
+        },
+        {
+          "keyword": "ECG feature",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "심전도",
+          "count": 5
+        },
+        {
+          "keyword": "정상인",
+          "count": 5
+        },
+        {
+          "keyword": "QRS",
+          "count": 5
+        },
+        {
+          "keyword": "P_wave",
+          "count": 0
+        },
+        {
+          "keyword": "T_wave",
+          "count": 0
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "NART125698899",
+        "platform": "scienceon",
+        "title": "PR and QRS interval changes after transcatheter pulmonary valve replacement in children",
+        "description": "Background Changes in PR intervals after transcatheter pulmonary valve replacement (TCPVR) have not been thoroughly evaluated in children. This study evaluated the changes in PR and QRS intervals six ...",
+        "keywords": [
+          "Transcatheter",
+          "pulmonary",
+          "valve",
+          "replacement",
+          "PR",
+          "interval",
+          "QRS",
+          "Tetralogy",
+          "of",
+          "Fallot"
+        ],
+        "score": 0.7615188802961748,
+        "reason": "QRS 간격과 PR 간격 변화에 대한 연구이며, 소아 대상으로 한 심전도 분석과 관련된 핵심 키워드(QRS, PR interval)가 다수 포함되어 있어 의미적으로 매우 유사함.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART125698899"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "NART76626172",
+        "platform": "scienceon",
+        "title": "The Ventricular Ectopic QRS Interval",
+        "description": "Objectives: The purpose of this study was to determine the potential value of a novel marker for the severity of structural heart disease and the risk of arrhythmia. Background: The ventricular ectopi...",
+        "keywords": [
+          "implantable",
+          "cardioverter-defibrillator",
+          "ischemic",
+          "heart",
+          "disease",
+          "sudden",
+          "cardiac",
+          "death",
+          "ventricular",
+          "ectopic",
+          "beat",
+          "QRS",
+          "interval"
+        ],
+        "score": 0.7610023337616814,
+        "reason": "QRS 간격과 심장 질환의 연관성을 다루며, 심근경색 환자와 건강한 사람 사이의 차이점을 분석한 연구로, 주제와 직접적으로 관련됨.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART76626172"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "NART57583159",
+        "platform": "scienceon",
+        "title": "ECG feature extraction and disease diagnosis",
+        "description": "An important factor to consider when using findings on electrocardiograms for clinical decision making is that the waveforms are influenced by normal physiological and technical factors as well as by ...",
+        "keywords": [
+          "ECG",
+          "signal",
+          "coding",
+          "wavelet",
+          "transform",
+          "scoring",
+          "pattern",
+          "disease"
+        ],
+        "score": 0.7609059197093736,
+        "reason": "심전도 특징 추출과 질병 진단 방법을 다루며, ECG 파형 분석과 관련된 핵심 키워드(ECG, QRS)가 포함되어 있어 주제와 밀접함.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART57583159"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO200640960997658",
+        "platform": "scienceon",
+        "title": "비만 치료제 Phentermine Hydrochloride가 심박동 변이율(Heart Rate Variability)에 미치는 영향",
+        "description": "Background : Phentermine classified by 'sympathomimmetic amie', is a stimulant of sympatheic tone But there has been no concrete study which presents the influence of phentermine on autonomic nervous ...",
+        "keywords": [
+          "phentermine",
+          "Heart",
+          "rate",
+          "variability",
+          "autonomic",
+          "nervous",
+          "system"
+        ],
+        "score": 0.7693891446952202,
+        "reason": "심박동 변이율(HRV)에 대한 연구로, 심전도와 관련된 생리학적 요소를 다루며, 주제와 어느 정도 연관성이 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200640960997658"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "DIKO0011402885",
+        "platform": "scienceon",
+        "title": "신체 활동량을 기반으로 한 심전도 분석",
+        "description": "Physical Activity Level(활동량)은 고지혈증, 고혈압 등 특히 심장질환(CAD)의 위험 요소들과 아주 밀접한 관련이 있다. 이렇게 PAL은 중요한 요소이지만 이러한 PAL을 측정하기란 쉽지가 않다. PAL 측정은 실험실내에서의 가스 분석이나 Accelerometer등으로 측정할 수가 있다. 하지만 공간의 제약을 많이 받으며 Accelero...",
+        "keywords": [
+          "생리학"
+        ],
+        "score": 0.7694508165452478,
+        "reason": "심전도와 신체 활동량의 연관성을 탐구하며, 심전도 파형 분석과 관련된 내용이 포함되어 있어 주제와 일부 겹침.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0011402885"
+      }
+    ],
+    "dataset_recommendations": [],
+    "processing_time_ms": 42239,
+    "candidates_analyzed": 39,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "c05286c716d93ea28c6fd08f28b17b6a",
+      "title": "돌발홍수 알람 분석",
+      "description": "돌발홍수 알람 \\r\\n대상기간 : 2020~2022.6 중 일부\\r\\n단위 : 읍면동 수준\\r\\n알람 단계 : 3단계\\r\\n입력 데이터 : 격자 강우 관측(RDR_COMP_ADJ), 예측(QPF) \\r\\n대상 범위 : 전국(제주도 등 남부 제외)\\r\\nFormat : OGC KML (XML)\\r\\n좌표참조체계 : EPSG::4326",
+      "keywords": [
+        "홍수",
+        "알람"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "홍수 경보 시스템",
+        "격자 강우 데이터",
+        "QPF 예측",
+        "OGC KML 형식",
+        "지역별 홍수 분석"
+      ],
+      "dataset_keywords": [
+        "돌발홍수",
+        "알람 분석",
+        "KML 데이터",
+        "강우 관측",
+        "예측 모델"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "홍수 경보 시스템",
+          "count": 5
+        },
+        {
+          "keyword": "격자 강우 데이터",
+          "count": 5
+        },
+        {
+          "keyword": "QPF 예측",
+          "count": 5
+        },
+        {
+          "keyword": "OGC KML 형식",
+          "count": 0
+        },
+        {
+          "keyword": "지역별 홍수 분석",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "돌발홍수",
+          "count": 2
+        },
+        {
+          "keyword": "알람 분석",
+          "count": 1
+        },
+        {
+          "keyword": "KML 데이터",
+          "count": 2
+        },
+        {
+          "keyword": "강우 관측",
+          "count": 2
+        },
+        {
+          "keyword": "예측 모델",
+          "count": 5
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "NPAP13594929",
+        "platform": "scienceon",
+        "title": "호우 영향예보를 위한 머신러닝 기반의 수문학적 정량강우예측(HQPF) 연구",
+        "description": "기상 예보자료는 발생 가능한 재난의 예방 및 대비 차원에서 매우 중요한 자료로 활용되고 있다. 우리나라 기상청에서는 동네예보를 통해 5km 공간해상도의 1시간 간격 초단기예보와, 6시간 간격 정량강우예보(Quantitative Precipitation Forecast, QPF)의 단기예보 정보를 제공하고 있다. 그러나 이와 같은 예보자료는 강우량의 시&#x...",
+        "keywords": [],
+        "score": 0.775757400871826,
+        "reason": "제목과 설명에서 정량적 강우예측(HQPF)과 관련된 기술적 내용이 다수 언급되며, 연구 목적과 방법이 돌발홍수 예측과 밀접하게 연결되어 있음.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NPAP&cn=NPAP13594929"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "DIKO0012543631",
+        "platform": "scienceon",
+        "title": "홍수위험 경보를 위한 모바일 기반 서비스 시스템 개발",
+        "description": "도시화의 급속한 진전과 기후변화 및 지구온난화에 따라 집중호우로 인한 홍수의 발생빈도가 많아지고, 그 피해규모도 증가하고 있다. 이러한 배경에서 이 연구는 도시 홍수피해 저감대책의 일환으로 집중호우가 발생할 때 침수위험지역에 있는 스마트폰에 위험 신호를 전송하여 스마트폰 사용자가 신속한 대처를 할 수 있도록 유도하는 서비스 시스템 구현방안을 제시하는 것이 ...",
+        "keywords": [
+          "홍수경보시스템",
+          "모바일"
+        ],
+        "score": 0.7723785939422683,
+        "reason": "홍수경보와 관련된 모바일 기반 시스템 개발에 대한 연구로, 실제 홍수 예측 및 경보 시스템 구축에 필요한 요소들이 잘 반영되어 있음.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0012543631"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "NPAP13248379",
+        "platform": "scienceon",
+        "title": "레이더자료를 이용한 초단기 강우 앙상블 예측 기법 개발",
+        "description": "집중호우로 인한 이재민 발생, 침수 등 많은 인명 및 재산 피해가 지속적으로 발생함에 따라, 홍수재해를 사전에 대응하는 다양한 방법에 대한 관심이 증가하고 있다. 본 연구에서는 레이더 반사도를 이용하여 강우의 이동방향과 이동속도를 추정하여 초단기 정량강우예측(QPF)이 가능한 기법을 개발하고, 2016년 태풍 차바 사상에 대하여 비슬산 레이더자료를 이용하여...",
+        "keywords": [],
+        "score": 0.7634454572751251,
+        "reason": "레이더 자료를 활용한 초단기 강우 예측 기법에 대한 연구로, 돌발홍수 예측에 필요한 실시간 강우 예측 기술과 관련성이 큼.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NPAP&cn=NPAP13248379"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "NPAP14024814",
+        "platform": "scienceon",
+        "title": "LSTM 기법을 이용한 도림천 유역의 침수 예측",
+        "description": "최근 이상기후의 영향으로 국지성 및 집중호우로 인한 침수 피해가 증가하고 있다. 도시유역의 홍수는 사회적&#x00B7;경제적으로 큰 손실을 야기할 수 있어 실제 호우에 대한 침수 양상을 신속하게 예측하는것은 매우 중요하다. 이로 인해 침수 해석에 대한 결과를 빨리 제공할 수 있는 기계학습을 기반으로 한 도시 홍수 분석에 대한 연구가 증가하고 있다. 본 연구...",
+        "keywords": [],
+        "score": 0.761831254601438,
+        "reason": "LSTM 기반의 침수 예측 모델에 대한 연구로, 집중호우로 인한 홍수 예측과 관련된 기계학습 기법을 다루고 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NPAP&cn=NPAP14024814"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "NPAP13594557",
+        "platform": "scienceon",
+        "title": "고해상도 격자 강수자료를 활용한 레이더 QPF 모델 개발",
+        "description": "고해상도 시공간적 격자 형태의 레이더 강수는 돌발홍수(flash flood)와 같은 기상재해에 대비하기 위하여 실시간 예측정보로 활용된다. 그러나 대부분의 레이더 강수는 과소 추정되는 경향이 있어 정량적인 보정 과정인 QPE (Quantitative Precipitation Estimation)가 필요하다. 일반적으로 레이더 강수자료 보정은 지점 관측자료를...",
+        "keywords": [],
+        "score": 0.7613508892901362,
+        "reason": "고해상도 격자 강수자료를 활용한 QPF 모델 개발에 대한 연구로, 돌발홍수 예측에 필요한 정확한 강수 예측 기술과 관련성이 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NPAP&cn=NPAP13594557"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "0342f5bd3a26d1effa6f2cf47a728395",
+        "platform": "dataon",
+        "title": "격자 강우",
+        "description": "환경부 레이더 격자 강우(RDR_COMP_ADJ) 를 ESRI ASC Format (with PRJ File) 으로 변환한 결과물\\r\\n\\r\\n20190613 to 20191105\\r\\n202009 to 202010\\r\\n202109 to 202110\\r\\n\\r\\n* 부분 누락은 존재함",
+        "keywords": [
+          "격자",
+          "강우",
+          "레이더",
+          "레이다"
+        ],
+        "score": 0.6277318264608435,
+        "reason": "제목과 설명에서 '격자 강우'라는 핵심 키워드가 직접적으로 언급되었으며, 소스 데이터셋의 입력 데이터로 사용되는 자료와 밀접하게 연결되어 의미적으로 매우 유사함.",
+        "level": "강추",
+        "url": "https://doi.org/10.22711/idr/948"
+      },
+      {
+        "rank": 2,
+        "type": "dataset",
+        "id": "7f16c4c927b308013b3c2e288239b333",
+        "platform": "dataon",
+        "title": "gpm kml 데이터",
+        "description": "GPM위성 강우 data에 대하여 이를 OGC 국제 표준 KML로 변환한 data입니다. Google Earth 등 친숙한 SW에서 쉽게 조회 가능합니다.",
+        "keywords": [
+          "GPM Precipitation standard format googleearth",
+          "GPM 강우 표준 포맷 구글어쓰"
+        ],
+        "score": 0.6058533598166185,
+        "reason": "KML 형식의 강우 데이터를 다루며, 소스 데이터셋과 동일한 형식과 목적에 부합하여 관련성이 높음.",
+        "level": "추천",
+        "url": "https://doi.org/10.22811/0101EH017053273811.0"
+      },
+      {
+        "rank": 3,
+        "type": "dataset",
+        "id": "b232f556363d72be99a04263d6a92a31",
+        "platform": "dataon",
+        "title": "주요 지점별 강우량 예측 모델 (2023년 경진대회 우수상)",
+        "description": "데이터 개요 : 6시간이전의 강우강도와 온도를 이용하여 지점별로 최대 6시간까지의 강우강도를 예측하는 LSTM 모델\\r\\n \\r\\n * 경진대회 발표영상\\r\\n \\n데이터 설명 : 지상 관측과 레이더 관측 자료를 활용하여 LSTM과 3D CNN에 기반",
+        "keywords": [],
+        "score": 0.596096768923634,
+        "reason": "강우 예측 모델에 대한 설명이 포함되어 있어, 소스 데이터셋의 알람 기능과 연계성이 있을 수 있음.",
+        "level": "추천",
+        "url": "https://aida.kisti.re.kr/data/9f347ae0-6e23-4ada-bdad-236326c2830a"
+      },
+      {
+        "rank": 4,
+        "type": "dataset",
+        "id": "275442721ed4e89ee19194bdd7bbc1da",
+        "platform": "dataon",
+        "title": "실시간 수요 예측 기반 택시 배차 최적화 시스템 (2024년 경진대회 우수문제해결상)",
+        "description": "데이터 개요 : 택시 서비스의 효율성을 높이기 위한 데이터 기반 동적 배차 시스템입니다. 지역별 수요를 예측하고 최적의 배차를 수행하는 두 가지 주요 모델로 구성됩니다. 수요 예측 모델은 XGBoost를 사용하여 시간대, 요일, 날씨, 지역 특성 등을 고려한 정확한 수요를 예측하며, 나아가 shap value를 통해 배차 이유를 제공합니다. 배차 최적화 모...",
+        "keywords": [],
+        "score": 0.5803510204858972,
+        "reason": "데이터 기반 예측 모델에 대한 설명이 포함되어 있으나, 강우와 직접적인 연관성이 적음.",
+        "level": "참고",
+        "url": "https://aida.kisti.re.kr/data/5b21ec7a-604b-4c01-a5ad-f9a321ceb394"
+      },
+      {
+        "rank": 5,
+        "type": "dataset",
+        "id": "9b1e09a3ad31fc10ebe9b88daede0de1",
+        "platform": "dataon",
+        "title": "초고해상도 기상 수치 모델 WRF를 이용한 산불 확산 예측 기술 개발",
+        "description": "유럽과 대한민국의 산불 관리 예측 시스템 부족 문제를 해결하기 위해 초고해상도 WRF-SFIRE을 기반으로 산불 확산 예측 시스템을 개발하고 있다. 대기 모형은 WRF-ARW, 산불 모델은 SFIRE를 이용하였다. 모델의 공간 영역은 유럽의 크로아티아와 그리스, 아시아의 한국 총 3개의 영역으로 구분된다. 크로아티아 41°N - 47°N, 12°E - 19...",
+        "keywords": [
+          "WRF",
+          "관측",
+          "산불",
+          "FDDA",
+          "재난대응",
+          "AWS",
+          "초고해상도"
+        ],
+        "score": 0.5740276753090665,
+        "reason": "산불 예측 모델에 대한 설명이 포함되어 있으나, 강우와 홍수와의 직접적인 연관성이 낮음.",
+        "level": "참고",
+        "url": "https://doi.org/10.22711/idr/1084"
+      }
+    ],
+    "processing_time_ms": 39545,
+    "candidates_analyzed": 28,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "e876ffe4cad991d4f4930284468df093",
+      "title": "2024 극한기후영향 보고서",
+      "description": "폭염, 한파, 폭우 및 홍수, 가뭄 등의 피해사례 및 정책",
+      "keywords": [
+        "극한기후",
+        "폭염",
+        "한파",
+        "폭우",
+        "홍수",
+        "가뭄"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "기후변화 영향",
+        "자연재해 분석",
+        "기상 재해",
+        "기후 모델링",
+        "정책 대응"
+      ],
+      "dataset_keywords": [
+        "극한기후",
+        "폭염",
+        "홍수",
+        "가뭄",
+        "한파"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "기후변화 영향",
+          "count": 5
+        },
+        {
+          "keyword": "자연재해 분석",
+          "count": 5
+        },
+        {
+          "keyword": "기상 재해",
+          "count": 5
+        },
+        {
+          "keyword": "기후 모델링",
+          "count": 5
+        },
+        {
+          "keyword": "정책 대응",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "극한기후",
+          "count": 5
+        },
+        {
+          "keyword": "폭염",
+          "count": 3
+        },
+        {
+          "keyword": "홍수",
+          "count": 5
+        },
+        {
+          "keyword": "가뭄",
+          "count": 5
+        },
+        {
+          "keyword": "한파",
+          "count": 2
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "DIKO0016913178",
+        "platform": "scienceon",
+        "title": "토픽 모델링을 활용한 기후위기 적응에 대한 언론보도 연구",
+        "description": "기후위기 적응처럼 중앙 및 지방정부, 기관 및 기업, 개인 등 관련된 주체 의 참여와 수용성 확보가 필요한 정책의 경우 언론의 역할이 매우 중요하다. 언론은 일반인들에게 익숙하지 않은 과학적 사실을 정확하게 전달해 여론을 형성하고 정책 수립의 목표 달성에 영향력을 발휘할 수 있기 때문이다. 본 연구에서는 국내 기후위기 적응에 대한 언론의 이슈 변화를 살펴보...",
+        "keywords": [
+          "기후위기",
+          "적응",
+          "토픽",
+          "모델링",
+          "언론",
+          "보도",
+          "빅카인즈",
+          "키워드",
+          "출현"
+        ],
+        "score": 0.8043125139066052,
+        "reason": "논문 제목과 설명에서 기후위기, 적응, 언론보도, 토픽모델링 등과 같은 핵심 키워드들이 다수 포함되어 있으며, 극한기후와 관련된 다양한 피해 사례와 정책 내용을 다루고 있어 의미적으로 매우 유사함.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0016913178"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "DIKO0013997300",
+        "platform": "scienceon",
+        "title": "기상재해에 의한 우리나라 양묘산업의 피해특성 및 극복방안",
+        "description": "본 연구는 우리나라 양묘산업의 기상재해 종류와 피해현황을 조사하여 기상재해로부터 양묘산업의 피해를 경감시킬 수 있는 방안을 수립하는 기초자료를 확보하기 위해 실시하였다. 본 연구에서는 1981년부터 2013년도까지의 기후변화 및 기상재해 자료를 조사하여 양묘산업의 기상재해 특성을 분석하였다. 우리나라 기후변화 양상에서, 2000년에는 지역마다 최고 적설량을...",
+        "keywords": [
+          "양묘산업",
+          "기상재해",
+          "기후변화",
+          "풍수해",
+          "한해"
+        ],
+        "score": 0.7623664013452259,
+        "reason": "기상재해와 관련된 피해 현황 및 대응 방안을 다루며, 폭염, 한파, 가뭄, 폭우 등 극한기후와 직접적으로 연결되는 내용을 포함하고 있어 주제와 밀접함.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0013997300"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "NART36939380",
+        "platform": "scienceon",
+        "title": "경제 양극화 현상과 정책 대응",
+        "description": "",
+        "keywords": [],
+        "score": 0.7447508559654489,
+        "reason": "경제 양극화 현상과 정책 대응이라는 주제는 직접적으로 극한기후와 관련되지 않지만, 사회적 영향과 정책 대응이라는 측면에서 간접적으로 연관될 수 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART36939380"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "JAKO200563606880593",
+        "platform": "scienceon",
+        "title": "부시행정부의 기후변화 대응 정책",
+        "description": "",
+        "keywords": [],
+        "score": 0.7470075095796032,
+        "reason": "기후변화 대응 정책이라는 주제로, 미국 부시 행정부의 대응 방식을 다루고 있어 극한기후와 관련된 국제적 정책 사례로서 참고 가치가 있음.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200563606880593"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "NART56250397",
+        "platform": "scienceon",
+        "title": "식물계절에 나타난 한반도 기후변화 영향",
+        "description": "",
+        "keywords": [],
+        "score": 0.7357904689101897,
+        "reason": "한반도 기후변화 영향을 식물계절을 통해 분석하고 있어 극한기후의 지역적 영향에 대한 이해를 돕는 데 도움이 될 수 있음.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART56250397"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "1865c5fb59ba445a8cd79cd5d4f794a0",
+        "platform": "dataon",
+        "title": "기후·대기 정책라이브러리",
+        "description": "제 8차 전력수급기본계획(2017), RE3020(2017), 3차 에너지기본계획(2019), 온실가스로드맵 수정안(2018), 관계부처합동, 폭염종합대책(2019) 등 주요 계획들에서 나타난 기후변화,미세먼지, 실내공기질, 대기질, 유해인자, 한파, 가뭄, 폭염 각 분야에 따라 관련된 정책을 정리함\\r\\n",
+        "keywords": [
+          "정책라이브러리",
+          "대기",
+          "기후변화"
+        ],
+        "score": 0.6533602327635404,
+        "reason": "제목과 설명에서 극한기후 관련 피해사례와 정책을 다루고 있으며, 핵심 키워드인 '폭염', '가뭄', '한파' 등이 포함되어 있어 의미적으로 매우 유사함.",
+        "level": "강추",
+        "url": "https://doi.org/10.23160/keidata.14"
+      },
+      {
+        "rank": 2,
+        "type": "dataset",
+        "id": "955cc7faa1705cd746e74617913f8f19",
+        "platform": "dataon",
+        "title": "댐유역 하천 일평균수위",
+        "description": "참조표준 설명 : 댐운영 관리에 활용하고자 댐 및 하천 관측소에서 계측한 수위의 일평균 참조표준 제/개정 사유 : - 우리나라는 지형학적, 수문학적 특성상 연중편차가 심한 수문순환 특성을 보이고 있고, 최근에는 지구온난화와 기상이변 등으로 인해 수문현상의 변동성이 더욱 커지고 있으므로, 국가 차원에서 홍수, 가뭄 등 수문현상을 신속하게 파악, 대비하고 과학...",
+        "keywords": [
+          "Dam",
+          "Environment",
+          "Water level",
+          "Hydrologic",
+          "K-water"
+        ],
+        "score": 0.6121960366748149,
+        "reason": "홍수와 가뭄 등 극한기후 현상에 대한 수문자료를 제공하며, 국가 차원의 재해 대비 정책과 관련된 내용이 포함되어 있어 상당히 관련성이 있음.",
+        "level": "추천",
+        "url": "https://doi.org/10.20925/KSRD.74670854.v1"
+      }
+    ],
+    "processing_time_ms": 40104,
+    "candidates_analyzed": 38,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "e876ffe4cad991d4f4930284468df093",
+      "title": "2024 극한기후영향 보고서",
+      "description": "폭염, 한파, 폭우 및 홍수, 가뭄 등의 피해사례 및 정책",
+      "keywords": [
+        "극한기후",
+        "폭염",
+        "한파",
+        "폭우",
+        "홍수",
+        "가뭄"
+      ]
+    },
+    "search_result": {
+      "paper_keywords": [
+        "기후변화 영향",
+        "기상 재해 모델",
+        "기후 적응 전략",
+        "자연재해 예측",
+        "기후 데이터 분석"
+      ],
+      "dataset_keywords": [
+        "극한기후",
+        "홍수피해",
+        "폭염데이터",
+        "가뭄분석",
+        "기상재해"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "기후변화 영향",
+          "count": 5
+        },
+        {
+          "keyword": "기상 재해 모델",
+          "count": 5
+        },
+        {
+          "keyword": "기후 적응 전략",
+          "count": 5
+        },
+        {
+          "keyword": "자연재해 예측",
+          "count": 5
+        },
+        {
+          "keyword": "기후 데이터 분석",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "극한기후",
+          "count": 5
+        },
+        {
+          "keyword": "홍수피해",
+          "count": 0
+        },
+        {
+          "keyword": "폭염데이터",
+          "count": 1
+        },
+        {
+          "keyword": "가뭄분석",
+          "count": 0
+        },
+        {
+          "keyword": "기상재해",
+          "count": 5
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "DIKO0016806046",
+        "platform": "scienceon",
+        "title": "기후위기와 복지 관련 언론기사 빅데이터 분석",
+        "description": "기후위기가 심화되면서 기후재난, 기후고통 등의 단어까지 등장했다. 앞으로 기후재난이 더욱 빈번하게 일어날 것으로 예측되는 가운데, 기후위기로 인한 피해는 모든 계층이나 지역에 동일하게 발생되지 않기 때문에 기후위기로 인한 불평등 또한 더 심해질 것으로 예측되고 있다. 해마다 기후위기와 사회복지 실천, 대응에 관한 사회적 관심도가 높아지고 있으며, 문제 해결...",
+        "keywords": [],
+        "score": 0.7839703094989673,
+        "reason": "기후위기와 관련된 사회적 영향, 취약계층에 대한 내용이 포함되어 있으며, 극한기후와 관련된 피해 사례 및 정책에 대한 논의가 활발히 이루어졌다는 점에서 매우 관련성이 높음.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0016806046"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "DIKO0015097182",
+        "platform": "scienceon",
+        "title": "기후변화 정책 의사결정 지원을 위한 빅데이터 분석",
+        "description": "빅데이터(Big Data)란 아주 방대한 양의 데이터를 말하며, 넓게는 수집 및 분석과 관련된 기술 및 도구를 포함하는 단어로, 소셜 미디어 사용이 증가하며 정책 의제 결정의 패러다임이 정치적 영향력을 가진 소수집단으로부터 일반 시민으로 확대되고 있는 것이 현 추세이다. 환경정책 분야의 경우, 수립 과정 중 시장자료의 부재로 설문조사를 통해 인식 및 정책수...",
+        "keywords": [],
+        "score": 0.7581926673044642,
+        "reason": "기후변화 정책과 관련된 빅데이터 분석을 다루고 있어, 극한기후 영향에 대한 대응 방안과 정책 수립에 중요한 참고 자료가 될 수 있음.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0015097182"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "DIKO0015810041",
+        "platform": "scienceon",
+        "title": "머신러닝 기반 도시 건축물 재해 취약성 평가에 관한 연구",
+        "description": "본 연구에서는 기존의 건축물을 대상으로 하는 재해예측 연구에서 재해 데이터 구축 및 예측 분석 방법의 비교 검증을 통해 효율적인 지역 및 건물단위의 건축물 재해취약성 평가를 목적으로 한다. 건축물 재해예측을 통해 효율적인 대응 및 대비를 위해서 연구에서는 기상현황, 건축물의 입지현황 및 물리적 현황, 위성영상을 이용한 지표면 환경의 현황, 재해 유형별 건축...",
+        "keywords": [
+          "머신러닝",
+          "위성영상",
+          "건축물재해취약성",
+          "자연재난"
+        ],
+        "score": 0.7507980787671247,
+        "reason": "자연재해에 대한 건축물의 취약성 평가와 예측 모델을 다루고 있어, 극한기후로 인한 피해 사례와 대응 전략에 대한 실질적인 접근이 가능함.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0015810041"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "NPAP08309555",
+        "platform": "scienceon",
+        "title": "민간보험사의 자연재해예측시스템 구축",
+        "description": "늘어나는 자연재해에 대응하여 새로운 보험 상품이 개발되고 있으며, 보험료 및 보험보상료의 증가에 따른 재보험율의 조정과정이 과학적 근거하에 작업이 이루어져야함에도 불구하고 2006년까지 이와 같은 재해 규모와 피해를 예측하거나 모의할 수 있는 시스템은 한국에서는 거의 드문 상황이었다. 본 과제의 목적은 남한 지역을 대상으로 하여 지진, 태풍, 해일, 풍수해...",
+        "keywords": [],
+        "score": 0.7460783231446291,
+        "reason": "자연재해 예측 시스템 구축에 대한 연구로, 극한기후에 따른 피해 예측과 대응 방안에 대한 실용적인 정보를 제공함.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NPAP&cn=NPAP08309555"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "JAKO201617337250534",
+        "platform": "scienceon",
+        "title": "국외 기후변화 적응전략 보고서 분석 : 수자원 부문 기후변화 적응전략을 중심으로",
+        "description": "",
+        "keywords": [],
+        "score": 0.7484914041635333,
+        "reason": "국외 기후변화 적응 전략을 분석한 보고서로, 수자원 부문에 대한 대응 방안을 포함하고 있어 극한기후 영향에 대한 국제적 시각을 제공함.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO201617337250534"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "5facd32f7b08e8c7e807cdedaee6cc46",
+        "platform": "dataon",
+        "title": "폭염_위기경보 분석용 데이터",
+        "description": "위기경보 분석용 지역민감도, 위험수준 데이터\\r\\n\\r\\n※ 행정안전부 재난안전 취약핵심역량 도약기술 개발 사업의 지원을 받아 수행된 연구임(2020-MOIS33-006)\\r\\n (과제명 : 지능형 위기경보를 위한 위험수준 자동분석 및 운영기술)",
+        "keywords": [
+          "재난안전데이터",
+          "위기관리",
+          "폭염",
+          "위기경보"
+        ],
+        "score": 0.5959931038011592,
+        "reason": "폭염 관련 데이터로 직접적인 연관성이 있으며, 위기 경보와 같은 극한 기후 대응 방안에 대한 정보가 포함되어 있어 의미적으로 매우 유사하다.",
+        "level": "강추",
+        "url": "https://doi.org/10.22711/idr/970"
+      },
+      {
+        "rank": 2,
+        "type": "dataset",
+        "id": "cac9a1969c0bc9ecdd7ee249f28382d8",
+        "platform": "dataon",
+        "title": "Meteorological observation data at the King Sejon Station from 2018 to 2021",
+        "description": "Meteorological observation has been carried out at the King Sejong Station from 2018 to 2021. To analyze relationship with air and ocean, we obtain the data of surface wind speed/direction and surface...",
+        "keywords": [
+          "ATMOSPHERIC TEMPERATURE",
+          "SURFACE WINDS",
+          "ATMOSPHERE",
+          "EARTH SCIENCE",
+          "ATMOSPHERIC WINDS",
+          "SURFACE TEMPERATURE"
+        ],
+        "score": 0.5267797042037153,
+        "reason": "기상 관측 데이터로 극한 기후 현상을 이해하는 데 중요한 정보를 제공하며, 표면 온도와 바람 속도 등이 포함되어 있다.",
+        "level": "추천",
+        "url": "https://dx.doi.org/doi:10.22663/KOPRI-KPDC-00002375.1"
+      },
+      {
+        "rank": 3,
+        "type": "dataset",
+        "id": "cf310d746ab44b72a73716c3c53cc446",
+        "platform": "dataon",
+        "title": "Climate Measurement Around the King Sejong Station, Antarctica in 2020",
+        "description": "Meteorological observation has been carried out at the King Sejong Station in 2020. Observational elements are composed of wind, air temperature, relative humidity, station level atmospheric pressure,...",
+        "keywords": [
+          "Air Temperature",
+          "Atmospheric Pressure",
+          "Humidity",
+          "Surface Winds",
+          "EARTH SCIENCE",
+          "Atmospheric Temperature",
+          "Surface Pressure",
+          "Atmospheric Water Vapor",
+          "Atmosphere",
+          "Atmospheric Winds"
+        ],
+        "score": 0.5300319807898951,
+        "reason": "기온, 습도, 바람 등 다양한 기상 요소를 포함하여 극한 기후 변화를 파악하는 데 유용한 데이터이다.",
+        "level": "추천",
+        "url": "https://dx.doi.org/doi:10.22663/KOPRI-KPDC-00001539.1"
+      },
+      {
+        "rank": 4,
+        "type": "dataset",
+        "id": "45e851c5d31f2c20525ddccf57bcffe6",
+        "platform": "dataon",
+        "title": "Ship-borne radiosonde observation data over the Arctic Ocean in the 2023 Araon summer expedition (ARA14B)",
+        "description": "The radiosonde balloon sounding observations were performed from 3 August 2023 to 29 August 2023 during the second leg of the IBRV Araon's Arctic research expedition (ARA14B) to obtain the Arctic Ocea...",
+        "keywords": [
+          "ATMOSPHERIC WATER VAPOR",
+          "ATMOSPHERIC WINDS",
+          "ATMOSPHERIC PRESSURE MEASUREMENTS",
+          "ATMOSPHERIC TEMPERATURE",
+          "WATER VAPOR PROFILES",
+          "ATMOSPHERIC PRESSURE",
+          "ATMOSPHERE",
+          "EARTH SCIENCE",
+          "UPPER AIR TEMPERATURE",
+          "WIND PROFILES"
+        ],
+        "score": 0.52794509414245,
+        "reason": "대기 수직 프로필 데이터로 극한 기후 영향을 분석하는 데 필요한 고도별 온도, 습도, 바람 정보를 제공한다.",
+        "level": "추천",
+        "url": "https://dx.doi.org/doi:10.22663/KOPRI-KPDC-00002225.1"
+      },
+      {
+        "rank": 5,
+        "type": "dataset",
+        "id": "d661e28c4c993004a640c79895af66ed",
+        "platform": "dataon",
+        "title": "Doppler wind lidar data at DASAN Station in 2023",
+        "description": "Doppler wind lidar(DWL) has been operated near Climate Change Tower of Ny-Alesund, Svalbard where Arctic DASAN station is located. DWL is acquiring vertical profile of wind up to 1.2 km on continuous ...",
+        "keywords": [
+          "Boundary Layer Winds",
+          "EARTH SCIENCE",
+          "Atmosphere",
+          "Wind Profiles",
+          "Atmospheric Winds"
+        ],
+        "score": 0.5244386583314903,
+        "reason": "바람의 수직 구조를 측정하여 극한 기후 조건 하에서 대기 경계층의 특성을 분석할 수 있는 데이터이다.",
+        "level": "참고",
+        "url": "https://dx.doi.org/doi:10.22663/KOPRI-KPDC-00002314.1"
+      }
+    ],
+    "processing_time_ms": 40096,
+    "candidates_analyzed": 35,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "03e16fe2b6d96d4961f22c244a94bb1a",
+      "title": "NSW COVID-19 tests by location (discontinued)",
+      "description": "From 20 October 2023, COVID-19 datasets will no longer be updated. \\\\r\\\\nDetailed information is available in the fortnightly NSW Respiratory Surveillance Report: https://www.health.nsw.gov.au/Infectious/covid-19/Pages/reports.aspx. \\\\r\\\\nLatest national COVID-19 spread, vaccination and treatment metrics are available on the Australian Government Health website: https://www.health.gov.au/topics/covid-19/reporting?language=und \\\\r\\\\n\\\\r\\\\nCOVID-19 tests by date and postcode, local health district, and local government area. \\\\r\\\\n\\\\r\\\\nThe data is for COVID-19 tests and is based on the Local Health District (LHD) and Local Government Area (LGA) of residence provided by the individual at time of testing. A surge in total number of tests performed on a particular day may occur as the test results are updated in batches and new laboratories gain testing capacity. \\\\r\\\\n\\\\r\\\\nThe underlying dataset was assessed to measure the risk of identifying an individual and the level of sensitivity of the information gained if it was known that an individual was in the dataset. The dataset was then treated to mitigate these risks, including suppressing and aggregating data.;COVID-19 tests by date and postcode, local health district, and local government area (discontinued).csv<br/>",
+      "keywords": []
+    },
+    "search_result": {
+      "paper_keywords": [
+        "감염병 모니터링",
+        "코로나 데이터 분석",
+        "호주 공중보건",
+        "바이러스 확산 추적",
+        "예방접종 연구"
+      ],
+      "dataset_keywords": [
+        "NSW 코로나 검사",
+        "지역별 테스트 데이터",
+        "코로나 감시 보고서",
+        "검사 현황",
+        "위치별 통계"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "감염병 모니터링",
+          "count": 5
+        },
+        {
+          "keyword": "코로나 데이터 분석",
+          "count": 5
+        },
+        {
+          "keyword": "호주 공중보건",
+          "count": 5
+        },
+        {
+          "keyword": "바이러스 확산 추적",
+          "count": 5
+        },
+        {
+          "keyword": "예방접종 연구",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "NSW 코로나 검사",
+          "count": 0
+        },
+        {
+          "keyword": "지역별 테스트 데이터",
+          "count": 1
+        },
+        {
+          "keyword": "코로나 감시 보고서",
+          "count": 0
+        },
+        {
+          "keyword": "검사 현황",
+          "count": 0
+        },
+        {
+          "keyword": "위치별 통계",
+          "count": 0
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "ATN0044151145",
+        "platform": "scienceon",
+        "title": "빅데이터 분석을 활용한 성형 의료관광에 대한 코로나 19 전후의 인식 비교 연구",
+        "description": "Medical tourism is experiencing an increase in demand due to the advancement of technology in the field of plastic surgery. Since the outbreak of COVID-19, there has been a dramatic decrease in the nu...",
+        "keywords": [
+          "big",
+          "data",
+          "Medical",
+          "tourism",
+          "COVID-19",
+          "semantic",
+          "analysis",
+          "빅데이터",
+          "의료관광",
+          "코로나",
+          "19",
+          "의미연결망",
+          "분석"
+        ],
+        "score": 0.7864258917680484,
+        "reason": "코로나19와 관련된 의료관광에 대한 인식 변화를 분석한 연구로, 빅데이터 분석 방법과 의미 연결망 분석을 사용해 코로나19 전후의 트렌드를 비교했다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ATN0044151145"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "ATN0037310409",
+        "platform": "scienceon",
+        "title": "빅데이터 분석을 통한 코로나19 전후 와인에 대한 소비자 인식의 비교 연구",
+        "description": "This study was conducted to understand how consumer perception on wine has been changing since COVID-19 outbreak by analyzing big data. For this, this study collected data containing 'wine' from vario...",
+        "keywords": [
+          "빅데이터",
+          "와인",
+          "의미연결망",
+          "분석",
+          "코로나19",
+          "텍스트",
+          "마이닝",
+          "big",
+          "data",
+          "wine",
+          "semantic",
+          "network",
+          "analysis",
+          "COVID-19",
+          "text",
+          "mining"
+        ],
+        "score": 0.7659443603964615,
+        "reason": "와인 소비자 인식 변화를 코로나19 전후로 비교한 연구로, 빅데이터와 텍스트 마이닝을 활용해 소비자 행동의 변화를 분석했다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ATN0037310409"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "ATN0035592080",
+        "platform": "scienceon",
+        "title": "대구지역 코로나19 유행 담론 분석: 국내 뉴스 빅데이터 활용",
+        "description": "본 연구는 가장 먼저 전염이 확산된 대구지역 코로나19와 관련하여 보도된 국내 언론 기사를 토대로 기사에 나타난 주요 키워드를 분석하였다. 코로나19 대응 시기별(대응 준비기, 대응 1기, 대응 2기, 대응 3기) 강조되는 핵심 키워드가 시간 흐름에 따라 어떠한 변화를 나타내는지 텍스트 마이닝을 통해 분석하였다. 분석결과 대구지역 코로나19에 대한 관심은 ...",
+        "keywords": [
+          "COVID-19",
+          "Pandemic",
+          "News",
+          "Big",
+          "Data",
+          "Social",
+          "distancing",
+          "Daegu",
+          "Textmining",
+          "Semantic",
+          "network",
+          "analysis",
+          "코로나19",
+          "팬데믹",
+          "뉴스",
+          "빅데이터",
+          "사회적",
+          "거리두기",
+          "대구",
+          "텍스트마이닝",
+          "시맨틱네트워크분석"
+        ],
+        "score": 0.7269736732620601,
+        "reason": "대구 지역의 코로나19 유행에 대한 뉴스 데이터를 바탕으로 키워드 변화를 분석했으며, 사회적 반응과 감정 변화를 파악했다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ATN0035592080"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "NART125448485",
+        "platform": "scienceon",
+        "title": "A Study on the use of WBE and Geographic Information System to Monitor the Spread of Infectious Diseases",
+        "description": "",
+        "keywords": [],
+        "score": 0.7402669731726546,
+        "reason": "WBE와 지리정보시스템을 활용한 감염병 확산 모니터링에 관한 연구로, 감염병 감시 체계에 대한 중요한 통찰을 제공한다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART125448485"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "JAKO200820258461929",
+        "platform": "scienceon",
+        "title": "이소시안화물 독성에 대한 보호장갑의 성능 연구",
+        "description": "As the concerns of dermal exposure of spray painters to isocyanates in the automobile industry, glove performance was examined like permeation rate and breakthrough time including fatigue test. Methyl...",
+        "keywords": [
+          "isocyanate",
+          "glove",
+          "performance",
+          "permeation",
+          "rate",
+          "breakthrough",
+          "time",
+          "crash",
+          "repair",
+          "shop"
+        ],
+        "score": 0.7518791439962338,
+        "reason": "이소시안화물에 대한 보호장갑의 성능을 평가한 연구로, 화학 물질 노출에 대한 안전성을 분석하고 개인 보호 장비 선택에 도움을 준다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO200820258461929"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "90fcdeca57d49f7b990d4c41d512e5f9",
+        "platform": "dataon",
+        "title": "10MW급 조류발전 실증단지 타당성 조사 보고서",
+        "description": "국내 조류발전 분야의 핵심기술을 개발하고 국제 경쟁력을 확보하기 위해 조류발전 테스트베드 역할을 수행할 실증단지가 필요하다. 본 보고서에서는 이러한 조류발전 실증단지를 구축하기 위하여, 대상 지역에 대한 조사 및 검토를 수행하고, 개발 여건을 전망하며, 계획을 수립하여 경제적이고 안전한 조류발전 실증단지에 대한 설계 및 구축 타당성을 포괄적으로 정리하였다.",
+        "keywords": [
+          "10MW급 조류발전 실증단지",
+          "비용 분석",
+          "계획 수립",
+          "적지조사",
+          "구축 타당성 조사"
+        ],
+        "score": 0.5231241646408037,
+        "reason": "제목과 설명에서 '실증단지', '타당성 조사'와 같은 용어가 포함되어 있으며, 데이터 수집 및 분석과 관련된 내용이 있어 의미적으로 매우 유사함.",
+        "level": "참고",
+        "url": "https://doi.org/10.22711/idr/1069"
+      }
+    ],
+    "processing_time_ms": 20005,
+    "candidates_analyzed": 26,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  },
+  {
+    "source_dataset": {
+      "id": "b89d0c5d5891c5c80cd7a565ce8a3dc6",
+      "title": "Police recorded crime trends in Victoria during the COVID-19 pandemic",
+      "description": "The Crime Statistics Agency (CSA) has released a research paper entitled Police-recorded crime trends in Victoria during the COVID-19 pandemic. The paper examines trends in criminal offences and family violence incidents to 30 June 2020, focusing on comparing the period from 1 April 2020 to 30 June 2020 with the same period in 2019.\\\\r\\\\nThis paper aims to examine whether and how the COVID-19 pandemic, associated behaviour changes and implemented restrictions impacted on crime in Victoria. It examines whether there were changes in the volume, nature or location of offending recorded by police following the introduction of restrictions in late March 2020 and provides an overview of offences recorded for breaching restrictions introduced to address COVID-19.;Offences by LGA Offence Type and LGA<br/>COVID Offences by Month and LGA<br/>COVID Offenders by Sex and Age<br/>Family Incidents by Month and LGA<br/>Research paper<br/>Research Paper<br/>",
+      "keywords": []
+    },
+    "search_result": {
+      "paper_keywords": [
+        "범죄 통계",
+        "가정 폭력",
+        "코로나19 영향",
+        "정책 분석",
+        "통계 모델"
+      ],
+      "dataset_keywords": [
+        "빅데이터",
+        "경찰 통계",
+        "코로나19 범죄",
+        "빅데이터 분석",
+        "범죄 추세"
+      ],
+      "paper_search_details": [
+        {
+          "keyword": "범죄 통계",
+          "count": 5
+        },
+        {
+          "keyword": "가정 폭력",
+          "count": 5
+        },
+        {
+          "keyword": "코로나19 영향",
+          "count": 5
+        },
+        {
+          "keyword": "정책 분석",
+          "count": 5
+        },
+        {
+          "keyword": "통계 모델",
+          "count": 5
+        }
+      ],
+      "dataset_search_details": [
+        {
+          "keyword": "빅데이터",
+          "count": 5
+        },
+        {
+          "keyword": "경찰 통계",
+          "count": 0
+        },
+        {
+          "keyword": "코로나19 범죄",
+          "count": 0
+        },
+        {
+          "keyword": "빅데이터 분석",
+          "count": 3
+        },
+        {
+          "keyword": "범죄 추세",
+          "count": 0
+        }
+      ]
+    },
+    "paper_recommendations": [
+      {
+        "rank": 1,
+        "type": "paper",
+        "id": "DIKO0016379844",
+        "platform": "scienceon",
+        "title": "코로나19 팬데믹이 우즈베키스탄 전자상거래에 미친 영향 : 코로나19 이전과 이후 비교연구를 중심으로",
+        "description": "이 논문의 목적은 코로나19 팬데믹이 우즈베키스탄 인터넷 전자상거래에 미친 영향을 연구하는 것이다. 이 논문에서 코로나19 이전과 이후의 전자상거래 비교, 즉 우즈베키스탄의 2019년 코로나19 이전 전자상거래와 2021년 코로나19 이후 전자상거래 비교를 통해 코로나19 영향을 연구하였다.&amp;#xD; 본 연구에서는 우즈베키스탄의 인터넷 전자상거래 사...",
+        "keywords": [
+          "인터넷",
+          "전자상거래",
+          "신뢰도",
+          "지각된",
+          "위험",
+          "정보탐색",
+          "서비스",
+          "제품가격",
+          "제품품질",
+          "코로나19",
+          "팬데믹"
+        ],
+        "score": 0.7357144919199393,
+        "reason": "코로나19 팬데믹 관련 연구이며, 전자상거래에 미친 영향을 분석한 것으로, 팬데믹이 다양한 사회현상에 미치는 영향을 이해하는 데 중요한 자료이다.",
+        "level": "강추",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=DIKO&cn=DIKO0016379844"
+      },
+      {
+        "rank": 2,
+        "type": "paper",
+        "id": "JAKO201404065097181",
+        "platform": "scienceon",
+        "title": "장마 강수를 위한 앙상블 통계 예측 모델 개발",
+        "description": "Statistical forecast models for the prediction of the summertime Changma precipitation have been developed in this study. As effective predictors for the Changma precipitation, the springtime sea surf...",
+        "keywords": [
+          "Changma",
+          "front",
+          "statistical",
+          "forecast",
+          "model",
+          "ensemble"
+        ],
+        "score": 0.7491198407255587,
+        "reason": "통계 모델링과 예측 방법론에 대한 연구로, 데이터 기반의 분석 접근 방식을 이해하는 데 도움이 되며, 사회과학 분야에서도 활용 가능하다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=JAKO201404065097181"
+      },
+      {
+        "rank": 3,
+        "type": "paper",
+        "id": "ATN0038663236",
+        "platform": "scienceon",
+        "title": "스웨덴 강간 범죄 통계에 대한 국제적 비교의 한계에 관한 연구",
+        "description": "본 연구는 기존 문헌들을 검토하여 스웨덴의 강간 범죄에 대한 정의 및 현황, 법적 대응과 스웨덴 강간 범죄 통계에 대한 특성을 살핌으로써 스웨덴의 강간 범죄 발생률이 국제적으로 상위에 위치하게 된 원인을 밝히고 이를 통해 국내 범죄 연구에서의 시사점을 도출하는 것을 연구의 목적으로 한다.스웨덴의 강간 범죄에 대한 정의 및 현황, 법적 대응과 스웨덴 강간 범...",
+        "keywords": [
+          "스웨덴의",
+          "강간",
+          "범죄",
+          "스웨덴",
+          "성폭력",
+          "통계",
+          "범죄통계의",
+          "한계",
+          "Swedish",
+          "rape",
+          "crime",
+          "sexual",
+          "violence",
+          "statistics",
+          "limitations",
+          "of",
+          "criminal"
+        ],
+        "score": 0.7319104001464387,
+        "reason": "국제적인 범죄 통계 비교에 대한 분석으로, 통계 수집 및 해석 방법의 차이점에 대해 깊이 있게 다루어져 있으며, 범죄 통계의 신뢰성 문제를 이해하는 데 유익하다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ATN0038663236"
+      },
+      {
+        "rank": 4,
+        "type": "paper",
+        "id": "NART69867727",
+        "platform": "scienceon",
+        "title": "경찰의 정책결정이 절도범죄통계에 미치는 영향",
+        "description": "&amp;nbsp;&amp;nbsp;범죄통계는 어떻게 변동하는가? 그간 한국에서 범죄추세를 연구한 학자들은 주로 경제적, 사회적, 정치적 환경 등의 실체적 사회변화가 범죄통계를 움직였을 거라는 주장을 해왔다. 이 논문은 2000년 이후의 절도범죄통계가 사회, 경제, 정치적 요인이 아니라, 경찰의 수사정책과 통계정책에 의해 변해왔음을 보여주고자 하였다. 경찰...",
+        "keywords": [
+          "범죄통계",
+          "절도통계",
+          "경찰정책",
+          "CIMS",
+          "KICS",
+          "Crime",
+          "Statistics",
+          "Theft",
+          "Police",
+          "Policy"
+        ],
+        "score": 0.7294123557447141,
+        "reason": "경찰의 정책 결정이 범죄 통계에 미치는 영향을 다룬 연구로, 통계의 왜곡 가능성과 정책의 영향력을 동시에 고려할 수 있다.",
+        "level": "추천",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=NART69867727"
+      },
+      {
+        "rank": 5,
+        "type": "paper",
+        "id": "ART001871579",
+        "platform": "scienceon",
+        "title": "가정폭력 개입 사건의 처리를 위한 제도개선방안",
+        "description": "Domestic Violence is a serious social problem, because it is not only harmful tovictims as well as their children, but also reproduces another violence. Therefore the Congress hasenacted several speci...",
+        "keywords": [],
+        "score": 0.749556950038526,
+        "reason": "가정 폭력에 대한 제도 개선 방안을 제시하며, 실제 사례와 법적 대응을 바탕으로 한 분석이 이루어져 있으며, 사회 문제 해결에 대한 실질적인 접근을 제공한다.",
+        "level": "참고",
+        "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?keyValue=05787966&target=NART&cn=ART001871579"
+      }
+    ],
+    "dataset_recommendations": [
+      {
+        "rank": 1,
+        "type": "dataset",
+        "id": "64931de210ff82a0371722ac06413630",
+        "platform": "dataon",
+        "title": "국가위성영상 인공지능 학습 데이터",
+        "description": "위성 정보 서비스 분야 시장 규모는 매년 크게 증가하고 있으며 다양한 공공, 민간 서비스 수요에 대응하기 위해 위성 개발 또한 확대되고 있다. 이처럼 기하급수적으로 증가하는 위성 정보를 효율적으로 분석, 활용하기 위해서는 AI 기술 개발이 꼭 필요한 실정이다. \\r\\n한국항공우주연구원(이하 항우연)은 국내 위성영상을 활용한 AI 분석 기술 발전을 위해 20...",
+        "keywords": [
+          "인공지능",
+          "위성영상",
+          "아리랑위성",
+          "학습 데이터",
+          "다목적 실용위성"
+        ],
+        "score": 0.5404007830241873,
+        "reason": "타겟 키워드인 '인공지능', '위성영상', '학습 데이터'가 모두 일치하며, 데이터셋의 목적과 내용이 연구 주제와 밀접하게 연결되어 있습니다.",
+        "level": "추천",
+        "url": ""
+      },
+      {
+        "rank": 2,
+        "type": "dataset",
+        "id": "3199fd69166405045b08aea5302068f0",
+        "platform": "dataon",
+        "title": "국가위성영상 인공지능 학습 데이터-II",
+        "description": "본 데이터는 다목적실용위성영상을 활용한 인공지능 학습 데이터로 종류는 다음과 같다.\\r\\n\\r\\n1) 객체탐지 (33개 클래스[주석], 20개 클래스)\\r\\n2) 건물 추출 \\r\\n3) 도로 추출 및 종류 구별\\r\\n4) 구름 추출\\r\\n5) 토지피복 데이터\\r\\n\\r\\n2023년에 DataON을 통해 공개한 데이터셋(국가위성영상 인공지능 학습 데이터)의 ...",
+        "keywords": [
+          "인공지능",
+          "위성영상",
+          "아리랑위성",
+          "학습 데이터",
+          "다목적 실용위성"
+        ],
+        "score": 0.5288944433282438,
+        "reason": "국가위성영상 기반 인공지능 학습 데이터로, 전작과 연계성이 높으며, 다양한 분류 작업을 포함하고 있어 연구 목적에 적합합니다.",
+        "level": "추천",
+        "url": ""
+      },
+      {
+        "rank": 3,
+        "type": "dataset",
+        "id": "711cea9c00f49d0ecd5ad8f24fa4ebbf",
+        "platform": "dataon",
+        "title": "KOMPSAT-3/3A호 영상 기반 선박탐지 인공지능 학습 데이터셋",
+        "description": "위성영상을 통한 선박탐지는 해상 감시 및 안전, 불법 어업 감시, 해상 교통 관리 등 다양한 분야에서 중요한 역할을 수행하고 있다. 기존의 선박 감시 방법은 주로 인간의 직접적인 노력을 필요로 하며, 이는 상당한 자원과 시간이 소요된다. 또한 광범위한 해역을 효과적으로 모니터링 하는데 한계가 있다. 이러한 한계를 극복하기 위해 딥러닝 기술이 선박탐지에 새로...",
+        "keywords": [
+          "다목적실용위성",
+          "인공지능",
+          "선박탐지"
+        ],
+        "score": 0.5260745597232184,
+        "reason": "선박 탐지에 특화된 인공지능 학습 데이터셋으로, 위성 영상 기반의 실제 적용 사례를 보여주어 연구에 실용적인 가치가 있습니다.",
+        "level": "추천",
+        "url": ""
+      },
+      {
+        "rank": 4,
+        "type": "dataset",
+        "id": "a46fb1187d70fb287ebfb2eadc15187e",
+        "platform": "dataon",
+        "title": "급성신손상 및 항생제 처리에 따른 쥐 분변의 NMR 대사체 분석",
+        "description": "장내 미생물군과 그 대사산물은 전신 염증과 신장 질환 결과에 영향을 미칩니다. 우리는 급성 신장 손상(AKI)에서 만성 신장 질환(CKD)으로의 전환과 관련된 주요 대사 산물과 이러한 전환에 대한 항생제 유발 미생물군 고갈(AIMD)의 영향을 조사했습니다. AKI에서 CKD로의 전환 위험을 확인하기 위해 61명의 AKI 환자에서 59개의 혈장 대사산물을 평...",
+        "keywords": [
+          "융합오믹스",
+          "K-BDS",
+          "대사체"
+        ],
+        "score": 0.5356371405135426,
+        "reason": "대사체 분석과 관련된 연구이며, 의료 및 생명과학 분야에 집중되어 있어 연구 주제와는 차이가 있으나, 데이터 분석 방법론 면에서 일부 참고 가치가 있을 수 있습니다.",
+        "level": "참고",
+        "url": "https://kbds.re.kr/KAP240682"
+      },
+      {
+        "rank": 5,
+        "type": "dataset",
+        "id": "e1ad0ce9ecf53e7a927c67c9e38929fb",
+        "platform": "dataon",
+        "title": "ICP 13.56MHz 아르곤/질소 혼합 플라즈마 분광 물성",
+        "description": "참조표준 설명 : ○ 플라즈마 현상을 이해하는데 필요한 원자/분자/ 광학특성 데이터를 정량화하여, 반응기의 압력과 전력 변화에 따른 플라즈마 분광 물성인 파장, 빛의 세기 비율 (선별 파장의 세기/광 방출총량)을 측정한 데이터를 절차에 의해 참조표준 제정\\n - ICP 13.56MHz 아르곤/질소 혼합 플라즈마 분광물성/ Ar 100sccm, N2 10sc...",
+        "keywords": [
+          "아르곤",
+          "질소 혼합 플라즈마 분광",
+          "ICP 발생원",
+          "플라즈마물성"
+        ],
+        "score": 0.5293321642385164,
+        "reason": "플라즈마 분광 물성에 관한 데이터로, 연구 주제와는 직접적인 관련이 없으나, 과학적 데이터 수집 및 분석 방법론에 대해 참고할 수 있는 부분이 있습니다.",
+        "level": "참고",
+        "url": "https://doi.org/10.20925/KSRD.34823721.v1"
+      }
+    ],
+    "processing_time_ms": 41314,
+    "candidates_analyzed": 30,
+    "model_info": {
+      "model_name": "Qwen/Qwen3-14B",
+      "model_type": "Qwen",
+      "device": "cuda",
+      "dtype": "float16",
+      "max_tokens": 512,
+      "temperature": 0.0,
+      "parameters": "14.8B",
+      "context_length": "32K"
+    },
+    "embedding_model_info": {
+      "embedding_model": "intfloat/multilingual-e5-large",
+      "paper_hybrid_weights": {
+        "alpha": 0.8,
+        "beta": 0.2
+      },
+      "dataset_hybrid_weights": {
+        "alpha": 0.6,
+        "beta": 0.4
+      }
+    }
+  }
+]
