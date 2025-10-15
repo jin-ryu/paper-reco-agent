@@ -84,7 +84,7 @@ class DataONClient:
                 response.raise_for_status()
 
                 data = response.json()
-                logger.info(f"Search completed: {data.get('response', {}).get('total count', 0)} datasets for '{query}'")
+                logger.info(f"Search completed: {len(data.get('records', []))} datasets for '{query}'")
 
                 datasets = []
                 for item in data.get('records', []):

@@ -15,7 +15,11 @@ def create_reranking_prompt(context: Dict[str, Any], num_recommendations: int, p
         프롬프트 문자열
     """
     source_title = context.get('source_title', '')
+    # Description 길이 제한 (1000자) - 긴 논문 초록으로 인한 context overflow 방지
     source_description = context.get('source_description', '')
+    if len(source_description) > 1000:
+        source_description = source_description[:1000] + "..."
+
     source_keywords = context.get('source_keywords', '')
 
     candidates = context.get('candidates', [])
@@ -103,27 +107,40 @@ Output ONLY valid JSON (no markdown, no comments) with a single "recommendations
     return prompt
 
 
-def create_search_queries_prompt(source_data: Dict[str, Any]) -> str:
+def create_search_queries_prompt(source_data: Dict[str, Any], previous_error: str = None) -> str:
     """
     검색 쿼리 생성을 위한 프롬프트 생성
 
     Args:
         source_data: 소스 데이터셋 정보
+        previous_error: 이전 파싱 실패 에러 (재시도 시)
 
     Returns:
         프롬프트 문자열
     """
-    # 제목과 설명 선택 (한글 우선, 없으면 영어)
-    title = source_data.get('title_ko') or source_data.get('title_en', '')
-    description = source_data.get('description_ko') or source_data.get('description_en', '')
+    # 제목과 설명 선택
+    title = source_data.get('title')
+    # Description 길이 제한 (1000자) - 긴 논문 초록으로 인한 context overflow 방지
+    description = source_data.get('description')
+    if len(description) > 1000:
+        description = description[:1000] + "..."
 
     # API에서 가져온 원본 키워드
     original_keywords = source_data.get('keywords', [])
-    keywords_str = ', '.join(original_keywords[:10]) if original_keywords else ''
+    keywords_str = ', '.join(original_keywords) if original_keywords else ''
 
     # 언어 설정 (dataset_main_lang_pc, dataset_sub_lang_pc 필드 참고)
     main_lang = source_data.get('dataset_main_lang_pc', 'Korean')
     sub_lang = source_data.get('dataset_sub_lang_pc', 'English')
+
+    # 에러 피드백 추가
+    error_feedback = ""
+    if previous_error:
+        error_feedback = f"""
+**IMPORTANT - Previous Parsing Error**:
+Your last response failed with this error: {previous_error}
+Please fix the error and output ONLY a valid JSON object that starts with '{{' and ends with '}}'.
+"""
 
     # 프롬프트 생성
     prompt = f"""You are a research data search expert. Generate SHORT and PRECISE search keywords for optimal search results.
@@ -133,7 +150,7 @@ Input Dataset:
    - Original Keywords (from API): {keywords_str}
    - Main Language: {main_lang}
    - Sub Language: {sub_lang}
-
+{error_feedback}
 Task:
 1. Analyze original keywords and SELECT only SHORT, SPECIFIC ones (filter out too generic or too long phrases).
 2. Generate NEW SHORT keywords (1-3 words maximum) based on title and description.

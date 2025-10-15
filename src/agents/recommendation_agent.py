@@ -146,53 +146,46 @@ class KoreanResearchRecommendationAgent:
             return {"error": str(e)}
 
     async def _generate_search_queries(self, source_data: Dict[str, Any]) -> Dict[str, List[str]]:
-        """2단계: LLM을 사용해서 최적의 검색 쿼리 생성"""
-        try:
-            # source_data에서 필요한 정보 추출
-            title = source_data.get('title', '')
-            description = source_data.get('description', '')
-            original_keywords = source_data.get('keywords', [])
+        """2단계: LLM을 사용해서 최적의 검색 쿼리 생성 (재시도 로직 포함)"""
+        max_retries = 2
+        previous_error = None
+        title = source_data.get('title', '')
+        description = source_data.get('description', '')
+        original_keywords = source_data.get('keywords', [])
 
-            prompt = create_search_queries_prompt(source_data)
-
-            # LLM 호출 (낮은 temperature로 일관된 응답 유도)
-            response = await self.llm_model.generate(
-                prompt,
-                max_new_tokens=300,
-                temperature=0.1
-            )
-
-            # JSON 파싱
+        for attempt in range(max_retries):
             try:
-                # <think> 태그 제거 (Qwen3 thinking 모드 출력)
-                import re
-                response_cleaned = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL)
-                response_cleaned = response_cleaned.strip()
+                logger.info(f"LLM 검색 쿼리 생성 시도 {attempt + 1}/{max_retries}")
 
-                # JSON 블록 추출 (```json ... ``` 또는 {...} 형식)
-                json_match = re.search(r'```json\s*(\{.*?\})\s*```', response_cleaned, re.DOTALL)
+                # 프롬프트 생성 (에러 피드백 포함)
+                prompt = create_search_queries_prompt(source_data, previous_error=previous_error)
+
+                # LLM 호출
+                response = await self.llm_model.generate(
+                    prompt,
+                    max_new_tokens=300,
+                    temperature=0.1
+                )
+
+                # JSON 파싱 및 검증
+                import re
+                response_cleaned = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL).strip()
+                json_match = re.search(r'```json\\s*(\\{.*?\\})\\s*```', response_cleaned, re.DOTALL)
                 if json_match:
                     json_str = json_match.group(1)
                 else:
-                    json_match = re.search(r'\{.*\}', response_cleaned, re.DOTALL)
+                    json_match = re.search(r'\\{.*\\}', response_cleaned, re.DOTALL)
                     json_str = json_match.group(0) if json_match else response_cleaned
 
                 queries = json.loads(json_str)
+                dataset_queries = clean_keywords(queries.get('dataset_queries', []))
+                paper_queries = clean_keywords(queries.get('paper_queries', []))
 
-                # LLM이 선별/생성한 키워드 (원본 키워드 분석 + 새 키워드 생성)
-                dataset_queries = queries.get('dataset_queries', [])
-                paper_queries = queries.get('paper_queries', [])
-
-                # 키워드 전처리 (공백 제거, 특수문자 정리, 중복 제거)
-                dataset_queries = clean_keywords(dataset_queries)
-                paper_queries = clean_keywords(paper_queries)
-
-                # 비어있으면 폴백
                 if not dataset_queries or not paper_queries:
-                    raise ValueError("Empty queries generated")
+                    raise ValueError("LLM이 생성한 쿼리가 비어 있습니다.")
 
                 logger.info(f"✅ LLM 키워드 생성 완료")
-                logger.info(f"   원본 키워드 ({len(original_keywords)}개): {original_keywords[:5]}{'...' if len(original_keywords) > 5 else ''}")
+                logger.info(f"   원본 키워드 ({len(original_keywords)}개): {original_keywords}")
                 logger.info(f"   → 데이터셋 검색 ({len(dataset_queries)}개): {dataset_queries}")
                 logger.info(f"   → 논문 검색 ({len(paper_queries)}개): {paper_queries}")
                 return {
@@ -201,27 +194,37 @@ class KoreanResearchRecommendationAgent:
                 }
 
             except (json.JSONDecodeError, ValueError, AttributeError) as e:
-                logger.warning(f"LLM 응답 파싱 실패, 폴백 사용: {e}")
+                error_msg = f"LLM 응답 파싱 또는 검증 실패: {str(e)}"
+                logger.warning(f"{error_msg} (시도 {attempt + 1}/{max_retries})")
                 logger.warning(f"LLM 원본 응답:\n{response}")
-                # 폴백: 기존 키워드 또는 추출
-                fallback_keywords = source_data.get('keywords', [])
-                if not fallback_keywords:
-                    text = f"{title} {description}"
-                    fallback_keywords = extract_keywords_from_text(text)
+                if attempt < max_retries - 1:
+                    previous_error = error_msg
+                    continue
+                else:
+                    logger.error("모든 재시도 실패, 폴백 로직을 사용합니다.")
+                    break  # 루프를 빠져나가 폴백 로직 실행
 
-                return {
-                    'dataset_queries': fallback_keywords[:5],
-                    'paper_queries': fallback_keywords[:5]
-                }
+            except Exception as e:
+                error_msg = f"검색 쿼리 생성 중 예외 발생: {str(e)}"
+                logger.error(f"{error_msg} (시도 {attempt + 1}/{max_retries})")
+                if attempt < max_retries - 1:
+                    previous_error = error_msg
+                    continue
+                else:
+                    logger.error("모든 재시도 실패, 폴백 로직을 사용합니다.")
+                    break # 루프를 빠져나가 폴백 로직 실행
 
-        except Exception as e:
-            logger.error(f"검색 쿼리 생성 실패: {e}")
-            # 폴백: 기존 키워드
-            fallback_keywords = source_data.get('keywords', ['research', 'data'])[:5]
-            return {
-                'dataset_queries': fallback_keywords,
-                'paper_queries': fallback_keywords
-            }
+        # 폴백 로직
+        logger.info("폴백 로직 실행: 기존 키워드 또는 텍스트에서 키워드를 추출합니다.")
+        fallback_keywords = source_data.get('keywords', [])
+        if not fallback_keywords:
+            text = f"{title} {description}"
+            fallback_keywords = extract_keywords_from_text(text)
+
+        return {
+            'dataset_queries': fallback_keywords,
+            'paper_queries': fallback_keywords
+        }
 
     async def _collect_candidates_with_queries(self, search_queries: Dict[str, List[str]], source_id: str) -> tuple:
         """3단계: 생성된 쿼리로 후보 수집 (DataON + ScienceON)"""
