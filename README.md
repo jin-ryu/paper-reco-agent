@@ -138,12 +138,14 @@ paper-reco-agent/
 │   ├── models/                # 언어모델 래퍼
 │   │   ├── qwen_model.py      # Qwen3-14B 모델
 │   │   └── mock_model.py      # 개발용 Mock 모델
+│   ├── router/                # FastAPI 라우터
+│   │   └── main.py            # FastAPI 서버
 │   ├── tools/                 # 유틸리티 도구
-│   │   └── research_tools.py  # 검색, 임베딩, 유사도 계산
+│   │   ├── research_tools.py  # 검색, 임베딩, 유사도 계산
+│   │   └── utils.py           # 텍스트 정제 등 유틸리티
 │   ├── evaluation/            # 평가 모듈
 │   │   ├── __init__.py        # 평가 함수 export
 │   │   └── metrics.py         # nDCG, MRR, Recall@k 등
-│   └── main.py                # FastAPI 서버
 │
 ├── notebooks/                 # Jupyter 노트북 (추론 실행)
 │   └── inference.ipynb        # ⭐ 추론 + 평가 실행 노트북
@@ -156,16 +158,18 @@ paper-reco-agent/
 │
 ├── demo/                      # 데모 영상
 ├── figures/                   # 아키텍처 다이어그램 및 결과 그림
-├── tests/                     # 단위 테스트
+
 └── requirements.txt           # 의존성 목록 (상세 버전)
 ```
 
 ### 주요 파일 설명
 
 - **notebooks/inference.ipynb**: 추론 + 평가 실행용 Jupyter 노트북 (필수)
+- **src/router/main.py**: FastAPI 서버 엔드포인트
 - **src/agents/recommendation_agent.py**: 메인 추천 에이전트 로직
 - **src/models/qwen_model.py**: Qwen3-14B 언어모델 래퍼
 - **src/tools/research_tools.py**: 검색, 임베딩, 유사도 계산 함수
+- **src/tools/utils.py**: 텍스트 정제 등 유틸리티 함수
 - **src/evaluation/metrics.py**: 평가 메트릭 (nDCG, MRR, Recall@k 등)
 - **scripts/test_evaluation.py**: 평가 모듈 단위 테스트
 - **requirements.txt**: 전체 의존성 목록 (pip freeze)
@@ -342,7 +346,10 @@ DEV_MODE=false
     {
       "rank": 1,
       "type": "paper",
+      "id": "DIKO0012345678",
+      "platform": "scienceon",
       "title": "COVID-19가 한국 가구의 소비패턴에 미친 영향",
+      "description": "COVID-19 팬데믹이 한국 가구의 소비 행태에 미친 영향을 분석...",
       "score": 0.892,
       "reason": "공통 키워드 'COVID-19', '한국인'으로 높은 연관성; 동일 연구 분야",
       "level": "강추",
@@ -351,7 +358,10 @@ DEV_MODE=false
     {
       "rank": 2,
       "type": "dataset",
+      "id": "a27774ddf0c702847a996cee9d660ba4",
+      "platform": "dataon",
       "title": "팬데믹 시기 생활 변화 설문조사 데이터",
+      "description": "2020-2021년 팬데믹 기간 동안 수집된 생활패턴 변화 설문 데이터...",
       "score": 0.784,
       "reason": "관련 주제 및 데이터 유형; 시간적 연관성 높음",
       "level": "추천",
@@ -367,6 +377,18 @@ DEV_MODE=false
   }
 }
 ```
+
+**추천 결과 필드 설명**:
+- `rank`: 추천 순위 (1부터 시작)
+- `type`: 타입 (`paper` 또는 `dataset`)
+- `id`: 고유 식별자 (논문: cn, 데이터셋: svc_id)
+- `platform`: 출처 플랫폼 (`scienceon` 또는 `dataon`)
+- `title`: 제목
+- `description`: 요약 설명 (최대 200자)
+- `score`: 유사도 점수 (0.0~1.0)
+- `reason`: LLM이 생성한 추천 이유
+- `level`: 추천 수준 (`강추`, `추천`, `참고`)
+- `url`: 원문 링크
 
 ---
 

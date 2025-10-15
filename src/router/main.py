@@ -6,8 +6,8 @@ import logging
 import os
 from datetime import datetime
 
-from agents.recommendation_agent import KoreanResearchRecommendationAgent
-from config.settings import settings
+from src.agents.recommendation_agent import KoreanResearchRecommendationAgent
+from src.config.settings import settings
 
 # 로깅 설정
 os.makedirs("logs", exist_ok=True)
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 # FastAPI 앱 초기화
 app = FastAPI(
     title="Research Recommendation Agent",
-    description="Qwen3-14B 기반 다국어 연구 데이터/논문 추천 시스템",
+    description="LLM 기반 다국어 연구 데이터/논문 추천 시스템",
     version="2.0.0"
 )
 
@@ -158,7 +158,7 @@ async def test_dataon_api(dataset_id: str):
     DataON API 연결 테스트
     """
     try:
-        from tools.research_tools import get_dataon_dataset_metadata
+        from src.tools.research_tools import get_dataon_dataset_metadata
         result = await get_dataon_dataset_metadata(dataset_id)
         return {"success": True, "data": result}
     except Exception as e:
@@ -170,7 +170,7 @@ async def test_scienceon_api():
     ScienceON API 연결 테스트
     """
     try:
-        from tools.research_tools import get_scienceon_access_token
+        from src.tools.research_tools import get_scienceon_access_token
         token = await get_scienceon_access_token()
         return {"success": True, "token_received": bool(token)}
     except Exception as e:

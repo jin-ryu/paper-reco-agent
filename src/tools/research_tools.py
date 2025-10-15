@@ -2,6 +2,7 @@ from typing import List, Dict, Any
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+from src.config.settings import settings
 from src.clients.dataon_client import DataONClient
 from src.clients.scienceon_client import ScienceONClient
 import logging
@@ -15,13 +16,8 @@ logger = logging.getLogger(__name__)
 dataon_client = DataONClient()
 scienceon_client = ScienceONClient()
 
-# 임베딩 모델 (E5: 다국어 지원, 논문 검색 최적화)
-# intfloat/multilingual-e5-large: KURE 벤치마크 Recall 0.658, NDCG 0.628
-# ko-sroberta 대비 Recall +95%, NDCG +63% 성능 향상
-# 한국어 + 영어 논문/데이터셋 검색에 최적화
-embedding_model = SentenceTransformer('intfloat/multilingual-e5-large')
-
-# SmolAgent용 도구 함수들
+# 임베딩 모델
+embedding_model = SentenceTransformer(settings.EMBEDDING_MODEL)
 
 async def get_dataon_dataset_metadata(svc_id: str) -> dict:
     """
@@ -167,11 +163,6 @@ def calculate_similarity_score(embedding1: List[float], embedding2: List[float])
         logger.error(f"유사도 계산 실패: {e}")
         return 0.0
 
-# 이 함수는 LLM 기반 추천 생성으로 대체되어 제거됨
-# LLM이 직접 추천 이유를 생성하도록 변경
-
-# determine_recommendation_level 함수도 LLM이 직접 판단하도록 제거
-
 def extract_keywords_from_text(text: str, max_keywords: int = 5) -> List[str]:
     """
     텍스트에서 주요 키워드를 추출합니다.
@@ -314,13 +305,14 @@ def calculate_bm25_score(query_text: str, document_text: str, k1: float = 1.2, b
         logger.error(f"BM25 점수 계산 실패: {e}")
         return 0.0
 
-def calculate_hybrid_similarity(source_text: str, candidate_text: str) -> Dict[str, float]:
+def calculate_hybrid_similarity(source_text: str, candidate_text: str, candidate_type: str) -> Dict[str, float]:
     """
     BM25 + E5 임베딩 하이브리드 유사도를 계산합니다 (Hybrid RAG 방식)
 
     Args:
         source_text: 소스 텍스트 (query로 처리)
         candidate_text: 후보 텍스트 (passage로 처리)
+        candidate_type: 후보 타입 ('paper' 또는 'dataset')
 
     Returns:
         각종 유사도 점수와 최종 점수가 포함된 딕셔너리
@@ -335,10 +327,15 @@ def calculate_hybrid_similarity(source_text: str, candidate_text: str) -> Dict[s
         # 2. BM25 기반 어휘적 유사도 (Sparse Retrieval)
         lexical_score = calculate_bm25_score(source_text, candidate_text)
 
-        # 3. 하이브리드 점수 계산
-        # 일반적으로 의미적 유사도에 더 높은 가중치 부여
-        alpha = 0.5  # 임베딩 가중치
-        beta = 0.5   # BM25 가중치
+        # 3. 하이브리드 점수 계산 (타입에 따라 가중치 조절)
+        if candidate_type == 'paper':
+            # 논문: 의미적 유사도에 높은 가중치
+            alpha = settings.PAPER_HYBRID_ALPHA
+            beta = settings.PAPER_HYBRID_BETA
+        else:
+            # 데이터셋: 균등 가중치
+            alpha = settings.DATASET_HYBRID_ALPHA
+            beta = settings.DATASET_HYBRID_BETA
 
         hybrid_score = alpha * semantic_score + beta * lexical_score
 
@@ -349,14 +346,11 @@ def calculate_hybrid_similarity(source_text: str, candidate_text: str) -> Dict[s
         common_tokens = source_tokens.intersection(candidate_tokens)
         keyword_bonus = min(len(common_tokens) / max(len(source_tokens), 1), 0.2)  # 최대 0.2 보너스
 
-        final_score = min(hybrid_score + keyword_bonus, 1.0)
-
         return {
             'semantic_score': semantic_score,
             'lexical_score': lexical_score,
             'keyword_bonus': keyword_bonus,
             'hybrid_score': hybrid_score,
-            'final_score': final_score,
             'common_keywords': list(common_tokens)[:5]
         }
 
@@ -367,6 +361,5 @@ def calculate_hybrid_similarity(source_text: str, candidate_text: str) -> Dict[s
             'lexical_score': 0.0,
             'keyword_bonus': 0.0,
             'hybrid_score': 0.0,
-            'final_score': 0.0,
             'common_keywords': []
         }

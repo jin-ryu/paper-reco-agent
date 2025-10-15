@@ -25,8 +25,12 @@ class Settings(BaseSettings):
 
     # 임베딩 모델 설정
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "intfloat/multilingual-e5-large")
-    # 선택사항: multilingual-e5-large-instruct (instruction 지원)
-    # 선택사항: nlpai-lab/KoE5 (한국어 특화, +3% 성능)
+
+    # 하이브리드 유사도 가중치
+    PAPER_HYBRID_ALPHA: float = float(os.getenv("PAPER_HYBRID_ALPHA", "0.8"))
+    PAPER_HYBRID_BETA: float = float(os.getenv("PAPER_HYBRID_BETA", "0.2"))
+    DATASET_HYBRID_ALPHA: float = float(os.getenv("DATASET_HYBRID_ALPHA", "0.5"))
+    DATASET_HYBRID_BETA: float = float(os.getenv("DATASET_HYBRID_BETA", "0.5"))
 
     # 서버 설정
     HOST: str = os.getenv("HOST", "0.0.0.0")
@@ -38,8 +42,8 @@ class Settings(BaseSettings):
     LOG_FILE: str = os.getenv("LOG_FILE", "logs/app.log")
 
     # API URLs
-    DATAON_BASE_URL: str = "https://dataon.kisti.re.kr"
-    SCIENCEON_BASE_URL: str = "https://apigateway.kisti.re.kr"
+    DATAON_BASE_URL: str = os.getenv("DATAON_BASE_URL", "https://dataon.kisti.re.kr")
+    SCIENCEON_BASE_URL: str = os.getenv("SCIENCEON_BASE_URL", "https://apigateway.kisti.re.kr")
 
     class Config:
         env_file = ".env"

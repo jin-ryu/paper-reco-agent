@@ -141,97 +141,6 @@ class QwenModel:
             logger.error(f"텍스트 생성 실패: {e}")
             return ""
 
-    def create_korean_prompt(self, task_description: str, context: Dict[str, Any]) -> str:
-        """
-        한국어/다국어 작업을 위한 프롬프트 생성 (Qwen3 최적화)
-
-        Args:
-            task_description: 작업 설명
-            context: 컨텍스트 정보
-
-        Returns:
-            프롬프트 문자열
-        """
-        source_title = context.get('source_title', '')
-        source_description = context.get('source_description', '')[:500]
-        source_keywords = context.get('source_keywords', '')
-        source_classification = context.get('source_classification', '')
-
-        candidates = context.get('candidates', [])
-
-        # 후보 정보 포맷팅 (유사도 점수 포함)
-        candidates_text = ""
-        for i, candidate in enumerate(candidates[:15], 1):
-            cand_type = candidate.get('type', 'unknown')
-            title = candidate.get('title', '')
-            desc = candidate.get('description', '')[:150]
-
-            # 유사도 점수 상세 정보
-            semantic_score = candidate.get('semantic_score', 0.0)
-            lexical_score = candidate.get('lexical_score', 0.0)
-            final_score = candidate.get('final_score', 0.0)
-            common_keywords = candidate.get('common_keywords', [])[:5]
-
-            keywords = ', '.join(candidate.get('keywords', []))[:150]
-
-            candidates_text += f"\n[{i}] ({cand_type}) {title}\n"
-            candidates_text += f"   Description: {desc}...\n"
-            candidates_text += f"   Similarity: Semantic {semantic_score:.2f} | Lexical {lexical_score:.2f} | Final {final_score:.2f}\n"
-            if common_keywords:
-                candidates_text += f"   Common terms: {', '.join(common_keywords)}\n"
-            if keywords:
-                candidates_text += f"   Keywords: {keywords}\n"
-
-        prompt = f"""# Task
-You are a research data and paper recommendation expert.
-
-**Important**: E5 embedding model has already calculated similarity scores. Your role:
-1. Analyze similarity scores and select most relevant candidates
-2. Write specific and logical reasons for each recommendation
-3. Determine recommendation level (강추/추천/참고)
-
-{task_description}
-
-## Recommendation Level Criteria:
-- 강추 (Strong): Final similarity ≥ 0.75, both semantic+lexical high
-- 추천 (Recommend): Final similarity ≥ 0.60, semantic or lexical high
-- 참고 (Reference): Final similarity ≥ 0.45, partial relevance
-
-## Source Dataset:
-Title: {source_title}
-Description: {source_description}...
-Keywords: {source_keywords}
-Classification: {source_classification}
-
-## Candidates (Filtered by E5 embedding):
-{candidates_text}
-
-## Output Format:
-Output ONLY valid JSON. No explanations, comments, or examples.
-
-{{
-  "recommendations": [
-    {{
-      "candidate_number": 1,
-      "reason": "High semantic similarity with common keywords",
-      "level": "강추"
-    }},
-    {{
-      "candidate_number": 2,
-      "reason": "Related research field",
-      "level": "추천"
-    }}
-  ]
-}}
-
-Rules:
-- Output JSON only, start with '{{' character
-- candidate_number: Number from candidate list above (1-15)
-- reason: One concise sentence explaining why this is relevant
-- level: "강추" (≥0.75) or "추천" (≥0.60) or "참고" (≥0.45)
-- DO NOT include title, type, or score - only candidate_number, reason, level
-"""
-        return prompt
 
     def get_model_info(self) -> Dict[str, Any]:
         """모델 정보 반환"""
@@ -248,13 +157,25 @@ Rules:
     def cleanup(self):
         """리소스 정리"""
         try:
-            if self.model:
-                del self.model
-            if self.tokenizer:
-                del self.tokenizer
+            import gc
 
+            # 1. Qwen 모델 삭제
+            if hasattr(self, 'model') and self.model is not None:
+                del self.model
+                self.model = None
+
+            # 2. 토크나이저 삭제
+            if hasattr(self, 'tokenizer') and self.tokenizer is not None:
+                del self.tokenizer
+                self.tokenizer = None
+
+            # 3. Python 가비지 컬렉션 강제 실행
+            gc.collect()
+
+            # 4. PyTorch CUDA 캐시 비우기
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
+                torch.cuda.synchronize()  # 모든 CUDA 작업 완료 대기
 
             logger.info("✅ 모델 리소스 정리 완료")
         except Exception as e:

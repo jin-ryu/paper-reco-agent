@@ -1,10 +1,8 @@
-import asyncio
 import json
 import time
 import os
-from typing import Dict, List, Any
-from src.config.settings import settings
 from src.tools.research_tools import *
+from src.models.prompts import create_search_queries_prompt, create_reranking_prompt
 import logging
 
 logger = logging.getLogger(__name__)
@@ -27,8 +25,10 @@ class KoreanResearchRecommendationAgent:
             from src.models.qwen_model import QwenModel
             self.llm_model = QwenModel()
 
-        self.max_candidates = 20
-        self.final_recommendations = 5
+        self.max_paper_candidates = 5  # E5/BM25로 상위 5개 논문만 선별
+        self.max_dataset_candidates = 5  # E5/BM25로 상위 5개 데이터셋만 선별
+        self.final_paper_recommendations = 3  # LLM이 최종 3개 논문 선택
+        self.final_dataset_recommendations = 3  # LLM이 최종 3개 데이터셋 선택
 
     def _check_gpu_available(self) -> bool:
         """GPU 사용 가능 여부 확인"""
@@ -74,17 +74,31 @@ class KoreanResearchRecommendationAgent:
             logger.info(f"검색 쿼리 생성 완료: 데이터셋({len(search_queries['dataset_queries'])}개), 논문({len(search_queries['paper_queries'])}개)")
 
             # 3단계: 후보 수집
-            candidates = await self._collect_candidates_with_queries(search_queries)
+            candidates = await self._collect_candidates_with_queries(search_queries, dataset_id)
             logger.info(f"총 {len(candidates)}개 후보 수집 완료")
 
             # 4단계: 유사도 계산 및 순위 결정
-            ranked_candidates = await self._rank_candidates(source_data, candidates)
-            logger.info(f"상위 {len(ranked_candidates)}개 후보 순위 결정 완료")
+            ranked_papers, ranked_datasets = await self._rank_candidates(source_data, candidates)
+            logger.info(f"상위 {len(ranked_papers)}개 논문, {len(ranked_datasets)}개 데이터셋 순위 결정 완료")
 
             # 5단계: LLM을 사용한 최종 추천 생성
-            final_recommendations = await self._generate_final_recommendations(
-                source_data, ranked_candidates[:self.max_candidates]
+            paper_reco_task = self._get_llm_recommendations_for_type(
+                source_data,
+                ranked_papers[:self.max_paper_candidates],
+                self.final_paper_recommendations,
+                "paper"
             )
+            dataset_reco_task = self._get_llm_recommendations_for_type(
+                source_data,
+                ranked_datasets[:self.max_dataset_candidates],
+                self.final_dataset_recommendations,
+                "dataset"
+            )
+
+            llm_results = await asyncio.gather(paper_reco_task, dataset_reco_task)
+            
+            paper_recommendations = llm_results[0]
+            dataset_recommendations = llm_results[1]
 
             processing_time = int((time.time() - start_time) * 1000)
             logger.info(f"추천 프로세스 완료: {processing_time}ms")
@@ -92,11 +106,12 @@ class KoreanResearchRecommendationAgent:
             return {
                 "source_dataset": {
                     "id": dataset_id,
-                    "title": source_data.get('title_ko', ''),
-                    "description": source_data.get('description_ko', '')[:200] + "...",
+                    "title": source_data.get('title', ''),
+                    "description": source_data.get('description', '')[:200] + "...",
                     "keywords": source_data.get('keywords', [])
                 },
-                "recommendations": final_recommendations,
+                "paper_recommendations": paper_recommendations,
+                "dataset_recommendations": dataset_recommendations,
                 "processing_time_ms": processing_time,
                 "candidates_analyzed": len(candidates),
                 "model_info": self.llm_model.get_model_info()
@@ -114,7 +129,7 @@ class KoreanResearchRecommendationAgent:
         """1단계: 소스 데이터셋 정보 조회"""
         try:
             source_data = await get_dataon_dataset_metadata(dataset_id)
-            logger.info(f"소스 데이터셋 정보 조회 완료: {source_data.get('title_ko', '')}")
+            logger.info(f"소스 데이터셋 정보 조회 완료: {source_data.get('title', '')}")
             return source_data
         except Exception as e:
             logger.error(f"소스 데이터셋 조회 실패: {e}")
@@ -123,52 +138,12 @@ class KoreanResearchRecommendationAgent:
     async def _generate_search_queries(self, source_data: Dict[str, Any]) -> Dict[str, List[str]]:
         """2단계: LLM을 사용해서 최적의 검색 쿼리 생성"""
         try:
-            # 제목과 설명 선택 (한글 우선, 없으면 영어)
-            title = source_data.get('title_ko') or source_data.get('title_en', '')
-            description = source_data.get('description_ko') or source_data.get('description_en', '')
-
-            # API에서 가져온 원본 키워드
+            # source_data에서 필요한 정보 추출
+            title = source_data.get('title', '')
+            description = source_data.get('description', '')
             original_keywords = source_data.get('keywords', [])
-            keywords_str = ', '.join(original_keywords[:10]) if original_keywords else ''
 
-            # 언어 설정 (dataset_main_lang_pc, dataset_sub_lang_pc 필드 참고)
-            main_lang = source_data.get('dataset_main_lang_pc', 'Korean')
-            sub_lang = source_data.get('dataset_sub_lang_pc', 'English')
-
-            # 언어 매핑 (pc -> 실제 언어명)
-            lang_map = {
-                'KO': 'Korean',
-                'EN': 'English',
-                'JA': 'Japanese',
-                'ZH': 'Chinese',
-                'FR': 'French',
-                'DE': 'German',
-                'ES': 'Spanish',
-                'RU': 'Russian'
-            }
-            main_lang = lang_map.get(main_lang, main_lang)
-            sub_lang = lang_map.get(sub_lang, sub_lang)
-
-            # 프롬프트 생성 (Qwen3-14B 최적화)
-            prompt = f"""You are a research data search expert. Generate optimal search keywords to find related papers and datasets.
-
-Input Dataset:
-Title: {title}
-Description: {description[:300]}...
-Original Keywords (from API): {keywords_str}
-Main Language: {main_lang}
-Sub Language: {sub_lang}
-
-Task:
-1. Generate 3-5 NEW dataset search keywords (core topics, fields, data types)
-2. Generate 3-5 NEW paper search keywords (research methods, theories, techniques)
-3. Generate keywords in {main_lang} (main) and {sub_lang} (secondary)
-4. DO NOT repeat the original keywords - only generate NEW ones
-
-IMPORTANT: Output ONLY valid JSON. No thinking process, no explanations, no markdown code blocks.
-
-Output this exact JSON structure:
-{{"dataset_queries": ["new_kw1", "new_kw2", "new_kw3"], "paper_queries": ["paper_kw1", "paper_kw2", "paper_kw3"]}}"""
+            prompt = create_search_queries_prompt(source_data)
 
             # LLM 호출 (낮은 temperature로 일관된 응답 유도)
             response = await self.llm_model.generate(
@@ -194,45 +169,34 @@ Output this exact JSON structure:
 
                 queries = json.loads(json_str)
 
-                # LLM이 생성한 새 키워드
-                llm_dataset_queries = queries.get('dataset_queries', [])
-                llm_paper_queries = queries.get('paper_queries', [])
+                # LLM이 선별/생성한 키워드 (원본 키워드 분석 + 새 키워드 생성)
+                dataset_queries = queries.get('dataset_queries', [])
+                paper_queries = queries.get('paper_queries', [])
 
-                # 원본 키워드 + LLM 생성 키워드 병합 (중복 제거)
-                def merge_and_dedupe(original: List[str], new_keywords: List[str], max_count: int = 10) -> List[str]:
-                    """키워드 병합 및 중복 제거 (대소문자 무시)"""
+                # 기본 정리만 수행 (공백 제거, 중복 제거)
+                def clean_keywords(keywords: List[str]) -> List[str]:
+                    """키워드 중복 제거 및 공백 정리"""
                     result = []
                     seen = set()
-
-                    # 원본 키워드 추가
-                    for kw in original:
+                    for kw in keywords:
                         kw_clean = kw.strip()
                         kw_lower = kw_clean.lower()
                         if kw_clean and kw_lower not in seen:
                             result.append(kw_clean)
                             seen.add(kw_lower)
+                    return result
 
-                    # 새 키워드 추가
-                    for kw in new_keywords:
-                        kw_clean = kw.strip()
-                        kw_lower = kw_clean.lower()
-                        if kw_clean and kw_lower not in seen:
-                            result.append(kw_clean)
-                            seen.add(kw_lower)
-
-                    return result[:max_count]
-
-                # 데이터셋/논문 쿼리 생성 (중복 제거됨)
-                dataset_queries = merge_and_dedupe(original_keywords, llm_dataset_queries, 10)
-                paper_queries = merge_and_dedupe(original_keywords, llm_paper_queries, 10)
+                dataset_queries = clean_keywords(dataset_queries)
+                paper_queries = clean_keywords(paper_queries)
 
                 # 비어있으면 폴백
                 if not dataset_queries or not paper_queries:
                     raise ValueError("Empty queries generated")
 
-                logger.info(f"최종 키워드 - 데이터셋: {dataset_queries}")
-                logger.info(f"최종 키워드 - 논문: {paper_queries}")
-                logger.info(f"  (원본: {len(original_keywords)}개, LLM 추가: 데이터셋 {len(llm_dataset_queries)}개, 논문 {len(llm_paper_queries)}개)")
+                logger.info(f"✅ LLM 키워드 생성 완료")
+                logger.info(f"   원본 키워드 ({len(original_keywords)}개): {original_keywords[:5]}{'...' if len(original_keywords) > 5 else ''}")
+                logger.info(f"   → 데이터셋 검색 ({len(dataset_queries)}개): {dataset_queries}")
+                logger.info(f"   → 논문 검색 ({len(paper_queries)}개): {paper_queries}")
                 return {
                     'dataset_queries': dataset_queries,
                     'paper_queries': paper_queries
@@ -261,7 +225,7 @@ Output this exact JSON structure:
                 'paper_queries': fallback_keywords
             }
 
-    async def _collect_candidates_with_queries(self, search_queries: Dict[str, List[str]]) -> List[Dict[str, Any]]:
+    async def _collect_candidates_with_queries(self, search_queries: Dict[str, List[str]], source_id: str) -> List[Dict[str, Any]]:
         """3단계: 생성된 쿼리로 후보 수집 (DataON + ScienceON)"""
         candidates = []
 
@@ -281,8 +245,8 @@ Output this exact JSON structure:
                         'type': 'dataset',
                         'source': 'dataon',
                         'data': dataset,
-                        'title': dataset.get('title_ko', ''),
-                        'description': dataset.get('description_ko', ''),
+                        'title': dataset.get('title', ''),
+                        'description': dataset.get('description', ''),
                         'keywords': dataset.get('keywords', []),
                         'url': dataset.get('url', ''),
                         'combined_text': dataset.get('combined_text', '')
@@ -296,14 +260,20 @@ Output this exact JSON structure:
                         'source': 'scienceon',
                         'data': paper,
                         'title': paper.get('title', ''),
-                        'description': paper.get('abstract', '')[:200] if paper.get('abstract') else '',
-                        'keywords': paper.get('keywords', '').split(',') if paper.get('keywords') else [],
+                        'description': paper.get('abstract', ''),
+                        'keywords': paper.get('keywords', []),
                         'url': paper.get('content_url', ''),
                         'combined_text': paper.get('combined_text', ''),
                         'cn': paper.get('cn', '')
                     })
 
-            return candidates
+            # Filter out the source dataset itself
+            filtered_candidates = [
+                c for c in candidates
+                if not (c['type'] == 'dataset' and c.get('data', {}).get('svc_id') == source_id)
+            ]
+
+            return filtered_candidates
 
         except Exception as e:
             logger.error(f"후보 수집 실패: {e}")
@@ -322,7 +292,7 @@ Output this exact JSON structure:
         try:
             papers = []
             # 키워드별로 검색하여 다양성 확보
-            for keyword in keywords[:3]:  # 상위 3개 키워드만 사용
+            for keyword in keywords:
                 keyword_papers = await search_scienceon_papers(keyword, limit=5)
                 papers.extend(keyword_papers)
 
@@ -353,20 +323,32 @@ Output this exact JSON structure:
                     candidate_text = candidate.get('combined_text', '')
 
                     # 🚀 BM25 + 임베딩 하이브리드 유사도 계산
-                    from tools.research_tools import calculate_hybrid_similarity
-                    hybrid_result = calculate_hybrid_similarity(source_text, candidate_text)
 
-                    similarity_score = hybrid_result['final_score']  # 하이브리드 최종 점수 사용
+                    hybrid_result = calculate_hybrid_similarity(source_text, candidate_text, candidate['type'])
 
-                    # 최종 점수는 하이브리드 유사도 그대로 사용
-                    # (검색 API 응답에 이미 인용 정보 포함됨, 상세 조회 불필요)
-                    final_score = similarity_score
+                    similarity_score = hybrid_result['hybrid_score']  # 하이브리드 점수 사용
+
+
+
+                    # ID 추출 (프롬프트에서 사용하기 위해)
+                    item_id = ''
+                    if candidate['type'] == 'paper':
+                        # 논문: cn 필드 또는 URL에서 추출
+                        item_id = candidate.get('cn', '')
+                        if not item_id and 'cn=' in candidate.get('url', ''):
+                            item_id = candidate['url'].split('cn=')[1].split('&')[0]
+                    else:
+                        # 데이터셋: data의 svc_id 또는 URL에서 추출
+                        item_id = candidate.get('data', {}).get('svc_id', '')
+                        if not item_id and 'svcId=' in candidate.get('url', ''):
+                            item_id = candidate['url'].split('svcId=')[1].split('&')[0]
 
                     candidate.update({
+                        'id': item_id,  # ID 추가 (프롬프트에서 사용)
                         'similarity_score': similarity_score,
                         'semantic_score': hybrid_result['semantic_score'],
                         'lexical_score': hybrid_result['lexical_score'],
-                        'final_score': final_score,
+                        'hybrid_score': similarity_score,
                         'common_keywords': hybrid_result.get('common_keywords', [])
                     })
 
@@ -377,59 +359,89 @@ Output this exact JSON structure:
                     continue
 
             # 점수순으로 정렬
-            ranked_candidates = sorted(scored_candidates, key=lambda x: x['final_score'], reverse=True)
-            return ranked_candidates
+            ranked_candidates = sorted(scored_candidates, key=lambda x: x['hybrid_score'], reverse=True)
+
+            # 논문과 데이터셋으로 분리
+            ranked_papers = [c for c in ranked_candidates if c['type'] == 'paper']
+            ranked_datasets = [c for c in ranked_candidates if c['type'] == 'dataset']
+
+            return ranked_papers, ranked_datasets
 
         except Exception as e:
             logger.error(f"후보 순위 결정 실패: {e}")
             return candidates
 
-    async def _generate_final_recommendations(self, source_data: Dict[str, Any], top_candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """4단계: Qwen 모델을 사용한 최종 추천 생성"""
+    async def _get_llm_recommendations_for_type(self, source_data: Dict[str, Any], top_candidates: List[Dict[str, Any]], num_recommendations: int, candidate_type: str) -> List[Dict[str, Any]]:
+        """특정 타입(논문/데이터셋)에 대한 LLM 추천 생성"""
+        if not top_candidates:
+            logger.info(f"후보 목록이 비어 있어 {candidate_type} 추천을 건너뜁니다.")
+            return []
         try:
             # LLM용 컨텍스트 준비
             context = {
-                'source_title': source_data.get('title_ko', ''),
-                'source_description': source_data.get('description_ko', ''),
+                'source_title': source_data.get('title', ''),
+                'source_description': source_data.get('description', ''),
                 'source_keywords': ', '.join(source_data.get('keywords', [])),
-                'source_classification': source_data.get('classification_ko', ''),
-                'candidates': top_candidates
+                'candidates': top_candidates,
+                'candidate_type': candidate_type
             }
 
-            # Qwen 모델용 프롬프트 생성
-            task_description = f"""
-주어진 소스 데이터셋과 관련된 연구논문과 데이터셋을 {self.final_recommendations}개 추천해주세요.
-각 추천에 대해 구체적이고 논리적인 근거를 제시하고, 추천 수준을 결정해주세요.
-"""
 
-            prompt = self.llm_model.create_korean_prompt(task_description, context)
 
-            # LLM 호출 (최대 2회 재시도)
+            # LLM 호출 (최대 2회 재시도, 에러 피드백 사용)
             max_retries = 2
+            previous_error = None
+
             for attempt in range(max_retries):
                 try:
-                    logger.info(f"LLM 추천 생성 시도 {attempt + 1}/{max_retries}")
+                    logger.info(f"LLM {candidate_type} 추천 생성 시도 {attempt + 1}/{max_retries}")
+
+                    prompt = create_reranking_prompt(
+                        context,
+                        num_recommendations,
+                        previous_error=previous_error
+                    )
+
+                    # 프롬프트 로깅 (디버깅용)
+                    logger.info(f'=' * 80)
+                    logger.info(f"LLM에게 전송하는 {candidate_type} 프롬프트:")
+                    logger.info(prompt)
+                    logger.info(f'=' * 80)
+
                     response = await self.llm_model.generate(prompt)
 
                     # JSON 응답 파싱
-                    recommendations = self._parse_llm_response(response, top_candidates)
+                    recommendations = self._parse_llm_response(response, top_candidates, num_recommendations)
 
                     if recommendations:
                         return recommendations
                     else:
-                        logger.warning(f"LLM 응답 파싱 실패 (시도 {attempt + 1}/{max_retries})")
+                        logger.warning(f"LLM {candidate_type} 응답 파싱 실패 (시도 {attempt + 1}/{max_retries})")
                         if attempt < max_retries - 1:
-                            # 프롬프트 수정하여 재시도
-                            prompt = self._create_simplified_prompt(source_data, top_candidates)
-                            logger.info("간소화된 프롬프트로 재시도")
+                            # 에러 메시지 생성하여 재시도
+                            previous_error = "Failed to parse JSON response. Please ensure output is valid JSON starting with '{' character."
+                            logger.info(f"에러 피드백과 함께 재시도: {previous_error}")
                             continue
                         else:
-                            logger.error("모든 재시도 실패, 추천 생성 불가")
+                            logger.error(f"모든 재시도 실패, {candidate_type} 추천 생성 불가")
                             return []
 
+                except json.JSONDecodeError as e:
+                    # JSON 파싱 에러를 명시적으로 캡처하여 에러 메시지 전달
+                    error_msg = f"JSON parsing error: {str(e)}"
+                    logger.error(f"LLM {candidate_type} 응답 파싱 에러 (시도 {attempt + 1}/{max_retries}): {error_msg}")
+                    if attempt < max_retries - 1:
+                        previous_error = error_msg
+                        continue
+                    else:
+                        return []
+
                 except Exception as e:
-                    logger.error(f"LLM 호출 실패 (시도 {attempt + 1}/{max_retries}): {e}")
-                    if attempt == max_retries - 1:
+                    logger.error(f"LLM {candidate_type} 호출 실패 (시도 {attempt + 1}/{max_retries}): {e}")
+                    if attempt < max_retries - 1:
+                        previous_error = f"Generation error: {str(e)}"
+                        continue
+                    else:
                         return []
 
             return []
@@ -438,7 +450,7 @@ Output this exact JSON structure:
             logger.error(f"최종 추천 생성 실패: {e}")
             return []
 
-    def _parse_llm_response(self, response: str, candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _parse_llm_response(self, response: str, candidates: List[Dict[str, Any]], num_recommendations: int) -> List[Dict[str, Any]]:
         """LLM 응답을 파싱하여 추천 결과 생성"""
         try:
             import re
@@ -521,34 +533,46 @@ Output this exact JSON structure:
 
                     # LLM 응답과 후보 데이터 매칭
                     final_recommendations = []
-                    for idx, rec in enumerate(llm_recommendations[:self.final_recommendations]):
-                        candidate_number = rec.get('candidate_number', 0)
-                        logger.debug(f"처리 중: 순서={idx+1}, candidate_number={candidate_number}")
+                    for rec in llm_recommendations[:num_recommendations]:
+                        # LLM이 반환한 명시적 rank 값과 candidate_id 사용
+                        rank = rec.get('rank', 0)
+                        candidate_id = rec.get('candidate_id', '')
+                        logger.debug(f"처리 중: rank={rank}, candidate_id={candidate_id}")
 
-                        if 1 <= candidate_number <= len(candidates):
-                            candidate = candidates[candidate_number - 1]
+                        # candidate_id로 후보 찾기
+                        candidate = None
+                        for cand in candidates:
+                            if cand.get('id', '') == candidate_id:
+                                candidate = cand
+                                break
+
+                        if candidate:
+                            # Platform 결정 (source 필드 활용)
+                            platform = candidate.get('source', 'unknown')
 
                             # LLM 추천 정보와 후보 데이터 결합
-                            # rank는 추천 순서 (1부터 시작)
-                            # title, type, score, url은 모두 candidates에서 가져옴
+                            # rank는 LLM이 명시적으로 반환한 값 사용
+                            # title, type, score, url, id, platform은 모두 candidates에서 가져옴
                             # reason, level만 LLM이 생성
                             final_rec = {
-                                "rank": idx + 1,  # 추천 순서 (LLM이 반환한 순서)
+                                "rank": rank,  # LLM이 명시적으로 반환한 rank 값 사용
                                 "type": candidate['type'],
+                                "id": candidate_id,  # LLM이 선택한 ID
+                                "platform": platform,  # Platform 추가 (dataon/scienceon)
                                 "title": candidate['title'],
                                 "description": candidate['description'][:200] + "..." if len(candidate.get('description', '')) > 200 else candidate.get('description', ''),
-                                "score": candidate.get('final_score', 0.5),  # E5 계산한 점수 사용
+                                "score": candidate.get('hybrid_score', 0.5),  # E5 계산한 점수 사용
                                 "reason": rec.get('reason', '추천 이유 생성 실패'),
                                 "level": rec.get('level', '참고'),
                                 "url": candidate['url']
                             }
                             final_recommendations.append(final_rec)
-                            logger.debug(f"✅ 추천 항목 추가: {candidate['title'][:50]}")
+                            logger.debug(f"✅ 추천 항목 추가 (rank={rank}, id={candidate_id}): {candidate['title'][:50]}")
                         else:
-                            logger.warning(f"⚠️  잘못된 candidate_number: {candidate_number} (총 {len(candidates)}개)")
+                            logger.warning(f"⚠️  candidate_id '{candidate_id}'를 찾을 수 없음")
 
-                    # 이미 순서대로 추가되었으므로 정렬 불필요
-                    # final_recommendations.sort(key=lambda x: x['rank'])
+                    # rank 값으로 정렬 (LLM이 명시적으로 지정한 순위)
+                    final_recommendations.sort(key=lambda x: x['rank'])
 
                     if final_recommendations:
                         logger.info(f"✅ LLM 추천 생성 성공: {len(final_recommendations)}개")
@@ -566,78 +590,3 @@ Output this exact JSON structure:
             logger.error(f"LLM 응답 파싱 실패: {e}")
             logger.error(f"LLM 응답:\n{response[:1000]}...")
             return []
-
-    def _create_simplified_prompt(self, source_data: Dict[str, Any], candidates: List[Dict[str, Any]]) -> str:
-        """
-        간소화된 프롬프트 생성 (재시도용)
-        더 명확하고 간단한 지시사항
-        """
-        # 상위 5개 후보만 사용
-        top_5 = candidates[:5]
-
-        candidates_text = ""
-        for i, cand in enumerate(top_5, 1):
-            candidates_text += f"\n[{i}] {cand.get('type', 'unknown')}: {cand.get('title', '')} (유사도: {cand.get('final_score', 0):.2f})\n"
-
-        prompt = f"""Select 3-5 best recommendations and output as JSON ONLY. Do NOT use <think> tags.
-
-Source Dataset: {source_data.get('title_ko') or source_data.get('title_en', '')}
-
-Candidates:
-{candidates_text}
-
-Output this JSON structure exactly (start with '{{' character):
-{{
-  "recommendations": [
-    {{"candidate_number": 1, "reason": "Very high similarity", "level": "강추"}},
-    {{"candidate_number": 2, "reason": "High similarity", "level": "추천"}},
-    {{"candidate_number": 3, "reason": "Related topic", "level": "참고"}}
-  ]
-}}
-
-Rules:
-- Only output: candidate_number (1-5), reason, level
-- DO NOT output: rank, title, type, score
-- Start your response with '{{' now:"""
-
-        return prompt
-
-    def _generate_fallback_recommendations(self, source_data: Dict[str, Any], candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """
-        폴백: 간단한 점수 기반 추천 생성 (사용 안함 - 제거 예정)
-        """
-        logger.warning("폴백 함수 호출됨 - 이 함수는 더 이상 사용되지 않아야 함")
-        recommendations = []
-
-        for idx, candidate in enumerate(candidates[:self.final_recommendations], 1):
-            try:
-                score = candidate.get('final_score', 0.5)
-
-                # 간단한 레벨 결정
-                if score >= 0.8:
-                    level = "강추"
-                elif score >= 0.65:
-                    level = "추천"
-                else:
-                    level = "참고"
-
-                # 간단한 추천 이유
-                reason = f"유사도 점수 {score:.2f} (의미적 {candidate.get('semantic_score', 0.0):.2f}, 어휘적 {candidate.get('lexical_score', 0.0):.2f})"
-
-                recommendation = {
-                    "rank": idx,
-                    "type": candidate['type'],
-                    "title": candidate['title'],
-                    "description": candidate['description'][:100] + "..." if len(candidate.get('description', '')) > 100 else candidate.get('description', ''),
-                    "score": round(score, 2),
-                    "reason": reason,
-                    "level": level,
-                    "url": candidate['url']
-                }
-                recommendations.append(recommendation)
-
-            except Exception as e:
-                logger.warning(f"폴백 추천 생성 실패: {e}")
-                continue
-
-        return recommendations

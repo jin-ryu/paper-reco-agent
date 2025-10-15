@@ -3,8 +3,10 @@ import xml.etree.ElementTree as ET
 from typing import Dict, List, Optional
 from datetime import datetime, timedelta
 from src.config.settings import settings
+from src.tools.utils import clean_text
 import logging
 import asyncio
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -165,16 +167,21 @@ class ScienceONClient:
                 return item.text.strip()
             return ""
 
+        abstract = clean_text(get_item_value('Abstract'))
+
+        keywords_str = get_item_value('Keyword')
+        keywords = [kw.strip() for kw in re.split(r'[,;\s]', keywords_str) if kw.strip()]
+
         paper_data = {
             'cn': get_item_value('CN'),
             'title': get_item_value('Title'),
-            'abstract': get_item_value('Abstract'),
+            'abstract': abstract,
             'authors': get_item_value('Author'),
             'affiliation': get_item_value('Affiliation'),
             'journal': get_item_value('JournalName'),
             'publisher': get_item_value('Publisher'),
             'pub_year': get_item_value('Pubyear'),
-            'keywords': get_item_value('Keyword'),
+            'keywords': keywords,
             'doi': get_item_value('DOI'),
             'content_url': get_item_value('ContentURL'),
             'fulltext_url': get_item_value('FulltextURL'),
@@ -186,8 +193,8 @@ class ScienceONClient:
             # 의미적 검색을 위한 결합된 텍스트
             'combined_text': self._create_combined_text_from_paper(
                 get_item_value('Title'),
-                get_item_value('Abstract'),
-                get_item_value('Keywords')
+                abstract,
+                get_item_value('Keyword')
             )
         }
 
@@ -264,8 +271,7 @@ class ScienceONClient:
         if title:
             parts.append(title)
         if abstract:
-            # 초록이 너무 길면 첫 500자만 사용
-            parts.append(abstract[:500] if len(abstract) > 500 else abstract)
+            parts.append(abstract)
         if keywords:
             parts.append(keywords)
         return ' '.join(parts)
