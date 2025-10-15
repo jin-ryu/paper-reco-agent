@@ -173,3 +173,39 @@ Output this exact JSON structure (3 to 5 keywords each):
 }}
 """.strip()
     return prompt
+
+def create_search_queries_prompt_test(source_data: Dict[str, Any], previous_error: str = None) -> str:
+    # 프롬프트 생성
+    prompt = f"""
+    You are a search keyword expert. Extract 3 keywords that users would TYPE to FIND this dataset.
+
+Dataset Information:
+{source_data}
+
+Extract keywords for TWO search systems:
+
+1. paper_queries
+   Purpose: Find ACADEMIC PAPERS related to this dataset's topic
+   Users: Korean researchers searching for papers
+   Strategy: 70% English + 30% Korean (한국어)
+   Examples: "machine learning", "neural network", "딥러닝", "데이터 분석"
+   
+2. dataset_queries  
+   Purpose: Find THIS EXACT DATASET or similar datasets
+   Users: International researchers searching for data
+   Strategy: 70% Original Language + 30% English
+   Examples: Keep technical terms, place names, proper nouns in original form
+
+THINK: What would someone TYPE in a search box to find this?
+- Use SHORT phrases (1-3 words)
+- Use domain-specific terminology
+- Include location names, technical standards, formats
+- Focus on SEARCHABLE terms, not descriptions
+
+Output ONLY this JSON (no markdown, no explanation):
+{{
+  "paper_queries": ["term1", "term2", "term3"],
+  "dataset_queries": ["term1", "term2", "term3"]
+}}
+    """.strip()
+    return prompt
