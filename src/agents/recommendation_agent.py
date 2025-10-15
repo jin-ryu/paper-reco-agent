@@ -25,10 +25,8 @@ class KoreanResearchRecommendationAgent:
             from src.models.qwen_model import QwenModel
             self.llm_model = QwenModel()
 
-        self.max_paper_candidates = 5  # E5/BM25로 상위 5개 논문만 선별
-        self.max_dataset_candidates = 5  # E5/BM25로 상위 5개 데이터셋만 선별
-        self.final_paper_recommendations = 3  # LLM이 최종 3개 논문 선택
-        self.final_dataset_recommendations = 3  # LLM이 최종 3개 데이터셋 선택
+        self.max_paper_candidates = 10  # E5/BM25로 상위 10개 논문만 선별
+        self.max_dataset_candidates = 10  # E5/BM25로 상위 10개 데이터셋만 선별
 
     def _check_gpu_available(self) -> bool:
         """GPU 사용 가능 여부 확인"""
@@ -49,12 +47,19 @@ class KoreanResearchRecommendationAgent:
             # psutil이 없으면 그냥 True 반환
             return True
 
-    async def recommend(self, dataset_id: str) -> Dict[str, Any]:
+    async def recommend(
+        self,
+        dataset_id: str,
+        num_paper_recommendations: int = 3,
+        num_dataset_recommendations: int = 3
+    ) -> Dict[str, Any]:
         """
         메인 추천 함수
 
         Args:
             dataset_id: DataON 데이터셋 ID
+            num_paper_recommendations: 추천할 논문 개수 (기본값: 3)
+            num_dataset_recommendations: 추천할 데이터셋 개수 (기본값: 3)
 
         Returns:
             추천 결과 딕셔너리
@@ -85,13 +90,13 @@ class KoreanResearchRecommendationAgent:
             paper_reco_task = self._get_llm_recommendations_for_type(
                 source_data,
                 ranked_papers[:self.max_paper_candidates],
-                self.final_paper_recommendations,
+                num_paper_recommendations,
                 "paper"
             )
             dataset_reco_task = self._get_llm_recommendations_for_type(
                 source_data,
                 ranked_datasets[:self.max_dataset_candidates],
-                self.final_dataset_recommendations,
+                num_dataset_recommendations,
                 "dataset"
             )
 
