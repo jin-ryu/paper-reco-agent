@@ -160,6 +160,12 @@ class KoreanResearchRecommendationAgent:
                 # 프롬프트 생성 (에러 피드백 포함)
                 prompt = create_search_queries_prompt(source_data, previous_error=previous_error)
 
+                # 프롬프트 로깅 (디버깅용)
+                logger.info(f'=' * 80)
+                logger.info(f"LLM에게 키워드 추출 프롬프트:")
+                logger.info(prompt)
+                logger.info(f'=' * 80)
+
                 # LLM 호출
                 response = await self.llm_model.generate(
                     prompt,
