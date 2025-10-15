@@ -2,7 +2,7 @@ import httpx
 import asyncio
 from typing import Dict, List, Optional
 from src.config.settings import settings
-from src.tools.utils import clean_text
+from src.utils.text_utils import clean_text
 import logging
 import json
 

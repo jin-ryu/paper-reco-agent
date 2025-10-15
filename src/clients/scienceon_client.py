@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from typing import Dict, List, Optional
 from datetime import datetime, timedelta
 from src.config.settings import settings
-from src.tools.utils import clean_text
+from src.utils.text_utils import clean_text
 import logging
 import asyncio
 import re

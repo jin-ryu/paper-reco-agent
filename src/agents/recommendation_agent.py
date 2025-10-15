@@ -3,6 +3,7 @@ import time
 import os
 from src.tools.research_tools import *
 from src.models.prompts import create_search_queries_prompt, create_reranking_prompt
+from src.utils.text_utils import clean_keywords
 import logging
 
 logger = logging.getLogger(__name__)
@@ -183,34 +184,6 @@ class KoreanResearchRecommendationAgent:
                 paper_queries = queries.get('paper_queries', [])
 
                 # 키워드 전처리 (공백 제거, 특수문자 정리, 중복 제거)
-                def clean_keywords(keywords: List[str]) -> List[str]:
-                    """키워드 중복 제거 및 전처리"""
-                    import re
-                    result = []
-                    seen = set()
-
-                    for kw in keywords:
-                        # 1. 앞뒤 공백 제거
-                        kw_clean = kw.strip()
-
-                        # 2. 불필요한 특수문자 제거 (점, 쉼표, 세미콜론 등)
-                        kw_clean = re.sub(r'^[.,;:!?\s]+|[.,;:!?\s]+$', '', kw_clean)
-
-                        # 3. 연속된 공백을 하나로
-                        kw_clean = re.sub(r'\s+', ' ', kw_clean)
-
-                        # 4. 빈 문자열이나 너무 짧은 키워드 제외 (1글자 제외)
-                        if len(kw_clean) < 2:
-                            continue
-
-                        # 5. 중복 체크 (대소문자 무시)
-                        kw_lower = kw_clean.lower()
-                        if kw_lower not in seen:
-                            result.append(kw_clean)
-                            seen.add(kw_lower)
-
-                    return result
-
                 dataset_queries = clean_keywords(dataset_queries)
                 paper_queries = clean_keywords(paper_queries)
 
@@ -275,7 +248,7 @@ class KoreanResearchRecommendationAgent:
                     'data': dataset,
                     'title': dataset.get('title', ''),
                     'description': dataset.get('description', ''),
-                    'keywords': dataset.get('keywords', []),
+                    'keywords': clean_keywords(dataset.get('keywords', [])),  # 키워드 전처리
                     'url': dataset.get('url', ''),
                     'combined_text': dataset.get('combined_text', '')
                 })
@@ -288,7 +261,7 @@ class KoreanResearchRecommendationAgent:
                     'data': paper,
                     'title': paper.get('title', ''),
                     'description': paper.get('abstract', ''),
-                    'keywords': paper.get('keywords', []),
+                    'keywords': clean_keywords(paper.get('keywords', [])),  # 키워드 전처리
                     'url': paper.get('content_url', ''),
                     'combined_text': paper.get('combined_text', ''),
                     'cn': paper.get('cn', '')

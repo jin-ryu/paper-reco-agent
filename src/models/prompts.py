@@ -26,7 +26,12 @@ def create_reranking_prompt(context: Dict[str, Any], num_recommendations: int, p
     for i, candidate in enumerate(candidates, 1):
         cand_id = candidate.get('id', '')
         title = candidate.get('title', '')
+
+        # Description 길이 제한 (1000자) - 긴 논문 초록으로 인한 context overflow 방지
         desc = candidate.get('description', '')
+        if len(desc) > 1000:
+            desc = desc[:1000] + "..."
+
         keywords = ", ".join(candidate.get('keywords', []))
 
         # 유사도 점수 (세부 점수 포함)
