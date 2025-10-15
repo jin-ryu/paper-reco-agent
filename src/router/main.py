@@ -64,24 +64,31 @@ async def shutdown_event():
 # 요청/응답 모델
 class RecommendationRequest(BaseModel):
     dataset_id: str
-    max_recommendations: Optional[int] = 5
+    num_paper_recommendations: Optional[int] = 3
+    num_dataset_recommendations: Optional[int] = 3
 
 class RecommendationItem(BaseModel):
-    rank: int  # 추천 순위 (1=최고 추천)
-    type: str  # "dataset" or "paper"
+    rank: int
+    type: str
+    id: str
+    platform: str
     title: str
     description: str
+    keywords: List[str]
     score: float
     reason: str
-    level: str  # "강추", "추천", "참고"
+    level: str
     url: str
 
 class RecommendationResponse(BaseModel):
     source_dataset: dict
-    recommendations: List[RecommendationItem]
+    search_result: dict
+    paper_recommendations: List[RecommendationItem]
+    dataset_recommendations: List[RecommendationItem]
     processing_time_ms: int
     candidates_analyzed: int
     model_info: dict
+    embedding_model_info: dict
 
 class HealthResponse(BaseModel):
     status: str
@@ -96,24 +103,25 @@ async def get_recommendations(request: RecommendationRequest):
     데이터셋 ID를 받아서 관련 논문/데이터셋을 추천합니다.
 
     - **dataset_id**: DataON 데이터셋 ID
-    - **max_recommendations**: 최대 추천 개수 (기본값: 5)
+    - **num_paper_recommendations**: 추천할 논문 개수 (기본값: 3)
+    - **num_dataset_recommendations**: 추천할 데이터셋 개수 (기본값: 3)
     """
     if not agent:
         raise HTTPException(status_code=503, detail="모델이 아직 로드되지 않았습니다")
 
     try:
-        logger.info(f"추천 요청: 데이터셋 ID = {request.dataset_id}")
+        logger.info(f"추천 요청: 데이터셋 ID = {request.dataset_id}, 논문 = {request.num_paper_recommendations}, 데이터셋 = {request.num_dataset_recommendations}")
 
-        # 에이전트 설정 업데이트
-        if request.max_recommendations:
-            agent.final_recommendations = min(request.max_recommendations, 10)  # 최대 10개 제한
-
-        result = await agent.recommend(request.dataset_id)
+        result = await agent.recommend(
+            dataset_id=request.dataset_id,
+            num_paper_recommendations=request.num_paper_recommendations,
+            num_dataset_recommendations=request.num_dataset_recommendations
+        )
 
         if "error" in result:
             raise HTTPException(status_code=400, detail=result["error"])
 
-        logger.info(f"추천 완료: {len(result['recommendations'])}개 추천")
+        logger.info(f"추천 완료: 논문 {len(result['paper_recommendations'])}개, 데이터셋 {len(result['dataset_recommendations'])}개")
 
         return RecommendationResponse(**result)
 
