@@ -25,23 +25,28 @@ LLM 기반 다국어 하이브리드 연구 데이터 및 논문 추천 시스�
 
 ### 대회 요구사항 충족
 
-- ✅ **소규모 언어모델**: Qwen3-14B (14.8B 파라미터)
-- ✅ **고사양 H/W 지원**: FP16 정밀도로 ~28GB VRAM에서 동작
+- ✅ **소규모 언어모델**: Gemma-2-9B-IT (9B 파라미터) 또는 Qwen3-14B (14.8B 파라미터)
+- ✅ **고사양 H/W 지원**: FP16 정밀도로 ~18GB (Gemma) 또는 ~28GB (Qwen) VRAM에서 동작
 - ✅ **짧은 응답시간**: 하이브리드 RAG로 3-4초 이내 응답
-- ✅ **낮은 실패율**: 임베딩 사전 필터링 + 재시도 로직으로 안정적 추론
+- ✅ **낮은 실패율**: 임베딩 사전 필터링 + 재시도 로직 + description 길이 제한으로 안정적 추론
 - ✅ **네트워크 제약**: DataON/ScienceON API, LLM Endpoint만 사용
 - ✅ **3-5건 추천**: LLM이 순위 결정, 강추/추천/참고 레벨 구분
 
 ### 주요 특징
 
-- 🤖 **Qwen3-14B**: 다국어 고성능 언어모델 (Alibaba Cloud)
+- 🤖 **멀티 모델 지원**:
+  - **Gemma-2-9B-IT** (기본): Google의 9B 파라미터 모델, 8K 컨텍스트
+  - **Qwen3-14B**: Alibaba Cloud의 14.8B 파라미터 모델, 32K 컨텍스트
   - 100+ 언어 지원 (영어, 중국어, 한국어, 일본어 등)
-  - 32K 토큰 컨텍스트 (확장 시 128K)
   - 뛰어난 reasoning 및 instruction following 성능
 
 - 🔍 **LLM 기반 검색 쿼리 생성**: 의미적 이해를 통한 최적 검색어 추출
 - 🌏 **하이브리드 RAG**: LLM 쿼리 생성 + E5 임베딩 + BM25 + LLM 재순위화
-- ⚡ **최적화**: FP16 정밀도, query/passage 구분 인코딩, 재시도 로직
+- ⚡ **최적화**:
+  - FP16 정밀도, query/passage 구분 인코딩
+  - 재시도 로직 (최대 2회)
+  - Description 길이 제한 (1000자)으로 context overflow 방지
+  - 키워드 전처리로 특수문자 제거 및 중복 제거
 
 ---
 
@@ -134,13 +139,15 @@ paper-reco-agent/
 │   ├── config/                # 설정 파일
 │   │   └── settings.py        # 환경 설정
 │   ├── models/                # 언어모델 래퍼
-│   │   ├── qwen_model.py      # Qwen3-14B 모델
+│   │   ├── llm_model.py       # 범용 LLM 모델 (Gemma/Qwen 지원)
+│   │   ├── prompts.py         # LLM 프롬프트 템플릿
 │   │   └── mock_model.py      # 개발용 Mock 모델
 │   ├── router/                # FastAPI 라우터
 │   │   └── main.py            # FastAPI 서버
 │   ├── tools/                 # 유틸리티 도구
-│   │   ├── research_tools.py  # 검색, 임베딩, 유사도 계산
-│   │   └── utils.py           # 텍스트 정제 등 유틸리티
+│   │   └── research_tools.py  # 검색, 임베딩, 유사도 계산
+│   ├── utils/                 # 공통 유틸리티
+│   │   └── text_utils.py      # 텍스트 정제 및 키워드 전처리
 │   ├── evaluation/            # 평가 모듈
 │   │   ├── __init__.py        # 평가 함수 export
 │   │   └── metrics.py         # nDCG, MRR, Recall@k 등
@@ -169,9 +176,10 @@ paper-reco-agent/
 - **notebooks/evaluation.ipynb**: 평가 실행용 Jupyter 노트북
 - **src/router/main.py**: FastAPI 서버 엔드포인트
 - **src/agents/recommendation_agent.py**: 메인 추천 에이전트 로직
-- **src/models/qwen_model.py**: Qwen3-14B 언어모델 래퍼
+- **src/models/llm_model.py**: 범용 LLM 모델 래퍼 (Gemma/Qwen 지원)
+- **src/models/prompts.py**: LLM 프롬프트 템플릿 (쿼리 생성, 재순위화)
 - **src/tools/research_tools.py**: 검색, 임베딩, 유사도 계산 함수
-- **src/tools/utils.py**: 텍스트 정제 등 유틸리티 함수
+- **src/utils/text_utils.py**: 텍스트 정제 및 키워드 전처리 함수
 - **src/evaluation/metrics.py**: 평가 메트릭 (nDCG, MRR, Recall@k 등)
 - **scripts/test_evaluation.py**: 평가 모듈 단위 테스트
 - **requirements.txt**: 전체 의존성 목록 (pip freeze)
@@ -182,7 +190,19 @@ paper-reco-agent/
 
 ### 사용 모델
 
-#### 1. 언어모델: Qwen3-14B
+#### 1. 언어모델 (선택 가능)
+
+**A. Gemma-2-9B-IT (기본값)**
+- **출처**: [google/gemma-2-9b-it](https://huggingface.co/google/gemma-2-9b-it) (Google)
+- **파라미터**: 9B
+- **컨텍스트**: 8K 토큰
+- **언어 지원**: 다국어 (영어, 한국어, 중국어 등)
+- **라이선스**: Gemma License (상업적 사용 가능)
+- **정밀도**: FP16
+- **용량**: ~18GB (FP16)
+- **다운로드**: 자동 다운로드됨 (HuggingFace 토큰 필요)
+
+**B. Qwen3-14B (대안)**
 - **출처**: [Qwen/Qwen3-14B](https://huggingface.co/Qwen/Qwen3-14B) (Alibaba Cloud)
 - **파라미터**: 14.8B (13.2B non-embedding)
 - **컨텍스트**: 32K 토큰 (확장 시 128K)
@@ -191,6 +211,8 @@ paper-reco-agent/
 - **정밀도**: FP16
 - **용량**: ~28GB (FP16)
 - **다운로드**: 자동 다운로드됨 (Hugging Face Hub)
+
+**모델 선택 방법**: `.env` 파일에서 `MODEL_NAME` 변수로 설정
 
 #### 2. 임베딩 모델: Multilingual E5
 - **출처**: [intfloat/multilingual-e5-large](https://huggingface.co/intfloat/multilingual-e5-large) (Microsoft)
@@ -274,35 +296,36 @@ jupyter notebook notebooks/evaluation.ipynb
 - `figures/evaluation_results/<timestamp>/summary_report.txt`: 요약 리포트
 - `figures/evaluation_results/<timestamp>/config.json`: 평가 설정
 
-### 방법 2: 실행 스크립트
+### 방법 2: 자동 환경 설정 스크립트 (⭐ 권장)
+
+프로젝트 환경을 자동으로 설정하는 스크립트를 제공합니다:
 
 ```bash
-# 환경 설정 (최초 1회)
+# 환경 설정 스크립트 실행 (최초 1회)
 bash scripts/setup_environment.sh
-
-# 추론 실행
-bash scripts/run_inference.sh <dataset_id>
-
-# 예시
-bash scripts/run_inference.sh KISTI_DATA_12345
 ```
 
-### 방법 3: FastAPI 서버
+**스크립트가 수행하는 작업**:
+1. conda 설치 확인
+2. `paper-agent` conda 환경 생성 (Python 3.10)
+3. pip 업그레이드
+4. requirements.txt에서 의존성 설치
+5. CUDA 사용 가능 여부 확인
+6. .env 템플릿 파일 생성 (없는 경우)
 
+**환경 설정 후**:
 ```bash
-# 서버 시작
-bash scripts/run_server.sh
+# 1. .env 파일에 API 키 입력
+nano .env
 
-# API 호출
-curl -X POST "http://localhost:8000/recommend" \
-     -H "Content-Type: application/json" \
-     -d '{"dataset_id": "SAMPLE_ID", "max_recommendations": 5}'
+# 2. 환경 활성화
+conda activate paper-agent
 
-# 또는 Swagger UI에서 테스트
-# http://localhost:8000/docs
+# 3. Jupyter 노트북 실행
+jupyter notebook notebooks/inference.ipynb
 ```
 
-### 환경 설정
+### 방법 3: 수동 환경 설정
 
 **1. 프로젝트 클론**
 ```bash
@@ -338,12 +361,27 @@ DATAON_META_KEY=your_key_here
 SCIENCEON_CLIENT_ID=your_client_id_here
 SCIENCEON_ACCOUNTS=your_accounts_here
 
-# 모델 설정
-MODEL_NAME=Qwen/Qwen3-14B
+# 모델 설정 (선택 가능)
+# MODEL_NAME=Qwen/Qwen3-14B  # 대안: Qwen3-14B (14.8B, 32K context)
+MODEL_NAME=google/gemma-2-9b-it  # 기본: Gemma-2-9B-IT (9B, 8K context)
 EMBEDDING_MODEL=intfloat/multilingual-e5-large
+MODEL_CACHE_DIR=/home/infidea/backup-data/paper-reco-agent/model
+
+# Hugging Face 토큰 (gated 모델 접근용, Gemma 필수)
+HF_TOKEN=your_huggingface_token_here
+
+# LLM 생성 파라미터
+MAX_TOKENS=512
+TEMPERATURE=0.1
 
 # 개발 모드 (GPU 없을 때 Mock 모델 사용)
 DEV_MODE=false
+
+# 하이브리드 유사도 가중치
+PAPER_HYBRID_ALPHA=0.8  # E5 임베딩 가중치 (논문)
+PAPER_HYBRID_BETA=0.2   # BM25 가중치 (논문)
+DATASET_HYBRID_ALPHA=0.6  # E5 임베딩 가중치 (데이터셋)
+DATASET_HYBRID_BETA=0.4   # BM25 가중치 (데이터셋)
 ```
 
 ### 추론 결과 예시
@@ -353,9 +391,22 @@ DEV_MODE=false
   "source_dataset": {
     "id": "KISTI_DATA_12345",
     "title": "COVID-19 관련 한국인 생활패턴 데이터",
+    "description": "COVID-19 팬데믹 기간 동안 수집된...",
     "keywords": ["COVID-19", "생활패턴", "한국인", "팬데믹"]
   },
-  "recommendations": [
+  "search_result": {
+    "paper_keywords": ["COVID-19", "생활패턴", "한국인", "팬데믹"],
+    "dataset_keywords": ["COVID-19", "데이터", "설문조사"],
+    "paper_search_details": [
+      {"keyword": "COVID-19", "count": 5},
+      {"keyword": "생활패턴", "count": 5}
+    ],
+    "dataset_search_details": [
+      {"keyword": "COVID-19", "count": 5},
+      {"keyword": "데이터", "count": 5}
+    ]
+  },
+  "paper_recommendations": [
     {
       "rank": 1,
       "type": "paper",
@@ -363,18 +414,22 @@ DEV_MODE=false
       "platform": "scienceon",
       "title": "COVID-19가 한국 가구의 소비패턴에 미친 영향",
       "description": "COVID-19 팬데믹이 한국 가구의 소비 행태에 미친 영향을 분석...",
+      "keywords": ["COVID-19", "소비패턴", "한국", "가구"],
       "score": 0.892,
       "reason": "공통 키워드 'COVID-19', '한국인'으로 높은 연관성; 동일 연구 분야",
       "level": "강추",
       "url": "http://click.ndsl.kr/servlet/OpenAPIDetailView?..."
-    },
+    }
+  ],
+  "dataset_recommendations": [
     {
-      "rank": 2,
+      "rank": 1,
       "type": "dataset",
       "id": "a27774ddf0c702847a996cee9d660ba4",
       "platform": "dataon",
       "title": "팬데믹 시기 생활 변화 설문조사 데이터",
       "description": "2020-2021년 팬데믹 기간 동안 수집된 생활패턴 변화 설문 데이터...",
+      "keywords": ["팬데믹", "생활패턴", "설문조사"],
       "score": 0.784,
       "reason": "관련 주제 및 데이터 유형; 시간적 연관성 높음",
       "level": "추천",
@@ -384,24 +439,52 @@ DEV_MODE=false
   "processing_time_ms": 4230,
   "candidates_analyzed": 30,
   "model_info": {
-    "model_name": "Qwen/Qwen3-14B",
-    "parameters": "14.8B",
-    "dtype": "float16"
+    "model_name": "google/gemma-2-9b-it",
+    "model_type": "Gemma",
+    "device": "cuda",
+    "dtype": "float16",
+    "max_tokens": 512,
+    "temperature": 0.1,
+    "parameters": "9B",
+    "context_length": "8K"
+  },
+  "embedding_model_info": {
+    "embedding_model": "intfloat/multilingual-e5-large",
+    "paper_hybrid_weights": {
+      "alpha": 0.8,
+      "beta": 0.2
+    },
+    "dataset_hybrid_weights": {
+      "alpha": 0.6,
+      "beta": 0.4
+    }
   }
 }
 ```
 
 **추천 결과 필드 설명**:
-- `rank`: 추천 순위 (1부터 시작)
-- `type`: 타입 (`paper` 또는 `dataset`)
-- `id`: 고유 식별자 (논문: cn, 데이터셋: svc_id)
-- `platform`: 출처 플랫폼 (`scienceon` 또는 `dataon`)
-- `title`: 제목
-- `description`: 요약 설명 (최대 200자)
-- `score`: 유사도 점수 (0.0~1.0)
-- `reason`: LLM이 생성한 추천 이유
-- `level`: 추천 수준 (`강추`, `추천`, `참고`)
-- `url`: 원문 링크
+- `source_dataset`: 입력 데이터셋 정보
+- `search_result`: LLM이 생성한 검색 키워드 및 검색 결과 상세
+  - `paper_keywords`: 논문 검색에 사용된 키워드
+  - `dataset_keywords`: 데이터셋 검색에 사용된 키워드
+  - `paper_search_details`: 키워드별 검색 결과 개수
+  - `dataset_search_details`: 키워드별 검색 결과 개수
+- `paper_recommendations`: 논문 추천 리스트
+- `dataset_recommendations`: 데이터셋 추천 리스트
+- 각 추천 항목:
+  - `rank`: 추천 순위 (1부터 시작)
+  - `type`: 타입 (`paper` 또는 `dataset`)
+  - `id`: 고유 식별자 (논문: cn, 데이터셋: svc_id)
+  - `platform`: 출처 플랫폼 (`scienceon` 또는 `dataon`)
+  - `title`: 제목
+  - `description`: 요약 설명 (최대 200자)
+  - `keywords`: 키워드 리스트 (전처리됨)
+  - `score`: 하이브리드 유사도 점수 (0.0~1.0)
+  - `reason`: LLM이 생성한 추천 이유
+  - `level`: 추천 수준 (`강추`, `추천`, `참고`)
+  - `url`: 원문 링크
+- `model_info`: LLM 모델 정보
+- `embedding_model_info`: 임베딩 모델 및 하이브리드 가중치 정보
 
 ---
 
@@ -420,45 +503,63 @@ DEV_MODE=false
     │
     ▼
 ┌─────────────────────────────────────┐
-│ 2. LLM 검색 쿼리 생성 (Qwen3-14B)   │
+│ 2. LLM 검색 쿼리 생성               │
+│    (Gemma-2-9B-IT / Qwen3-14B)     │
 │    입력: 소스 제목 + 설명 + 키워드   │
 │    출력:                             │
 │    - 데이터셋 검색용 쿼리 3-5개      │
 │    - 논문 검색용 쿼리 3-5개          │
+│    - 키워드 전처리 (특수문자 제거)   │
 │    (다국어 의미 이해 기반)           │
 └─────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────┐
-│ 3. API 후보 수집 (병렬)              │
-│   - DataON: LLM 생성 쿼리로 검색     │
-│     (15개 데이터셋)                  │
-│   - ScienceON: LLM 생성 쿼리로 검색  │
-│     (15개 논문)                      │
+│ 3. API 후보 수집 (병렬, 키워드별)    │
+│   ※ 설정 가능 (에이전트 __init__)    │
+│   - search_per_keyword = 5          │
+│     (키워드당 검색 개수)              │
+│   - DataON: 키워드당 5개씩 검색      │
+│     → 중복 제거 후 전체 수집         │
+│   - ScienceON: 키워드당 5개씩 검색   │
+│     → 중복 제거 후 전체 수집         │
+│   - 키워드 전처리 적용               │
 └─────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────┐
 │ 4. 하이브리드 유사도 계산 및 필터링  │
-│   - Semantic (E5): 70%              │
+│   ※ 설정 가능 (.env 파일)            │
+│   - Semantic (E5):                  │
+│     PAPER_HYBRID_ALPHA (기본 0.8)   │
+│     DATASET_HYBRID_ALPHA (기본 0.6) │
+│   - Lexical (BM25):                 │
+│     PAPER_HYBRID_BETA (기본 0.2)    │
+│     DATASET_HYBRID_BETA (기본 0.4)  │
+│   - 계산 방식:                       │
 │     * query: 소스 데이터셋           │
 │     * passage: 후보 문서             │
-│     * 코사인 유사도 계산              │
-│   - Lexical (BM25): 30%             │
-│     * 어휘 매칭 점수                 │
-│   - 최종 점수 = 의미적*0.7 + 어휘*0.3│
-│   → 상위 15개 후보 선별              │
+│     * 코사인 유사도 (E5)             │
+│     * BM25 어휘 매칭 점수            │
+│   - 최종 점수로 정렬                 │
+│   ※ 설정 가능 (에이전트 __init__)    │
+│   → max_paper_candidates (기본 10)  │
+│   → max_dataset_candidates (기본 10)│
 └─────────────────────────────────────┘
     │
     ▼
 ┌─────────────────────────────────────┐
-│ 5. LLM 최종 분석 (Qwen3-14B)        │
-│   - 15개 후보 정밀 분석              │
+│ 5. LLM 최종 분석                    │
+│    (Gemma-2-9B-IT / Qwen3-14B)     │
+│   - 상위 10개 후보 정밀 분석         │
+│   - Description 길이 제한 (1000자)   │
 │   - 유사도 점수 해석                 │
 │   - 추천 순위 결정 (rank)            │
-│   - 3-5개 최종 추천 선별             │
+│   - num_paper_recommendations개 선별│
+│   - num_dataset_recommendations개 선별│
 │   - 추천 이유 작성 (다국어)          │
 │   - 추천 레벨 결정 (강추/추천/참고)  │
+│   - 재시도 로직 (최대 2회)           │
 └─────────────────────────────────────┘
     │
     ▼
@@ -470,6 +571,17 @@ DEV_MODE=false
 - 🔄 **맞춤형 쿼리**: 데이터셋 검색과 논문 검색에 각각 최적화된 쿼리 사용
 - ⚡ **빠른 필터링**: 검색 API 응답만으로 유사도 계산, 상세 조회 불필요
 - 🎨 **하이브리드 스코어링**: E5 임베딩(의미) + BM25(어휘)로 정확도와 재현율 확보
+  - 논문: E5 80% + BM25 20% (의미 중심, `.env`에서 조정 가능)
+  - 데이터셋: E5 60% + BM25 40% (키워드 중심, `.env`에서 조정 가능)
+- 🔧 **유연한 검색 설정** (에이전트 클래스에서 조정 가능):
+  - `search_per_keyword`: 키워드당 검색 개수 (기본 5개)
+  - `max_paper_candidates`: LLM에 보낼 논문 후보 개수 (기본 10개)
+  - `max_dataset_candidates`: LLM에 보낼 데이터셋 후보 개수 (기본 10개)
+  - 키워드별 검색 → 중복 제거 → 점수 계산 → 상위 N개 선별
+- 🛡️ **안정성 개선**:
+  - 키워드 전처리 (특수문자 제거, 중복 제거)
+  - Description 길이 제한 (1000자)으로 context overflow 방지
+  - LLM 재시도 로직 (최대 2회)
 
 ---
 
@@ -525,6 +637,7 @@ jupyter notebook notebooks/inference.ipynb
 
 본 프로젝트는 다음 오픈소스 라이브러리를 사용합니다:
 
+- **Gemma-2-9B-IT**: Gemma License (Google, 상업적 사용 가능)
 - **Qwen3-14B**: Apache 2.0 License (Alibaba Cloud)
 - **PyTorch**: BSD License
 - **Transformers**: Apache 2.0 License (Hugging Face)
@@ -541,6 +654,7 @@ jupyter notebook notebooks/inference.ipynb
 
 ## 참고 자료
 
+- **Gemma-2-9B-IT**: https://huggingface.co/google/gemma-2-9b-it
 - **Qwen3-14B**: https://huggingface.co/Qwen/Qwen3-14B
 - **Multilingual E5**: https://huggingface.co/intfloat/multilingual-e5-large
 - **DataON API**: https://dataon.gitbook.io/
