@@ -120,10 +120,8 @@ paper-reco-agent/
 ├── .env                       # 환경 변수 (API 키)
 │
 ├── data/                      # 데이터 폴더
-│   ├── test/                  # 테스트 데이터셋
-│   │   └── testset_gemini_ver1.json  # 평가용 테스트 데이터
-│   ├── inference_results/     # 추론 결과 저장 위치
-│   └── evaluation_results/    # 평가 결과 저장 위치
+│   └── test/                  # 테스트 데이터셋
+│       └── testset_gemini_ver1.json  # 평가용 테스트 데이터
 │
 ├── model/                     # 학습된 모델 파일 (자동 다운로드)
 │
@@ -147,8 +145,9 @@ paper-reco-agent/
 │   │   ├── __init__.py        # 평가 함수 export
 │   │   └── metrics.py         # nDCG, MRR, Recall@k 등
 │
-├── notebooks/                 # Jupyter 노트북 (추론 실행)
-│   └── inference.ipynb        # ⭐ 추론 + 평가 실행 노트북
+├── notebooks/                 # Jupyter 노트북
+│   ├── inference.ipynb        # ⭐ 추론 실행 노트북
+│   └── evaluation.ipynb       # ⭐ 평가 실행 노트북
 │
 ├── scripts/                   # 실행 스크립트
 │   ├── setup_environment.sh   # 환경 설정 스크립트
@@ -157,14 +156,17 @@ paper-reco-agent/
 │   └── run_server.sh          # FastAPI 서버 실행 스크립트
 │
 ├── demo/                      # 데모 영상
-├── figures/                   # 아키텍처 다이어그램 및 결과 그림
+├── figures/                   # 결과 저장 폴더
+│   ├── inference_results/     # 추론 결과 (타임스탬프별)
+│   └── evaluation_results/    # 평가 결과 (타임스탬프별)
 
 └── requirements.txt           # 의존성 목록 (상세 버전)
 ```
 
 ### 주요 파일 설명
 
-- **notebooks/inference.ipynb**: 추론 + 평가 실행용 Jupyter 노트북 (필수)
+- **notebooks/inference.ipynb**: 추론 실행용 Jupyter 노트북
+- **notebooks/evaluation.ipynb**: 평가 실행용 Jupyter 노트북
 - **src/router/main.py**: FastAPI 서버 엔드포인트
 - **src/agents/recommendation_agent.py**: 메인 추천 에이전트 로직
 - **src/models/qwen_model.py**: Qwen3-14B 언어모델 래퍼
@@ -204,7 +206,7 @@ paper-reco-agent/
 - **API 데이터**:
   - DataON API: 데이터셋 메타데이터 및 검색
   - ScienceON API: 논문 검색 및 메타데이터
-- **출력 데이터**: JSON 형식 추천 결과 (`data/inference_results/`)
+- **출력 데이터**: JSON 형식 추천 결과 (`figures/inference_results/`)
 
 **데이터 저작권**: 경진대회 제공 API만 사용, 저작권 문제 없음
 
@@ -239,15 +241,24 @@ jupyter notebook notebooks/inference.ipynb
 
 ### 평가 실행
 
-노트북의 평가 섹션(Section 10-15)에서 자동 평가를 실행할 수 있습니다:
+**evaluation.ipynb 노트북**을 사용하여 평가를 실행할 수 있습니다:
 
-```python
-# 노트북 내에서 실행
-# 1. 테스트 데이터 로드 (data/test/testset_gemini_ver1.json)
-# 2. 배치 추론 실행
-# 3. 평가 메트릭 계산 (nDCG@k, MRR@k, Recall@k, Precision@k)
-# 4. 결과 저장 (data/evaluation_results/)
+```bash
+# Jupyter 실행
+jupyter notebook notebooks/evaluation.ipynb
+
+# 노트북에서 모든 셀 순차 실행
 ```
+
+**평가 프로세스**:
+1. 테스트 데이터셋 로드 (data/test/testset_gemini_ver1.json)
+2. 추천 에이전트 초기화
+3. 각 테스트 케이스에 대해 추천 실행
+4. 평가 메트릭 계산 (nDCG@k, MRR@k, Recall@k, Precision@k)
+5. 결과를 타임스탬프 폴더에 저장 (figures/evaluation_results/<timestamp>/)
+6. 논문/데이터셋 분리 평가
+7. 카테고리별 분석
+8. CSV 및 요약 리포트 생성
 
 **평가 지표**:
 - **nDCG@k**: Normalized Discounted Cumulative Gain (순위 품질)
@@ -256,10 +267,12 @@ jupyter notebook notebooks/inference.ipynb
 - **Precision@k**: 정밀도 (추천 중 관련 아이템 비율)
 
 **평가 결과 파일**:
-- `data/evaluation_results/detailed_evaluation.json`: 상세 평가 결과
-- `data/evaluation_results/evaluation_summary.csv`: 요약 (CSV)
-- `data/evaluation_results/average_metrics.json`: 평균 메트릭
-- `data/evaluation_results/failed_cases.json`: 실패 케이스
+- `figures/evaluation_results/<timestamp>/individual_results.json`: 개별 테스트 케이스 결과
+- `figures/evaluation_results/<timestamp>/metrics_summary.json`: k별 평균 메트릭
+- `figures/evaluation_results/<timestamp>/category_metrics.json`: 카테고리별 메트릭
+- `figures/evaluation_results/<timestamp>/results.csv`: CSV 형식 결과
+- `figures/evaluation_results/<timestamp>/summary_report.txt`: 요약 리포트
+- `figures/evaluation_results/<timestamp>/config.json`: 평가 설정
 
 ### 방법 2: 실행 스크립트
 
