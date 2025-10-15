@@ -21,10 +21,12 @@ class KoreanResearchRecommendationAgent:
             from src.models.mock_model import MockQwenModel
             self.llm_model = MockQwenModel()
         else:
-            logger.info("🚀 프로덕션 모드로 실행: 실제 Qwen 모델 사용")
-            from src.models.qwen_model import QwenModel
-            self.llm_model = QwenModel()
+            logger.info("🚀 프로덕션 모드로 실행: 실제 LLM 모델 사용")
+            from src.models.llm_model import LLMModel
+            self.llm_model = LLMModel()
 
+        # 후보 검색 설정
+        self.search_per_keyword = 5  # 키워드당 검색할 개수
         self.max_paper_candidates = 10  # E5/BM25로 상위 10개 논문만 선별
         self.max_dataset_candidates = 10  # E5/BM25로 상위 10개 데이터셋만 선별
 
@@ -79,7 +81,7 @@ class KoreanResearchRecommendationAgent:
             logger.info(f"검색 쿼리 생성 완료: 데이터셋({len(search_queries['dataset_queries'])}개), 논문({len(search_queries['paper_queries'])}개)")
 
             # 3단계: 후보 수집
-            candidates = await self._collect_candidates_with_queries(search_queries, dataset_id)
+            candidates, search_result = await self._collect_candidates_with_queries(search_queries, dataset_id)
             logger.info(f"총 {len(candidates)}개 후보 수집 완료")
 
             # 4단계: 유사도 계산 및 순위 결정
@@ -115,11 +117,13 @@ class KoreanResearchRecommendationAgent:
                     "description": source_data.get('description', '')[:200] + "...",
                     "keywords": source_data.get('keywords', [])
                 },
+                "search_result": search_result,
                 "paper_recommendations": paper_recommendations,
                 "dataset_recommendations": dataset_recommendations,
                 "processing_time_ms": processing_time,
                 "candidates_analyzed": len(candidates),
-                "model_info": self.llm_model.get_model_info()
+                "model_info": self.llm_model.get_model_info(),
+                "embedding_model_info": self._get_embedding_model_info()
             }
 
         except Exception as e:
@@ -178,17 +182,33 @@ class KoreanResearchRecommendationAgent:
                 dataset_queries = queries.get('dataset_queries', [])
                 paper_queries = queries.get('paper_queries', [])
 
-                # 기본 정리만 수행 (공백 제거, 중복 제거)
+                # 키워드 전처리 (공백 제거, 특수문자 정리, 중복 제거)
                 def clean_keywords(keywords: List[str]) -> List[str]:
-                    """키워드 중복 제거 및 공백 정리"""
+                    """키워드 중복 제거 및 전처리"""
+                    import re
                     result = []
                     seen = set()
+
                     for kw in keywords:
+                        # 1. 앞뒤 공백 제거
                         kw_clean = kw.strip()
+
+                        # 2. 불필요한 특수문자 제거 (점, 쉼표, 세미콜론 등)
+                        kw_clean = re.sub(r'^[.,;:!?\s]+|[.,;:!?\s]+$', '', kw_clean)
+
+                        # 3. 연속된 공백을 하나로
+                        kw_clean = re.sub(r'\s+', ' ', kw_clean)
+
+                        # 4. 빈 문자열이나 너무 짧은 키워드 제외 (1글자 제외)
+                        if len(kw_clean) < 2:
+                            continue
+
+                        # 5. 중복 체크 (대소문자 무시)
                         kw_lower = kw_clean.lower()
-                        if kw_clean and kw_lower not in seen:
+                        if kw_lower not in seen:
                             result.append(kw_clean)
                             seen.add(kw_lower)
+
                     return result
 
                 dataset_queries = clean_keywords(dataset_queries)
@@ -230,47 +250,49 @@ class KoreanResearchRecommendationAgent:
                 'paper_queries': fallback_keywords
             }
 
-    async def _collect_candidates_with_queries(self, search_queries: Dict[str, List[str]], source_id: str) -> List[Dict[str, Any]]:
+    async def _collect_candidates_with_queries(self, search_queries: Dict[str, List[str]], source_id: str) -> tuple:
         """3단계: 생성된 쿼리로 후보 수집 (DataON + ScienceON)"""
         candidates = []
 
         try:
-            # 병렬로 후보 수집
-            tasks = [
-                self._search_similar_datasets(search_queries['dataset_queries']),
-                self._search_related_papers(search_queries['paper_queries'])
-            ]
+            # 병렬로 후보 수집 (키워드별 상세 결과 포함)
+            dataset_results = await self._search_similar_datasets_detailed(search_queries['dataset_queries'])
+            paper_results = await self._search_related_papers_detailed(search_queries['paper_queries'])
 
-            results = await asyncio.gather(*tasks, return_exceptions=True)
+            # search_result 구성
+            search_result = {
+                "paper_keywords": search_queries['paper_queries'],
+                "dataset_keywords": search_queries['dataset_queries'],
+                "paper_search_details": paper_results['details'],
+                "dataset_search_details": dataset_results['details']
+            }
 
             # DataON 데이터셋 후보
-            if not isinstance(results[0], Exception):
-                for dataset in results[0]:
-                    candidates.append({
-                        'type': 'dataset',
-                        'source': 'dataon',
-                        'data': dataset,
-                        'title': dataset.get('title', ''),
-                        'description': dataset.get('description', ''),
-                        'keywords': dataset.get('keywords', []),
-                        'url': dataset.get('url', ''),
-                        'combined_text': dataset.get('combined_text', '')
-                    })
+            for dataset in dataset_results['candidates']:
+                candidates.append({
+                    'type': 'dataset',
+                    'source': 'dataon',
+                    'data': dataset,
+                    'title': dataset.get('title', ''),
+                    'description': dataset.get('description', ''),
+                    'keywords': dataset.get('keywords', []),
+                    'url': dataset.get('url', ''),
+                    'combined_text': dataset.get('combined_text', '')
+                })
 
             # ScienceON 논문 후보
-            if not isinstance(results[1], Exception):
-                for paper in results[1]:
-                    candidates.append({
-                        'type': 'paper',
-                        'source': 'scienceon',
-                        'data': paper,
-                        'title': paper.get('title', ''),
-                        'description': paper.get('abstract', ''),
-                        'keywords': paper.get('keywords', []),
-                        'url': paper.get('content_url', ''),
-                        'combined_text': paper.get('combined_text', ''),
-                        'cn': paper.get('cn', '')
-                    })
+            for paper in paper_results['candidates']:
+                candidates.append({
+                    'type': 'paper',
+                    'source': 'scienceon',
+                    'data': paper,
+                    'title': paper.get('title', ''),
+                    'description': paper.get('abstract', ''),
+                    'keywords': paper.get('keywords', []),
+                    'url': paper.get('content_url', ''),
+                    'combined_text': paper.get('combined_text', ''),
+                    'cn': paper.get('cn', '')
+                })
 
             # Filter out the source dataset itself
             filtered_candidates = [
@@ -278,28 +300,57 @@ class KoreanResearchRecommendationAgent:
                 if not (c['type'] == 'dataset' and c.get('data', {}).get('svc_id') == source_id)
             ]
 
-            return filtered_candidates
+            return filtered_candidates, search_result
 
         except Exception as e:
             logger.error(f"후보 수집 실패: {e}")
-            return []
+            return [], {"paper_keywords": [], "dataset_keywords": [], "paper_search_details": [], "dataset_search_details": []}
 
-    async def _search_similar_datasets(self, keywords: List[str]) -> List[Dict[str, Any]]:
-        """DataON에서 유사한 데이터셋 검색"""
+    async def _search_similar_datasets_detailed(self, keywords: List[str]) -> Dict[str, Any]:
+        """DataON에서 유사한 데이터셋 검색 (키워드별 상세 정보 포함)"""
         try:
-            return await search_similar_dataon_datasets(keywords, limit=15)
-        except Exception as e:
-            logger.error(f"DataON 검색 실패: {e}")
-            return []
+            all_datasets = []
+            details = []
+            seen_ids = set()
 
-    async def _search_related_papers(self, keywords: List[str]) -> List[Dict[str, Any]]:
-        """ScienceON에서 관련 논문 검색"""
-        try:
-            papers = []
             # 키워드별로 검색하여 다양성 확보
             for keyword in keywords:
-                keyword_papers = await search_scienceon_papers(keyword, limit=5)
+                keyword_datasets = await search_similar_dataon_datasets([keyword], limit=self.search_per_keyword)
+
+                # 중복 제거 (svc_id 기준)
+                for dataset in keyword_datasets:
+                    svc_id = dataset.get('svc_id', '')
+                    if svc_id and svc_id not in seen_ids:
+                        seen_ids.add(svc_id)
+                        all_datasets.append(dataset)
+
+                details.append({
+                    "keyword": keyword,
+                    "count": len(keyword_datasets)
+                })
+
+            return {
+                "candidates": all_datasets,  # 모든 후보 반환 (중복 제거만)
+                "details": details
+            }
+        except Exception as e:
+            logger.error(f"DataON 검색 실패: {e}")
+            return {"candidates": [], "details": []}
+
+    async def _search_related_papers_detailed(self, keywords: List[str]) -> Dict[str, Any]:
+        """ScienceON에서 관련 논문 검색 (키워드별 상세 정보 포함)"""
+        try:
+            papers = []
+            details = []
+
+            # 키워드별로 검색하여 다양성 확보
+            for keyword in keywords:
+                keyword_papers = await search_scienceon_papers(keyword, limit=self.search_per_keyword)
                 papers.extend(keyword_papers)
+                details.append({
+                    "keyword": keyword,
+                    "count": len(keyword_papers)
+                })
 
             # 중복 제거 (CN 기준)
             seen_cns = set()
@@ -310,11 +361,14 @@ class KoreanResearchRecommendationAgent:
                     seen_cns.add(cn)
                     unique_papers.append(paper)
 
-            return unique_papers[:15]  # 최대 15개
+            return {
+                "candidates": unique_papers,  # 모든 후보 반환 (중복 제거만)
+                "details": details
+            }
 
         except Exception as e:
             logger.error(f"ScienceON 검색 실패: {e}")
-            return []
+            return {"candidates": [], "details": []}
 
     async def _rank_candidates(self, source_data: Dict[str, Any], candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """3단계: 하이브리드 유사도 계산 및 후보 순위 결정"""
@@ -557,7 +611,7 @@ class KoreanResearchRecommendationAgent:
 
                             # LLM 추천 정보와 후보 데이터 결합
                             # rank는 LLM이 명시적으로 반환한 값 사용
-                            # title, type, score, url, id, platform은 모두 candidates에서 가져옴
+                            # title, type, score, url, id, platform, keywords는 모두 candidates에서 가져옴
                             # reason, level만 LLM이 생성
                             final_rec = {
                                 "rank": rank,  # LLM이 명시적으로 반환한 rank 값 사용
@@ -566,6 +620,7 @@ class KoreanResearchRecommendationAgent:
                                 "platform": platform,  # Platform 추가 (dataon/scienceon)
                                 "title": candidate['title'],
                                 "description": candidate['description'][:200] + "..." if len(candidate.get('description', '')) > 200 else candidate.get('description', ''),
+                                "keywords": candidate.get('keywords', []),  # 키워드 추가
                                 "score": candidate.get('hybrid_score', 0.5),  # E5 계산한 점수 사용
                                 "reason": rec.get('reason', '추천 이유 생성 실패'),
                                 "level": rec.get('level', '참고'),
@@ -595,3 +650,19 @@ class KoreanResearchRecommendationAgent:
             logger.error(f"LLM 응답 파싱 실패: {e}")
             logger.error(f"LLM 응답:\n{response[:1000]}...")
             return []
+
+    def _get_embedding_model_info(self) -> Dict[str, Any]:
+        """임베딩 모델 및 하이브리드 유사도 설정 정보 반환"""
+        from src.config.settings import settings
+
+        return {
+            "embedding_model": settings.EMBEDDING_MODEL,
+            "paper_hybrid_weights": {
+                "alpha": settings.PAPER_HYBRID_ALPHA,
+                "beta": settings.PAPER_HYBRID_BETA
+            },
+            "dataset_hybrid_weights": {
+                "alpha": settings.DATASET_HYBRID_ALPHA,
+                "beta": settings.DATASET_HYBRID_BETA
+            }
+        }
