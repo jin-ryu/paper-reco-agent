@@ -1,8 +1,8 @@
 # Research Recommendation Agent
 
 **2025 DATA·AI 분석 경진대회 - 논문·데이터 추천 에이전트**
- 
-LLM 기반 다국어 하이브리드 연구 데이터 및 논문 추천 시스템
+
+하이브리드 검색 기반 연구 데이터 및 논문 추천 에이전트
 
 ---
 
@@ -25,28 +25,29 @@ LLM 기반 다국어 하이브리드 연구 데이터 및 논문 추천 시스�
 
 ### 대회 요구사항 충족
 
-- ✅ **소규모 언어모델**: Gemma-2-9B-IT (9B 파라미터) 또는 Qwen3-14B (14.8B 파라미터)
-- ✅ **고사양 H/W 지원**: FP16 정밀도로 ~18GB (Gemma) 또는 ~28GB (Qwen) VRAM에서 동작
-- ✅ **짧은 응답시간**: 하이브리드 RAG로 3-4초 이내 응답
-- ✅ **낮은 실패율**: 임베딩 사전 필터링 + 재시도 로직 + description 길이 제한으로 안정적 추론
-- ✅ **네트워크 제약**: DataON/ScienceON API, LLM Endpoint만 사용
-- ✅ **3-5건 추천**: LLM이 순위 결정, 강추/추천/참고 레벨 구분
+- **소규모 언어모델**: Gemma-2-9B-IT (9B 파라미터) 또는 Qwen3-14B (14.8B 파라미터)
+- **고사양 H/W 지원**: FP16 정밀도로 ~18GB (Gemma) 또는 ~28GB (Qwen) VRAM에서 동작
+- **짧은 응답시간**: 하이브리드 검색 기반 추천으로 평균 29.5초 응답
+- **낮은 실패율**: 임베딩 사전 필터링 + 재시도 로직 + description 길이 제한으로 안정적 추론 (100% 성공률)
+- **네트워크 제약**: DataON/ScienceON API만 사용
+- **3-5건 추천**: LLM이 순위 결정, 강추/추천/참고 레벨 구분
 
 ### 주요 특징
 
-- 🤖 **멀티 모델 지원**:
+- **멀티 모델 지원**:
   - **Gemma-2-9B-IT** (기본): Google의 9B 파라미터 모델, 8K 컨텍스트
   - **Qwen3-14B**: Alibaba Cloud의 14.8B 파라미터 모델, 32K 컨텍스트
   - 100+ 언어 지원 (영어, 중국어, 한국어, 일본어 등)
   - 뛰어난 reasoning 및 instruction following 성능
 
-- 🔍 **LLM 기반 검색 쿼리 생성**: 의미적 이해를 통한 최적 검색어 추출
-- 🌏 **하이브리드 RAG**: LLM 쿼리 생성 + E5 임베딩 + BM25 + LLM 재순위화
-- ⚡ **최적화**:
+- **LLM 기반 검색 쿼리 생성**: 의미적 이해를 통한 최적 검색어 추출
+- **하이브리드 검색**: LLM 쿼리 생성 + E5 임베딩(의미 유사도) + BM25(어휘 매칭) + LLM 재순위화
+- **최적화**:
   - FP16 정밀도, query/passage 구분 인코딩
   - 재시도 로직 (최대 2회)
-  - Description 길이 제한 (1000자)으로 context overflow 방지
+  - Description 길이 제한 (1000자)로 context overflow 방지
   - 키워드 전처리로 특수문자 제거 및 중복 제거
+- **개발 모드**: GPU 없이도 실행 가능한 Mock 모델 자동 전환
 
 ---
 
@@ -127,7 +128,7 @@ paper-reco-agent/
 │
 ├── data/                      # 데이터 폴더
 │   └── test/                  # 테스트 데이터셋
-│       └── testset_gemini_ver1.json  # 평가용 테스트 데이터
+│       └── testset_aug.json   # 평가용 테스트 데이터 (13개 케이스)
 │
 ├── model/                     # 학습된 모델 파일 (자동 다운로드)
 │
@@ -164,8 +165,8 @@ paper-reco-agent/
 │       └── text_utils.py      # 텍스트 정제 및 키워드 전처리
 │
 ├── notebooks/                 # Jupyter 노트북
-│   ├── inference.ipynb        # ⭐ 추론 실행 노트북
-│   └── evaluation.ipynb       # ⭐ 평가 실행 노트북
+│   ├── inference.ipynb        # 추론 실행 노트북 (권장)
+│   └── evaluation.ipynb       # 평가 실행 노트북 (권장)
 │
 ├── scripts/                   # 실행 스크립트
 │   └── setup_environment.sh   # 환경 설정 스크립트
@@ -236,7 +237,8 @@ paper-reco-agent/
 - **API 데이터**:
   - DataON API: 데이터셋 메타데이터 및 검색
   - ScienceON API: 논문 검색 및 메타데이터
-- **출력 데이터**: JSON 형식 추천 결과 (`figures/inference_results/`)
+- **출력 데이터**: JSON 형식 추천 결과 (`results/inference_results/`)
+- **평가 데이터**: `data/test/testset_aug.json` (13개 테스트 케이스)
 
 **데이터 저작권**: 경진대회 제공 API만 사용, 저작권 문제 없음
 
@@ -244,7 +246,7 @@ paper-reco-agent/
 
 ## 추론 수행 방법
 
-### 방법 1: Jupyter Notebook (⭐ 권장)
+### 방법 1: Jupyter Notebook (권장)
 
 **대회 심사자용 추론 실행 방법**:
 
@@ -286,7 +288,7 @@ jupyter notebook notebooks/evaluation.ipynb
 3.  **추천 생성 및 평가**: 각 테스트 케이스에 대해 다음을 수행합니다.
     *   에이전트를 통해 논문 및 데이터셋 추천을 생성합니다.
     *   생성된 추천 목록과 정답셋(`candidate_pool`)을 비교하여 평가 메트릭을 계산합니다.
-4.  **결과 저장**: 모든 평가가 완료되면, 타임스탬프 기반의 결과 폴더(`figures/evaluation_results/<timestamp>/`)에 아래 파일들을 저장합니다.
+4.  **결과 저장**: 모든 평가가 완료되면, 타임스탬프 기반의 결과 폴더(`results/evaluation_results/<timestamp>/`)에 아래 파일들을 저장합니다.
 5.  **리포트 생성**: 전체 결과를 종합하여 가독성 높은 요약 리포트를 생성하고 출력합니다.
 
 **평가 지표**:
@@ -296,12 +298,12 @@ jupyter notebook notebooks/evaluation.ipynb
 - **Precision@k**: 정밀도 (추천 중 관련 아이템 비율)
 
 **평가 결과 파일**:
-- `figures/evaluation_results/<timestamp>/EVALUATION_SUMMARY.txt`: ⭐ **(가장 먼저 확인)** 평가 설정, 카테고리별/종합 성능, 상위/하위 케이스 분석 등 핵심 결과를 요약한 리포트입니다.
-- `figures/evaluation_results/<timestamp>/detailed_results.csv`: 각 테스트 케이스별 추천 결과 및 정답 여부를 포함한 상세 데이터 (CSV 형식).
-- `figures/evaluation_results/<timestamp>/metrics.json`: 전체 테스트 케이스에 대한 평균 평가 지표(nDCG, MRR 등)를 저장한 파일.
-- `figures/evaluation_results/<timestamp>/recommend_result.json`: 에이전트가 생성한 원본 추천 결과(JSON 형식) 전체를 저장한 파일.
+- `results/evaluation_results/<timestamp>/EVALUATION_SUMMARY.txt`: **(가장 먼저 확인)** 평가 설정, 카테고리별/종합 성능, 상위/하위 케이스 분석 등 핵심 결과를 요약한 리포트입니다.
+- `results/evaluation_results/<timestamp>/detailed_results.csv`: 각 테스트 케이스별 추천 결과 및 정답 여부를 포함한 상세 데이터 (CSV 형식).
+- `results/evaluation_results/<timestamp>/metrics.json`: 전체 테스트 케이스에 대한 평균 평가 지표(nDCG, MRR 등)를 저장한 파일.
+- `results/evaluation_results/<timestamp>/recommend_result.json`: 에이전트가 생성한 원본 추천 결과(JSON 형식) 전체를 저장한 파일.
 
-### 방법 2: 자동 환경 설정 스크립트 (⭐ 권장)
+### 방법 2: 자동 환경 설정 스크립트 (권장)
 
 프로젝트 환경을 자동으로 설정하는 스크립트를 제공합니다:
 
@@ -408,7 +410,7 @@ nano .env
       "url": "https://dataon.kisti.re.kr/..."
     }
   ],
-  "processing_time_ms": 4230,
+  "processing_time_ms": 29500,
   "candidates_analyzed": 30,
   "model_info": {
     "model_name": "google/gemma-2-9b-it",
@@ -462,7 +464,7 @@ nano .env
 
 ## 시스템 아키텍처
 
-### LLM 기반 하이브리드 RAG 파이프라인
+### 하이브리드 검색 기반 추천 파이프라인
 
 ```
 입력: dataset_id
@@ -539,18 +541,18 @@ nano .env
 ```
 
 ### 핵심 개선점
-- 🎯 **LLM이 검색 쿼리 생성**: 의미적 이해를 통해 최적의 검색어를 생성
-- 🔄 **맞춤형 쿼리**: 데이터셋 검색과 논문 검색에 각각 최적화된 쿼리 사용
-- ⚡ **빠른 필터링**: 검색 API 응답만으로 유사도 계산, 상세 조회 불필요
-- 🎨 **하이브리드 스코어링**: E5 임베딩(의미) + BM25(어휘)로 정확도와 재현율 확보
+- **LLM이 검색 쿼리 생성**: 의미적 이해를 통해 최적의 검색어를 생성
+- **맞춤형 쿼리**: 데이터셋 검색과 논문 검색에 각각 최적화된 쿼리 사용
+- **빠른 필터링**: 검색 API 응답만으로 유사도 계산, 상세 조회 불필요
+- **하이브리드 스코어링**: E5 임베딩(의미) + BM25(어휘)로 정확도와 재현율 확보
   - 논문: E5 80% + BM25 20% (의미 중심, `.env`에서 조정 가능)
   - 데이터셋: E5 60% + BM25 40% (키워드 중심, `.env`에서 조정 가능)
-- 🔧 **유연한 검색 설정** (에이전트 클래스에서 조정 가능):
+- **유연한 검색 설정** (에이전트 클래스에서 조정 가능):
   - `search_per_keyword`: 키워드당 검색 개수 (기본 5개)
   - `max_paper_candidates`: LLM에 보낼 논문 후보 개수 (기본 10개)
   - `max_dataset_candidates`: LLM에 보낼 데이터셋 후보 개수 (기본 10개)
   - 키워드별 검색 → 중복 제거 → 점수 계산 → 상위 N개 선별
-- 🛡️ **안정성 개선**:
+- **안정성 개선**:
   - 키워드 전처리 (특수문자 제거, 중복 제거)
   - Description 길이 제한 (1000자)으로 context overflow 방지
   - LLM 재시도 로직 (최대 2회)
@@ -559,21 +561,59 @@ nano .env
 
 ## 성능 평가
 
-### 시스템 성능 (고사양 기준)
+### 실제 평가 결과 (Gemma-2-9B-IT 기준)
 
-| 메트릭 | FP16 (28GB) |
-|--------|------------|
-| **응답 시간** | 3-4초 |
-| **메모리 사용** | ~28GB |
-| **처리량** | 20-25 req/min |
-| **실패율** | < 0.5% |
+**평가 환경**
+- **평가 일시**: 2025-10-16 08:15
+- **LLM 모델**: google/gemma-2-9b-it (9B 파라미터)
+- **임베딩 모델**: intfloat/multilingual-e5-large
+- **테스트 케이스**: 13개 (성공률 100%, 13/13)
+- **평균 응답 시간**: 29.5초 (최소 20.1초 ~ 최대 37.5초)
+
+**전체 추천 품질 (k=5)**
+
+| 메트릭 | 점수 | 설명 |
+| --- | --- | --- |
+| **nDCG@5** | **0.8085** (±0.3634) | 순위 품질 - 이상적 순위 대비 80.85% |
+| **MRR@5** | **0.8462** (±0.3755) | 첫 관련 아이템 순위 - 평균 1.18위 |
+| **Recall@5** | **0.3669** (±0.1914) | 재현율 - 전체 관련 항목의 36.69% 발견 |
+| **Precision@5** | **0.5692** (±0.3250) | 정밀도 - 추천 중 56.92%가 관련 있음 |
+
+**타입별 성능**
+
+| 타입 | nDCG@5 | MRR@5 | Recall@5 | Precision@5 |
+| --- | --- | --- | --- | --- |
+| 논문 | 0.8327 (±0.3708) | 0.8462 (±0.3755) | 0.6564 (±0.4034) | 0.5423 (±0.3396) |
+| **데이터셋** | **0.9199** (±0.2765) | **0.9231** (±0.2774) | **0.7474** (±0.3149) | **0.6385** (±0.3176) |
+
+**카테고리별 성능**
+
+| 카테고리 | 전체 nDCG@5 | 논문 nDCG@5 | 데이터셋 nDCG@5 | 테스트 케이스 수 |
+| --- | --- | --- | --- | --- |
+| 국내 데이터셋 | 0.7736 | 0.8023 | 0.9071 | 11개 |
+| 해외 데이터셋 | **1.0000** | **1.0000** | 0.9908 | 2개 |
+
+**시스템 성능**
+
+| 항목 | 측정값 |
+| --- | --- |
+| 평균 응답 시간 | 29.5초 (최소 20.1초 ~ 최대 37.5초) |
+| 메모리 사용량 | ~18GB (Gemma-2-9B-IT, FP16) |
+| 처리 성공률 | 100% (13/13) |
+| 실패율 | 0% |
+
+**주요 성과**
+- **데이터셋 추천 우수**: nDCG 0.92, MRR 0.92, Recall 0.75로 특히 뛰어난 성능
+- **안정적 동작**: 13개 테스트 케이스 100% 성공
+- **해외 데이터 완벽 대응**: 해외 데이터셋에서 nDCG 1.0 달성
+- **높은 순위 품질**: 전체 nDCG 0.81, MRR 0.85로 우수한 추천 순위
 
 **응답 시간 분해**:
-- LLM 쿼리 생성: 0.5-1초
-- 후보 검색 (병렬): 0.5-1초
-- 유사도 계산: 0.3-0.5초
-- LLM 최종 분석: 1.5-2초
-- **총합**: 3-4초 (FP16 기준)
+- LLM 쿼리 생성: 3-5초
+- 후보 검색 (병렬): 8-12초
+- 유사도 계산: 1-2초
+- LLM 최종 분석: 15-20초
+- **총합**: 평균 29.5초 (FP16 기준)
 
 ### 추천 품질 평가 지표
 
@@ -593,12 +633,8 @@ nano .env
 
 **평가 실행 방법**:
 ```bash
-# 평가 모듈 단위 테스트
-python scripts/test_evaluation.py
-
 # 전체 평가 (Jupyter Notebook)
-jupyter notebook notebooks/inference.ipynb
-# → Section 10-15 실행
+jupyter notebook notebooks/evaluation.ipynb
 ```
 
 ---
@@ -632,4 +668,3 @@ jupyter notebook notebooks/inference.ipynb
 - **DataON API**: https://dataon.gitbook.io/
 - **ScienceON API**: https://scienceon.kisti.re.kr/apigateway/
 - **대회 페이지**: https://aida.kisti.re.kr/competition/
-
