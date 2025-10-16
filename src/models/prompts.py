@@ -223,35 +223,47 @@ Input Dataset:
 {error_feedback}
 
 GOAL:
-Create concise search keywords (1–3 words) for TWO search systems:
-1. dataset_queries: find THIS dataset or similar datasets.
-   - Language mix: 70% {main_lang} + 30% English.
-   - Preserve technical terms, proper nouns, and local names in their native script.
-2. paper_queries: find ACADEMIC PAPERS related to this dataset.
-   - Language mix: 70% English + 30% {main_lang}.
-   - Focus on domain, methodology, and research topic terms.
+Create EXACTLY 5 concise search keywords (1–3 words each) for TWO search systems:
+
+1. dataset_queries: Find THIS dataset or similar datasets
+   Language Strategy (IMPORTANT):
+   - Prioritize {main_lang} (4 keywords) + {sub_lang} (1 keyword)
+   - Rationale: Datasets in {main_lang} are best found with {main_lang} keywords
+   - Example split: If main=Korean, use 4 Korean terms + 1 English term
+   - Preserve proper nouns, location names, and technical terms in their native script
+
+2. paper_queries: Find ACADEMIC PAPERS related to this dataset
+   Language Strategy (IMPORTANT):
+   - Use balanced mix: 3 {main_lang} + 2 {sub_lang} (or 2 {main_lang} + 3 {sub_lang})
+   - Rationale: Papers exist in both languages, need broad coverage
+   - If {main_lang}=Korean and {sub_lang}=English, use 3 Korean + 2 English
+   - Focus on domain, methodology, and research topic terms
 
 RULES (STRICT):
-- Length: each keyword must be 1–3 words only.
-- Keep only nouns, abbreviations, or domain-specific terms (no sentences).
-- Discard generic words (e.g., “dataset”, “research”, “study”, “result”, “data”).
-- Use abbreviations (e.g., NMR, LC-MS, RNA-seq) and formats (e.g., FASTQ, NetCDF) as-is.
-- Always output between 3 and 5 unique keywords per category.
+- Output EXACTLY 5 keywords per category (no more, no less)
+- Length: each keyword must be 1–3 words only
+- Keep only nouns, abbreviations, or domain-specific terms (no sentences)
+- Discard generic words (e.g., "dataset", "research", "study", "result", "data")
+- Use abbreviations (e.g., NMR, LC-MS, RNA-seq) and formats (e.g., FASTQ, NetCDF) as-is
 - Normalize:
-  * Lowercase except abbreviations (A–Z).
-  * Deduplicate and trim spaces.
-  * Sort alphabetically within each script for consistency.
+  * Lowercase except abbreviations (A–Z)
+  * Deduplicate and trim spaces
+  * Sort by language first ({main_lang} then {sub_lang}), then alphabetically
 - Cross-language logic:
-  * If multiple languages appear (e.g., English + Korean + Japanese), follow the ratio rule above.
-  * If translation equivalents exist, prefer the more searchable form (the version most users would type in search boxes).
-  * Do not invent new terms not implied by the title/description/original keywords.
+  * Match keyword language to target dataset/paper language for better retrieval
+  * If translation equivalents exist, prefer the native language version
+  * Do not invent new terms not implied by the title/description/original keywords
+  * Keep technical terms in their commonly used language (usually English)
 
 DETERMINISTIC SELECTION PIPELINE (DO NOT OUTPUT, JUST FOLLOW):
-1. Extract candidate terms from title, description, and keywords (nouns, abbreviations, named entities).
-2. Normalize, deduplicate, and remove long or generic terms.
-3. Rank by (1) domain-specificity, (2) appearance importance (title > description > keywords), (3) search likelihood.
-4. Select top 3–5 terms per category using language ratio constraints.
-5. Sort deterministically (score desc → alphabetical order).
+1. Extract candidate terms from title, description, and keywords (nouns, abbreviations, named entities)
+2. Identify the language of each term
+3. Normalize, deduplicate, and remove long or generic terms
+4. Rank by (1) domain-specificity, (2) language match to main_lang, (3) appearance importance (title > description > keywords)
+5. Select exactly 5 terms per category:
+   - dataset_queries: 4 {main_lang} + 1 {sub_lang}
+   - paper_queries: 3 {main_lang} + 2 {sub_lang} (adjust based on domain)
+6. Sort deterministically: {main_lang} keywords first, then {sub_lang}, alphabetically within each language group
 
 OUTPUT FORMAT (STRICT):
 Output ONLY valid JSON. No markdown, no explanations, NO CODE BLOCKS.
