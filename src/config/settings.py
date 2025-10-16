@@ -18,8 +18,11 @@ class Settings(BaseSettings):
     HF_TOKEN: Optional[str] = os.getenv("HF_TOKEN", None)
 
     # LLM 생성 설정
-    MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", "512"))
-    TEMPERATURE: float = float(os.getenv("TEMPERATURE", "0.1"))
+    MAX_TOKENS_RERANKING: int = int(os.getenv("MAX_TOKENS_RERANKING", "1024"))
+    MAX_TOKENS_KEYWORD: int = int(os.getenv("MAX_TOKENS_KEYWORD", "300"))
+    # 하위 호환성을 위한 MAX_TOKENS (MAX_TOKENS_RERANKING으로 폴백)
+    MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", os.getenv("MAX_TOKENS_RERANKING", "1024")))
+    TEMPERATURE: float = float(os.getenv("TEMPERATURE", "0.0"))
 
     # 개발 모드 (GPU 없을 때 Mock 모델 사용)
     DEV_MODE: bool = os.getenv("DEV_MODE", "false").lower() == "true"
