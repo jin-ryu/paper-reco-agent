@@ -108,7 +108,7 @@ Output ONLY valid JSON (no markdown, no comments) with a single "recommendations
     return prompt
 
 
-def create_search_queries_prompt(source_data: Dict[str, Any], previous_error: str = None) -> str:
+def create_search_queries_prompt_prev(source_data: Dict[str, Any], previous_error: str = None) -> str:
     """
     검색 쿼리 생성을 위한 프롬프트 생성
 
@@ -180,7 +180,7 @@ Output this exact JSON structure (3 to 5 keywords each):
 """.strip()
     return prompt
 
-def create_search_queries_prompt_advanced(source_data: Dict[str, Any], previous_error: str = None) -> str:
+def create_search_queries_prompt(source_data: Dict[str, Any], previous_error: str = None) -> str:
     """
     검색 쿼리 생성을 위한 프롬프트 생성 (다국어 대응 + 결정적 키워드 생성)
     - 구조는 기존 함수 그대로 유지
@@ -223,47 +223,39 @@ Input Dataset:
 {error_feedback}
 
 GOAL:
-Create EXACTLY 5 concise search keywords (1–3 words each) for TWO search systems:
+Generate 3-5 concise search keywords (1–3 words each) for TWO search systems:
 
 1. dataset_queries: Find THIS dataset or similar datasets
-   Language Strategy (IMPORTANT):
-   - Prioritize {main_lang} (4 keywords) + {sub_lang} (1 keyword)
-   - Rationale: Datasets in {main_lang} are best found with {main_lang} keywords
-   - Example split: If main=Korean, use 4 Korean terms + 1 English term
+   Language Strategy:
+   - Predominantly use {main_lang} keywords (majority of keywords)
+   - Include 1-2 {sub_lang} keywords if they're essential technical terms
+   - Rationale: Datasets are primarily described in their native language
    - Preserve proper nouns, location names, and technical terms in their native script
 
 2. paper_queries: Find ACADEMIC PAPERS related to this dataset
-   Language Strategy (IMPORTANT):
-   - Use balanced mix: 3 {main_lang} + 2 {sub_lang} (or 2 {main_lang} + 3 {sub_lang})
-   - Rationale: Papers exist in both languages, need broad coverage
-   - If {main_lang}=Korean and {sub_lang}=English, use 3 Korean + 2 English
+   Language Strategy:
+   - Balanced mix of {main_lang} and {sub_lang} keywords
+   - Rationale: Academic papers exist in both languages, need broad coverage
    - Focus on domain, methodology, and research topic terms
+   - Technical terms (abbreviations, methods) often use English regardless of main language
 
-RULES (STRICT):
-- Output EXACTLY 5 keywords per category (no more, no less)
+KEYWORD SELECTION RULES:
+- Output 3-5 keywords per category (flexible count based on content richness)
 - Length: each keyword must be 1–3 words only
 - Keep only nouns, abbreviations, or domain-specific terms (no sentences)
-- Discard generic words (e.g., "dataset", "research", "study", "result", "data")
+- Discard generic words (e.g., "dataset", "research", "study", "result", "data", "analysis")
+- Prioritize specific, searchable terms over broad concepts
 - Use abbreviations (e.g., NMR, LC-MS, RNA-seq) and formats (e.g., FASTQ, NetCDF) as-is
-- Normalize:
-  * Lowercase except abbreviations (A–Z)
-  * Deduplicate and trim spaces
-  * Sort by language first ({main_lang} then {sub_lang}), then alphabetically
 - Cross-language logic:
-  * Match keyword language to target dataset/paper language for better retrieval
-  * If translation equivalents exist, prefer the native language version
-  * Do not invent new terms not implied by the title/description/original keywords
+  * Match keyword language to target search system (dataset vs paper)
   * Keep technical terms in their commonly used language (usually English)
+  * Do not invent new terms not implied by the title/description/original keywords
 
-DETERMINISTIC SELECTION PIPELINE (DO NOT OUTPUT, JUST FOLLOW):
-1. Extract candidate terms from title, description, and keywords (nouns, abbreviations, named entities)
-2. Identify the language of each term
-3. Normalize, deduplicate, and remove long or generic terms
-4. Rank by (1) domain-specificity, (2) language match to main_lang, (3) appearance importance (title > description > keywords)
-5. Select exactly 5 terms per category:
-   - dataset_queries: 4 {main_lang} + 1 {sub_lang}
-   - paper_queries: 3 {main_lang} + 2 {sub_lang} (adjust based on domain)
-6. Sort deterministically: {main_lang} keywords first, then {sub_lang}, alphabetically within each language group
+QUALITY GUIDELINES:
+- GOOD examples: "한반도", "기상", "NMR", "대사체", "COVID-19", "혈장"
+- BAD examples: "NMR 기반 분석", "환경 오염물질", "데이터 분석" (too long or generic)
+- Each keyword should be independently searchable
+- Prefer concrete terms over abstract concepts
 
 OUTPUT FORMAT (STRICT):
 Output ONLY valid JSON. No markdown, no explanations, NO CODE BLOCKS.
@@ -274,7 +266,7 @@ Output ONLY valid JSON. No markdown, no explanations, NO CODE BLOCKS.
 
 {{
   "dataset_queries": ["term1", "term2", "term3"],
-  "paper_queries": ["term1", "term2", "term3"]
+  "paper_queries": ["term1", "term2", "term3", "term4"]
 }}
 """.strip()
 
