@@ -171,7 +171,7 @@ paper-reco-agent/
 │   └── setup_environment.sh   # 환경 설정 스크립트
 │
 ├── demo/                      # 데모 영상
-├── figures/                   # 결과 저장 폴더
+├── results/                   # 결과 저장 폴더
 │   ├── inference_results/     # 추론 결과 (타임스탬프별)
 │   └── evaluation_results/    # 평가 결과 (타임스탬프별)
 │
