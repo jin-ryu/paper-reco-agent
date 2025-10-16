@@ -207,7 +207,9 @@ class LLMModel:
             "model_type": self.model_type,
             "device": self.device,
             "dtype": "float16",
-            "max_tokens": settings.MAX_TOKENS,
+            "max_tokens_reranking": settings.MAX_TOKENS_RERANKING,
+            "max_tokens_keyword": settings.MAX_TOKENS_KEYWORD,
+            "max_tokens": settings.MAX_TOKENS,  # 하위 호환성
             "temperature": settings.TEMPERATURE,
             "parameters": params,
             "context_length": f"{self.max_context_length // 1024}K"
