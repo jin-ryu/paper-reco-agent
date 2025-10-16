@@ -166,11 +166,12 @@ class KoreanResearchRecommendationAgent:
                 logger.info(prompt)
                 logger.info(f'=' * 80)
 
-                # LLM 호출
+                # LLM 호출 (키워드 생성용 토큰 수 사용)
+                from src.config.settings import settings
                 response = await self.llm_model.generate(
                     prompt,
-                    max_new_tokens=300,
-                    temperature=0.1
+                    max_new_tokens=settings.MAX_TOKENS_KEYWORD,
+                    temperature=settings.TEMPERATURE
                 )
 
                 # JSON 파싱 및 검증
@@ -450,7 +451,13 @@ class KoreanResearchRecommendationAgent:
                     logger.info(prompt)
                     logger.info(f'=' * 80)
 
-                    response = await self.llm_model.generate(prompt)
+                    # LLM 호출 (Reranking용 토큰 수 사용)
+                    from src.config.settings import settings
+                    response = await self.llm_model.generate(
+                        prompt,
+                        max_new_tokens=settings.MAX_TOKENS_RERANKING,
+                        temperature=settings.TEMPERATURE
+                    )
 
                     # JSON 응답 파싱 (실패 시 ValueError 또는 JSONDecodeError 발생)
                     recommendations = self._parse_llm_response(response, top_candidates, num_recommendations)
