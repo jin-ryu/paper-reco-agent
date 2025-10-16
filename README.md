@@ -122,7 +122,8 @@ Scikit-learn: 1.3.2
 ```
 paper-reco-agent/
 ├── README.md                  # 이 파일 (프로젝트 전체 설명)
-├── .env                       # 환경 변수 (API 키)
+├── CONTEST.md                 # 대회 관련 추가 정보
+├── .env                       # 환경 변수 (API 키, .env.example을 복사하여 사용)
 │
 ├── data/                      # 데이터 폴더
 │   └── test/                  # 테스트 데이터셋
@@ -130,43 +131,50 @@ paper-reco-agent/
 │
 ├── model/                     # 학습된 모델 파일 (자동 다운로드)
 │
+├── logs/                      # 로그 파일 저장 폴더
+│
 ├── src/                       # 소스코드 폴더
+│   ├── __init__.py
 │   ├── agents/                # 추천 에이전트
+│   │   ├── __init__.py
 │   │   └── recommendation_agent.py  # 메인 추천 로직
 │   ├── clients/               # API 클라이언트
+│   │   ├── __init__.py
 │   │   ├── dataon_client.py   # DataON API
 │   │   └── scienceon_client.py  # ScienceON API
 │   ├── config/                # 설정 파일
+│   │   ├── __init__.py
 │   │   └── settings.py        # 환경 설정
+│   ├── evaluation/            # 평가 모듈
+│   │   ├── __init__.py
+│   │   └── metrics.py         # nDCG, MRR, Recall@k 등
 │   ├── models/                # 언어모델 래퍼
+│   │   ├── __init__.py
 │   │   ├── llm_model.py       # 범용 LLM 모델 (Gemma/Qwen 지원)
 │   │   ├── prompts.py         # LLM 프롬프트 템플릿
 │   │   └── mock_model.py      # 개발용 Mock 모델
 │   ├── router/                # FastAPI 라우터
+│   │   ├── __init__.py
 │   │   └── main.py            # FastAPI 서버
 │   ├── tools/                 # 유틸리티 도구
+│   │   ├── __init__.py
 │   │   └── research_tools.py  # 검색, 임베딩, 유사도 계산
-│   ├── utils/                 # 공통 유틸리티
-│   │   └── text_utils.py      # 텍스트 정제 및 키워드 전처리
-│   ├── evaluation/            # 평가 모듈
-│   │   ├── __init__.py        # 평가 함수 export
-│   │   └── metrics.py         # nDCG, MRR, Recall@k 등
+│   └── utils/                 # 공통 유틸리티
+│       ├── __init__.py
+│       └── text_utils.py      # 텍스트 정제 및 키워드 전처리
 │
 ├── notebooks/                 # Jupyter 노트북
 │   ├── inference.ipynb        # ⭐ 추론 실행 노트북
 │   └── evaluation.ipynb       # ⭐ 평가 실행 노트북
 │
 ├── scripts/                   # 실행 스크립트
-│   ├── setup_environment.sh   # 환경 설정 스크립트
-│   ├── run_inference.sh       # 추론 실행 스크립트
-│   ├── test_evaluation.py     # 평가 모듈 테스트
-│   └── run_server.sh          # FastAPI 서버 실행 스크립트
+│   └── setup_environment.sh   # 환경 설정 스크립트
 │
 ├── demo/                      # 데모 영상
 ├── figures/                   # 결과 저장 폴더
 │   ├── inference_results/     # 추론 결과 (타임스탬프별)
 │   └── evaluation_results/    # 평가 결과 (타임스탬프별)
-
+│
 └── requirements.txt           # 의존성 목록 (상세 버전)
 ```
 
@@ -181,7 +189,7 @@ paper-reco-agent/
 - **src/tools/research_tools.py**: 검색, 임베딩, 유사도 계산 함수
 - **src/utils/text_utils.py**: 텍스트 정제 및 키워드 전처리 함수
 - **src/evaluation/metrics.py**: 평가 메트릭 (nDCG, MRR, Recall@k 등)
-- **scripts/test_evaluation.py**: 평가 모듈 단위 테스트
+- **scripts/setup_environment.sh**: Python 가상환경 및 의존성 설치 스크립트
 - **requirements.txt**: 전체 의존성 목록 (pip freeze)
 
 ---
@@ -273,14 +281,13 @@ jupyter notebook notebooks/evaluation.ipynb
 ```
 
 **평가 프로세스**:
-1. 테스트 데이터셋 로드 (data/test/testset_gemini_ver1.json)
-2. 추천 에이전트 초기화
-3. 각 테스트 케이스에 대해 추천 실행
-4. 평가 메트릭 계산 (nDCG@k, MRR@k, Recall@k, Precision@k)
-5. 결과를 타임스탬프 폴더에 저장 (figures/evaluation_results/<timestamp>/)
-6. 논문/데이터셋 분리 평가
-7. 카테고리별 분석
-8. CSV 및 요약 리포트 생성
+1.  **테스트 데이터셋 로드**: `data/test/testset_aug.json` 파일을 로드하여 평가에 사용할 13개의 테스트 케이스를 준비합니다.
+2.  **추천 에이전트 초기화**: 설정된 LLM (Gemma/Qwen) 및 임베딩 모델을 로드하여 추천 에이전트를 준비합니다.
+3.  **추천 생성 및 평가**: 각 테스트 케이스에 대해 다음을 수행합니다.
+    *   에이전트를 통해 논문 및 데이터셋 추천을 생성합니다.
+    *   생성된 추천 목록과 정답셋(`candidate_pool`)을 비교하여 평가 메트릭을 계산합니다.
+4.  **결과 저장**: 모든 평가가 완료되면, 타임스탬프 기반의 결과 폴더(`figures/evaluation_results/<timestamp>/`)에 아래 파일들을 저장합니다.
+5.  **리포트 생성**: 전체 결과를 종합하여 가독성 높은 요약 리포트를 생성하고 출력합니다.
 
 **평가 지표**:
 - **nDCG@k**: Normalized Discounted Cumulative Gain (순위 품질)
@@ -289,12 +296,10 @@ jupyter notebook notebooks/evaluation.ipynb
 - **Precision@k**: 정밀도 (추천 중 관련 아이템 비율)
 
 **평가 결과 파일**:
-- `figures/evaluation_results/<timestamp>/individual_results.json`: 개별 테스트 케이스 결과
-- `figures/evaluation_results/<timestamp>/metrics_summary.json`: k별 평균 메트릭
-- `figures/evaluation_results/<timestamp>/category_metrics.json`: 카테고리별 메트릭
-- `figures/evaluation_results/<timestamp>/results.csv`: CSV 형식 결과
-- `figures/evaluation_results/<timestamp>/summary_report.txt`: 요약 리포트
-- `figures/evaluation_results/<timestamp>/config.json`: 평가 설정
+- `figures/evaluation_results/<timestamp>/EVALUATION_SUMMARY.txt`: ⭐ **(가장 먼저 확인)** 평가 설정, 카테고리별/종합 성능, 상위/하위 케이스 분석 등 핵심 결과를 요약한 리포트입니다.
+- `figures/evaluation_results/<timestamp>/detailed_results.csv`: 각 테스트 케이스별 추천 결과 및 정답 여부를 포함한 상세 데이터 (CSV 형식).
+- `figures/evaluation_results/<timestamp>/metrics.json`: 전체 테스트 케이스에 대한 평균 평가 지표(nDCG, MRR 등)를 저장한 파일.
+- `figures/evaluation_results/<timestamp>/recommend_result.json`: 에이전트가 생성한 원본 추천 결과(JSON 형식) 전체를 저장한 파일.
 
 ### 방법 2: 자동 환경 설정 스크립트 (⭐ 권장)
 
@@ -349,39 +354,6 @@ pip install -r requirements.txt
 ```bash
 # .env 파일에 API 키 입력
 nano .env
-```
-
-`.env` 파일 내용:
-```env
-# DataON API 키
-DATAON_SEARCH_KEY=your_key_here
-DATAON_META_KEY=your_key_here
-
-# ScienceON API 키
-SCIENCEON_CLIENT_ID=your_client_id_here
-SCIENCEON_ACCOUNTS=your_accounts_here
-
-# 모델 설정 (선택 가능)
-# MODEL_NAME=Qwen/Qwen3-14B  # 대안: Qwen3-14B (14.8B, 32K context)
-MODEL_NAME=google/gemma-2-9b-it  # 기본: Gemma-2-9B-IT (9B, 8K context)
-EMBEDDING_MODEL=intfloat/multilingual-e5-large
-MODEL_CACHE_DIR=/home/infidea/backup-data/paper-reco-agent/model
-
-# Hugging Face 토큰 (gated 모델 접근용, Gemma 필수)
-HF_TOKEN=your_huggingface_token_here
-
-# LLM 생성 파라미터
-MAX_TOKENS=512
-TEMPERATURE=0.1
-
-# 개발 모드 (GPU 없을 때 Mock 모델 사용)
-DEV_MODE=false
-
-# 하이브리드 유사도 가중치
-PAPER_HYBRID_ALPHA=0.8  # E5 임베딩 가중치 (논문)
-PAPER_HYBRID_BETA=0.2   # BM25 가중치 (논문)
-DATASET_HYBRID_ALPHA=0.6  # E5 임베딩 가중치 (데이터셋)
-DATASET_HYBRID_BETA=0.4   # BM25 가중치 (데이터셋)
 ```
 
 ### 추론 결과 예시
