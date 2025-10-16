@@ -99,10 +99,11 @@ Output ONLY valid JSON (no markdown, no comments) with a single "recommendations
 ## Rules:
 - Output EXACTLY {num_recommendations} recommendations.
 - rank: Your ranking decision (1, 2, 3, ...).
-- candidate_id: ID from the candidate list above.
+- candidate_id: MUST be EXACT ID from the candidate list above. DO NOT invent, shorten, or modify IDs. Copy the full ID string exactly as shown.
 - reason: Specific explanation in KOREAN (qualitative, no scores).
 - level: "강추", "추천", or "참고".
 - Start response with '{{' character.
+- DO NOT wrap output in markdown code blocks (```json). Output pure JSON only.
 """.strip()
     return prompt
 
@@ -165,7 +166,12 @@ KEYWORD LENGTH RULES:
 - Keep it SHORT (maximum 3 words per keyword) for better search coverage.
 - MUST output 3 to 5 keywords for dataset_queries and paper_queries.
 
-IMPORTANT: Output ONLY valid JSON. No thinking, no explanations, no markdown.
+IMPORTANT: Output ONLY valid JSON. No thinking, no explanations, NO MARKDOWN CODE BLOCKS.
+- DO NOT wrap output in ```json or ``` markers
+- Start your response directly with {{ character
+- End your response with }} character
+- Output pure JSON only
+
 Output this exact JSON structure (3 to 5 keywords each):
 {{
   "dataset_queries": ["keyword1", "keyword2", "keyword3"],
@@ -174,38 +180,127 @@ Output this exact JSON structure (3 to 5 keywords each):
 """.strip()
     return prompt
 
-def create_search_queries_prompt_test(source_data: Dict[str, Any], previous_error: str = None) -> str:
-    # 프롬프트 생성
+def create_search_queries_prompt_advanced(source_data: Dict[str, Any], previous_error: str = None) -> str:
+    """
+    검색 쿼리 생성을 위한 프롬프트 생성 (다국어 대응 + 결정적 키워드 생성)
+    - 구조는 기존 함수 그대로 유지
+    - 프롬프트 내용만 통합형으로 개선
+    """
+
+    # 기본 필드 준비
+    title = source_data.get('title', '')
+    description = source_data.get('description', '')
+    if len(description) > 1000:
+        description = description[:1000] + "..."
+
+    original_keywords = source_data.get('keywords', [])
+    keywords_str = ', '.join(original_keywords) if original_keywords else ''
+
+    # 언어 설정
+    main_lang = source_data.get('dataset_main_lang_pc', 'Korean')
+    sub_lang = source_data.get('dataset_sub_lang_pc', 'English')
+
+    # 에러 피드백
+    error_feedback = ""
+    if previous_error:
+        error_feedback = f"""
+**IMPORTANT - Previous Parsing Error**:
+Your last response failed with this error: {previous_error}
+Please fix the error and output ONLY a valid JSON object that starts with '{{' and ends with '}}'.
+"""
+
+    # 통합형 프롬프트
     prompt = f"""
-    You are a search keyword expert. Extract 3 keywords that users would TYPE to FIND this dataset.
+You are a multilingual research data search expert.
+Your task is to generate SHORT, PRECISE, SEARCHABLE keywords for optimal dataset and paper retrieval.
 
-Dataset Information:
-{source_data}
+Input Dataset:
+   - Title: {title}
+   - Description: {description}
+   - Original Keywords (from API): {keywords_str}
+   - Main Language: {main_lang}
+   - Sub Language: {sub_lang}
+{error_feedback}
 
-Extract keywords for TWO search systems:
+GOAL:
+Create concise search keywords (1–3 words) for TWO search systems:
+1. dataset_queries: find THIS dataset or similar datasets.
+   - Language mix: 70% {main_lang} + 30% English.
+   - Preserve technical terms, proper nouns, and local names in their native script.
+2. paper_queries: find ACADEMIC PAPERS related to this dataset.
+   - Language mix: 70% English + 30% {main_lang}.
+   - Focus on domain, methodology, and research topic terms.
 
-1. paper_queries
-   Purpose: Find ACADEMIC PAPERS related to this dataset's topic
-   Users: Korean researchers searching for papers
-   Strategy: 70% English + 30% Korean (한국어)
-   Examples: "machine learning", "neural network", "딥러닝", "데이터 분석"
-   
-2. dataset_queries  
-   Purpose: Find THIS EXACT DATASET or similar datasets
-   Users: International researchers searching for data
-   Strategy: 70% Original Language + 30% English
-   Examples: Keep technical terms, place names, proper nouns in original form
+RULES (STRICT):
+- Length: each keyword must be 1–3 words only.
+- Keep only nouns, abbreviations, or domain-specific terms (no sentences).
+- Discard generic words (e.g., “dataset”, “research”, “study”, “result”, “data”).
+- Use abbreviations (e.g., NMR, LC-MS, RNA-seq) and formats (e.g., FASTQ, NetCDF) as-is.
+- Always output between 3 and 5 unique keywords per category.
+- Normalize:
+  * Lowercase except abbreviations (A–Z).
+  * Deduplicate and trim spaces.
+  * Sort alphabetically within each script for consistency.
+- Cross-language logic:
+  * If multiple languages appear (e.g., English + Korean + Japanese), follow the ratio rule above.
+  * If translation equivalents exist, prefer the more searchable form (the version most users would type in search boxes).
+  * Do not invent new terms not implied by the title/description/original keywords.
 
-THINK: What would someone TYPE in a search box to find this?
-- Use SHORT phrases (1-3 words)
-- Use domain-specific terminology
-- Include location names, technical standards, formats
-- Focus on SEARCHABLE terms, not descriptions
+DETERMINISTIC SELECTION PIPELINE (DO NOT OUTPUT, JUST FOLLOW):
+1. Extract candidate terms from title, description, and keywords (nouns, abbreviations, named entities).
+2. Normalize, deduplicate, and remove long or generic terms.
+3. Rank by (1) domain-specificity, (2) appearance importance (title > description > keywords), (3) search likelihood.
+4. Select top 3–5 terms per category using language ratio constraints.
+5. Sort deterministically (score desc → alphabetical order).
 
-Output ONLY this JSON (no markdown, no explanation):
+OUTPUT FORMAT (STRICT):
+Output ONLY valid JSON. No markdown, no explanations, NO CODE BLOCKS.
+- DO NOT wrap output in ```json or ``` markers
+- Start your response directly with {{ character
+- End your response with }} character
+- Output pure JSON only
+
 {{
-  "paper_queries": ["term1", "term2", "term3"],
-  "dataset_queries": ["term1", "term2", "term3"]
+  "dataset_queries": ["term1", "term2", "term3"],
+  "paper_queries": ["term1", "term2", "term3"]
 }}
-    """.strip()
+""".strip()
+
     return prompt
+
+
+# def create_search_queries_prompt_test(source_data: Dict[str, Any], previous_error: str = None) -> str:
+#     # 프롬프트 생성
+#     prompt = f"""
+#     You are a search keyword expert. Extract 3 keywords that users would TYPE to FIND this dataset.
+#
+# Dataset Information:
+# {source_data}
+#
+# Extract keywords for TWO search systems:
+#
+# 1. paper_queries
+#    Purpose: Find ACADEMIC PAPERS related to this dataset's topic
+#    Users: Korean researchers searching for papers
+#    Strategy: 70% English + 30% Korean (한국어)
+#    Examples: "machine learning", "neural network", "딥러닝", "데이터 분석"
+#
+# 2. dataset_queries
+#    Purpose: Find THIS EXACT DATASET or similar datasets
+#    Users: International researchers searching for data
+#    Strategy: 70% Original Language + 30% English
+#    Examples: Keep technical terms, place names, proper nouns in original form
+#
+# THINK: What would someone TYPE in a search box to find this?
+# - Use SHORT phrases (1-3 words)
+# - Use domain-specific terminology
+# - Include location names, technical standards, formats
+# - Focus on SEARCHABLE terms, not descriptions
+#
+# Output ONLY this JSON (no markdown, no explanation):
+# {{
+#   "paper_queries": ["term1", "term2", "term3"],
+#   "dataset_queries": ["term1", "term2", "term3"]
+# }}
+#     """.strip()
+#     return prompt
