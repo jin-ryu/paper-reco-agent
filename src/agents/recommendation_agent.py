@@ -176,11 +176,11 @@ class KoreanResearchRecommendationAgent:
                 # JSON 파싱 및 검증
                 import re
                 response_cleaned = re.sub(r'<think>.*?</think>', '', response, flags=re.DOTALL).strip()
-                json_match = re.search(r'```json\\s*(\\{.*?\\})\\s*```', response_cleaned, re.DOTALL)
+                json_match = re.search(r'```json\s*(\{.*?\})\s*```', response_cleaned, re.DOTALL)
                 if json_match:
                     json_str = json_match.group(1)
                 else:
-                    json_match = re.search(r'\\{.*\\}', response_cleaned, re.DOTALL)
+                    json_match = re.search(r'\{.*\}', response_cleaned, re.DOTALL)
                     json_str = json_match.group(0) if json_match else response_cleaned
 
                 queries = json.loads(json_str)
@@ -434,6 +434,7 @@ class KoreanResearchRecommendationAgent:
             previous_error = None
 
             for attempt in range(max_retries):
+                response = ""  # response 변수 초기화
                 try:
                     logger.info(f"LLM {candidate_type} 추천 생성 시도 {attempt + 1}/{max_retries}")
 
@@ -451,34 +452,28 @@ class KoreanResearchRecommendationAgent:
 
                     response = await self.llm_model.generate(prompt)
 
-                    # JSON 응답 파싱
+                    # JSON 응답 파싱 (실패 시 ValueError 또는 JSONDecodeError 발생)
                     recommendations = self._parse_llm_response(response, top_candidates, num_recommendations)
 
-                    if recommendations:
-                        return recommendations
-                    else:
-                        logger.warning(f"LLM {candidate_type} 응답 파싱 실패 (시도 {attempt + 1}/{max_retries})")
-                        if attempt < max_retries - 1:
-                            # 에러 메시지 생성하여 재시도
-                            previous_error = "Failed to parse JSON response. Please ensure output is valid JSON starting with '{' character."
-                            logger.info(f"에러 피드백과 함께 재시도: {previous_error}")
-                            continue
-                        else:
-                            logger.error(f"모든 재시도 실패, {candidate_type} 추천 생성 불가")
-                            return []
+                    # 파싱 성공 시 (에러 없음) 즉시 반환
+                    return recommendations
 
-                except json.JSONDecodeError as e:
-                    # JSON 파싱 에러를 명시적으로 캡처하여 에러 메시지 전달
-                    error_msg = f"JSON parsing error: {str(e)}"
-                    logger.error(f"LLM {candidate_type} 응답 파싱 에러 (시도 {attempt + 1}/{max_retries}): {error_msg}")
+                except (json.JSONDecodeError, ValueError) as e:
+                    # JSON 파싱 또는 내용 검증 에러 처리
+                    error_msg = f"응답 파싱/검증 오류: {str(e)}"
+                    logger.warning(f"LLM {candidate_type} 응답 처리 실패 (시도 {attempt + 1}/{max_retries}): {error_msg}")
+                    logger.warning(f"LLM 원본 응답:\n{response}") # 원본 응답 로깅
+
                     if attempt < max_retries - 1:
                         previous_error = error_msg
+                        logger.info(f"에러 피드백과 함께 재시도합니다.")
                         continue
                     else:
+                        logger.error(f"모든 재시도 실패, {candidate_type} 추천을 생성할 수 없습니다.")
                         return []
 
                 except Exception as e:
-                    logger.error(f"LLM {candidate_type} 호출 실패 (시도 {attempt + 1}/{max_retries}): {e}")
+                    logger.error(f"LLM {candidate_type} 호출 중 예외 발생 (시도 {attempt + 1}/{max_retries}): {e}")
                     if attempt < max_retries - 1:
                         previous_error = f"Generation error: {str(e)}"
                         continue
@@ -622,16 +617,19 @@ class KoreanResearchRecommendationAgent:
                     else:
                         logger.warning(f"⚠️  매칭된 추천 항목 없음 (LLM 응답 {len(llm_recommendations)}개)")
                 else:
-                    logger.warning(f"⚠️  'recommendations' 키가 응답에 없음. 키 목록: {list(parsed_response.keys())}")
+                    error_msg = f"'recommendations' 키가 응답에 없음. 키 목록: {list(parsed_response.keys())}"
+                    logger.warning(f"⚠️  {error_msg}")
+                    raise ValueError(error_msg)
 
             # JSON 파싱 실패
-            logger.warning(f"LLM 응답에서 JSON 추출 실패, 원문:\n{response[:500]}...")
-            return []
+            error_msg = f"LLM 응답에서 JSON 추출 실패, 원문:\n{response[:500]}..."
+            logger.warning(error_msg)
+            raise ValueError(error_msg)
 
         except Exception as e:
             logger.error(f"LLM 응답 파싱 실패: {e}")
             logger.error(f"LLM 응답:\n{response[:1000]}...")
-            return []
+            raise ValueError(f"LLM 응답 파싱 실패: {e}") from e
 
     def _get_embedding_model_info(self) -> Dict[str, Any]:
         """임베딩 모델 및 하이브리드 유사도 설정 정보 반환"""
